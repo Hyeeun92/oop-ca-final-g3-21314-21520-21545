@@ -2,7 +2,7 @@ package com.company;
 
 /* 21545 - Hyeeun Lee
 21520
-21314
+21314 - Nathalie Flores
  */
 
 import javax.swing.*;
@@ -26,10 +26,12 @@ public class CalendarMemo extends JFrame implements ActionListener {
     JButton btnAfter;
     JButton btnAdd;
     JButton btnDelete;
+    JButton btnAttendManage;
+    JButton btnStudentInfo;
     JButton[] calBtn = new JButton[49];
 
     JPanel panWest;
-    JPanel PanSouth;
+    JPanel panSouth;
     JPanel panNorth;
     JPanel panEast;
 
@@ -56,8 +58,6 @@ public class CalendarMemo extends JFrame implements ActionListener {
         f = new Font("Serif", Font.BOLD, 24);
         textYear.setFont(f);
         textMonth.setFont(f);
-        panNorth.add(btnAdd = new JButton("ADD MEMO"));
-        panNorth.add(btnDelete = new JButton("DELETE MEMO"));
 
         add(panNorth, "North");
 
@@ -70,8 +70,15 @@ public class CalendarMemo extends JFrame implements ActionListener {
 
         panEast = new JPanel();
         panEast.add(textWrite = new JTextField());
-        textWrite.setPreferredSize(new Dimension(200, 150));
+        textWrite.setPreferredSize(new Dimension(200, 250));
         add(panEast, "East");
+
+        panSouth = new JPanel();
+        panSouth.add(btnAttendManage = new JButton("Manage attendance"));
+        panSouth.add(btnStudentInfo = new JButton("Detail of students"));
+        panSouth.add(btnAdd = new JButton("ADD MEMO"));
+        panSouth.add(btnDelete = new JButton("DELETE MEMO"));
+        add(panSouth, "South");
 
         btnBefore.addActionListener(this);
         btnAfter.addActionListener(this);
@@ -80,7 +87,7 @@ public class CalendarMemo extends JFrame implements ActionListener {
 
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setTitle("CALENDAR");
-        setBounds(100, 100, 600, 300);
+        setBounds(100, 100, 650, 400);
         setVisible(true);
 
     }
@@ -124,7 +131,6 @@ public class CalendarMemo extends JFrame implements ActionListener {
             }
             calBtn[i+6+hopping].setText((i) + "");
         }
-
     }
 
     public void actionPerformed(ActionEvent e) {
@@ -151,11 +157,10 @@ public class CalendarMemo extends JFrame implements ActionListener {
         }
         else if (e.getSource() == btnDelete) {
             textWrite.setText("");
-
         }
         else if (Integer.parseInt(e.getActionCommand()) >= 1 && Integer.parseInt(e.getActionCommand()) <=31) {
             day = Integer.parseInt(e.getActionCommand());
-            System.out.println(day);
+            System.out.println(day + "/" + month + "/" + year);
             calSet();
         }
     }

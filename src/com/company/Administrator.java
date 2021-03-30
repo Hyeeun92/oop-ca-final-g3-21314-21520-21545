@@ -1,5 +1,10 @@
 package com.company;
 
+/* 21545 - Hyeeun Lee
+21520
+21314 - Nathalie Flores
+ */
+
 import javax.swing.*;
 import javax.swing.plaf.basic.BasicBorders;
 import java.awt.*;
