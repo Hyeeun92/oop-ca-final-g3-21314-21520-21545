@@ -53,7 +53,7 @@ public class CalendarMemo extends JFrame implements ActionListener {
         textMonth.setEditable(false);
 
         panNorth.add(btnAfter = new JButton(">"));
-        f = new Font("Sherif", Font.BOLD, 24);
+        f = new Font("Serif", Font.BOLD, 24);
         textYear.setFont(f);
         textMonth.setFont(f);
         panNorth.add(btnAdd = new JButton("ADD MEMO"));
@@ -62,7 +62,7 @@ public class CalendarMemo extends JFrame implements ActionListener {
         add(panNorth, "North");
 
         panWest = new JPanel(new GridLayout(7,7));
-        f = new Font("Sherif", Font.BOLD, 12);
+        f = new Font("Serif", Font.BOLD, 12);
 
         gridInit();
         calSet();
