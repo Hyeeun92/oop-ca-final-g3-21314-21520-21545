@@ -1,7 +1,7 @@
 package com.company;
 
 /* 21545 - Hyeeun Lee
-21520
+21520 - Liubov Eremenko
 21314 - Nathalie Flores
  */
 
@@ -123,7 +123,7 @@ public class CalendarMemo extends JFrame implements ActionListener {
             else {
                 calBtn[i+6+hopping].setForeground(new Color(0,0,0));
                 if ((i+hopping)%7 == 0) {
-                   calBtn[i+6+hopping].setForeground(new Color(0,0,255));
+                    calBtn[i+6+hopping].setForeground(new Color(0,0,255));
                 }
                 if ((i+hopping-1)%7 == 0) {
                     calBtn[i+6+hopping].setForeground(new Color(255,0,0));
@@ -191,8 +191,5 @@ public class CalendarMemo extends JFrame implements ActionListener {
             year = year+1;
         }
     }
-
-
-
 
 }
