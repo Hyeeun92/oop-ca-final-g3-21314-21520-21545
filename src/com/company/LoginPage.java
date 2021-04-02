@@ -26,11 +26,6 @@ public class LoginPage extends Database { //action listener interface
 
         Database db = new Database();
         List<LoginInfo> getList = db.getList();
-        System.out.println("1");
-
-        System.out.println(getList);
-        System.out.println("2");
-
 
         //create JFrame
         frame = new JFrame();
@@ -45,7 +40,6 @@ public class LoginPage extends Database { //action listener interface
         adminRadio = new JRadioButton("Administrator", false);
         lectureRadio = new JRadioButton("Lecture", false);
         studentRadio = new JRadioButton("Student", false);
-
 
         adminRadio.setBounds(25, 50, 100, 25);
         adminRadio.setFont(new Font(null, Font.BOLD, 10));
@@ -62,10 +56,8 @@ public class LoginPage extends Database { //action listener interface
         idLabel.setBounds(50, 100, 75, 25);
         pswdLabel.setBounds(50, 150, 75, 25);
 
-
         messageLabel.setBounds(125, 250, 250, 35);
         messageLabel.setFont(new Font(null, Font.BOLD, 25));
-
 
         idField.setBounds(125, 100, 200, 25);
         pswdField.setBounds(125, 150, 200, 25);
@@ -87,7 +79,6 @@ public class LoginPage extends Database { //action listener interface
         frame.add(lectureRadio);
         frame.add(studentRadio);
 
-
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setSize(1200, 700);
         frame.setLayout(null);
@@ -106,9 +97,6 @@ public class LoginPage extends Database { //action listener interface
 
                         for (int i = 0; i < getList.size(); i++) {
                             values = String.format("%s", getList.get(i));
-                            System.out.println(values);
-                            System.out.println("??");
-                            System.out.println(gettingInfo);
 
                             if (adminRadio.isSelected()) {
                                 gettingInfo = String.format("%s %s %s", typeAdmin, id, pswd);
