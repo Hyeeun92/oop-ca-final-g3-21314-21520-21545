@@ -1,11 +1,9 @@
 package com.company;
 
-/*
-21545 - Hyeeun Lee
-21520 - Liubov Eremenko
+/* 21545 - Hyeeun Lee
+21520
 21314 - Nathalie Flores
-*/
-
+ */
 
 import javax.swing.*;
 import javax.swing.plaf.basic.BasicBorders;
@@ -13,43 +11,48 @@ import java.awt.*;
 import java.awt.event.*;
 import java.util.*;
 
-public class Administrator extends Database { //action listener interface
+public class Administrator extends JFrame {
 
-    JFrame frame;
+    Font f;
+
     JLabel title;
+
+    JRadioButton rdbCreateStudent;
+    JRadioButton rdbCreateCourse;
+    JRadioButton rdbCreateTimetable;
+    JRadioButton rdbManageStudentInfo;
+
     ButtonGroup radioGroup;
-    JRadioButton rdbCreateStudent, rdbCreateCourse, rdbCreateTimetable, rdbManageStudentInfo;
+
     JButton btnChangeScreen;
 
+    JPanel panWest;
+    JPanel PanSouth;
+    JPanel panNorth;
+    JPanel panEast;
 
     public Administrator(){
-        Database db = new Database();
 
-        //create JFrame
-        frame = new JFrame();
-        title = new JLabel("Administrator Functions",SwingConstants.CENTER);
-        title.setBounds(0, 0, 640, 47);
+        super("Administrator.1");
+
+        panNorth= new JPanel();
+
+        panNorth.add(title = new JLabel("Administrator Functions"));
+        title.setBounds(0, 0, 460, 47);
         title.setBackground(new Color(107, 142, 35));
         title.setForeground(new Color(255, 250, 224));
         title.setFont(new Font("Serif", Font.ITALIC + Font.BOLD, 20));
         title.setOpaque(true);
 
-        rdbCreateStudent = new JRadioButton("Create student");
-        rdbCreateStudent.setFont(new Font("Serif", Font.BOLD, 20));
-        rdbCreateStudent.setBounds(100, 100, 175, 50);
-        rdbCreateCourse = new JRadioButton("Create course");
-        rdbCreateCourse.setFont(new Font("Serif", Font.BOLD, 20));
-        rdbCreateCourse.setBounds(100, 150, 175, 50);
-        rdbCreateTimetable = new JRadioButton("Create timetable");
-        rdbCreateTimetable.setFont(new Font("Serif", Font.BOLD, 20));
-        rdbCreateTimetable.setBounds(100, 200, 175, 50);
-        rdbManageStudentInfo = new JRadioButton("Manage student information");
-        rdbManageStudentInfo.setFont(new Font("Serif", Font.BOLD, 20));
-        rdbManageStudentInfo.setBounds(100, 250, 375, 50);
+        panWest= new JPanel();
+        panWest.add(rdbCreateStudent = new JRadioButton("Create student"));
+        rdbCreateStudent.setFont(new Font("Serif", Font.BOLD, 12));
+        rdbCreateStudent.setBounds(205, 64, 135, 21);
 
-        btnChangeScreen = new JButton("Continue");
-        btnChangeScreen.setFont(new Font("Serif", Font.BOLD, 20));
-        btnChangeScreen.setBounds(400, 350, 175, 50);
+        panWest.add(rdbCreateCourse = new JRadioButton("Create course"));
+        panWest.add(rdbCreateTimetable = new JRadioButton("Create timetable"));
+        panWest.add(rdbManageStudentInfo = new JRadioButton("Manage student information"));
+        panWest.add(btnChangeScreen = new JButton("Continue"));
 
         radioGroup= new ButtonGroup();
         radioGroup.add(rdbCreateStudent);
@@ -57,18 +60,21 @@ public class Administrator extends Database { //action listener interface
         radioGroup.add(rdbCreateTimetable);
         radioGroup.add(rdbManageStudentInfo);
 
-        frame.add(title);
-        frame.add(rdbCreateStudent);
-        frame.add(rdbCreateCourse);
-        frame.add(rdbCreateTimetable);
-        frame.add(rdbManageStudentInfo);
-        frame.add(btnChangeScreen);
+        /*rdbCreateStudent.addActionListener();
+        rdbCreateCourse.addActionListener();
+        rdbCreateTimetable.addActionListener();
+        rdbManageStudentInfo.addActionListener();
+        btnChangeScreen.addActionListener();
 
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setLayout(null);
-        frame.setSize(640, 480);
-        frame.setVisible(true);
+         */
 
+        f = new Font("Serif", Font.BOLD, 12);
+        add(panWest, SwingConstants.CENTER);
+
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setTitle("Administrator");
+        setBounds(100, 100, 600, 300);
+        setVisible(true);
     }
 
 }
