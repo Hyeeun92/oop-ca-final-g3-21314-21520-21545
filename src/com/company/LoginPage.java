@@ -17,7 +17,7 @@ public class LoginPage extends Database { //action listener interface
     JButton btnLogin, btnReset;
     JTextField idField;
     JPasswordField pswdField;
-    JLabel idLabel, pswdLabel, messageLabel;
+    JLabel title,idLabel, pswdLabel, messageLabel;
     JRadioButton adminRadio, lectureRadio, studentRadio;
     String id = null;
     String pswd = null;
@@ -29,6 +29,13 @@ public class LoginPage extends Database { //action listener interface
 
         //create JFrame
         frame = new JFrame();
+        title = new JLabel("Virtual Global College (VGC)",SwingConstants.CENTER);
+        title.setBounds(0, 0, 640, 47);
+        title.setBackground(new Color(107, 142, 35));
+        title.setForeground(new Color(255, 250, 224));
+        title.setFont(new Font("Serif", Font.ITALIC + Font.BOLD, 20));
+        title.setOpaque(true);
+
         btnLogin = new JButton("Login");
         btnReset = new JButton("Reset");
         idField = new JTextField(null);
@@ -41,33 +48,34 @@ public class LoginPage extends Database { //action listener interface
         lectureRadio = new JRadioButton("Lecture", false);
         studentRadio = new JRadioButton("Student", false);
 
-        adminRadio.setBounds(25, 50, 100, 25);
-        adminRadio.setFont(new Font(null, Font.BOLD, 10));
-        lectureRadio.setBounds(175, 50, 100, 25);
-        lectureRadio.setFont(new Font(null, Font.BOLD, 10));
-        studentRadio.setBounds(325, 50, 100, 25);
-        studentRadio.setFont(new Font(null, Font.BOLD, 10));
+        adminRadio.setBounds(150, 100, 150, 50);
+        adminRadio.setFont(new Font(null, Font.BOLD, 12));
+        lectureRadio.setBounds(300, 100, 100, 50);
+        lectureRadio.setFont(new Font(null, Font.BOLD, 12));
+        studentRadio.setBounds(420, 100, 100, 50);
+        studentRadio.setFont(new Font(null, Font.BOLD, 12));
 
         radioGroup = new ButtonGroup();
         radioGroup.add(adminRadio);
         radioGroup.add(lectureRadio);
         radioGroup.add(studentRadio);
 
-        idLabel.setBounds(50, 100, 75, 25);
-        pswdLabel.setBounds(50, 150, 75, 25);
+        idLabel.setBounds(150, 150, 75, 25);
+        pswdLabel.setBounds(150, 200, 75, 25);
 
-        messageLabel.setBounds(125, 250, 250, 35);
+        messageLabel.setBounds(325, 250, 250, 35);
         messageLabel.setFont(new Font(null, Font.BOLD, 25));
 
-        idField.setBounds(125, 100, 200, 25);
-        pswdField.setBounds(125, 150, 200, 25);
+        idField.setBounds(225, 150, 200, 25);
+        pswdField.setBounds(225, 200, 200, 25);
 
-        btnLogin.setBounds(225, 200, 100, 25);
+        btnLogin.setBounds(300, 250, 100, 25);
         btnLogin.setFocusable(false);
 
-        btnReset.setBounds(125, 200, 100, 25);
+        btnReset.setBounds(150, 250, 100, 25);
         btnReset.setFocusable(false);
 
+        frame.add(title);
         frame.add(idLabel);
         frame.add(pswdLabel);
         frame.add(messageLabel);
@@ -80,7 +88,7 @@ public class LoginPage extends Database { //action listener interface
         frame.add(studentRadio);
 
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setSize(1200, 700);
+        frame.setSize(640, 480);
         frame.setLayout(null);
         frame.setVisible(true);
 

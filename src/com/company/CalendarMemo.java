@@ -87,7 +87,7 @@ public class CalendarMemo extends JFrame implements ActionListener {
 
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setTitle("CALENDAR");
-        setBounds(100, 100, 650, 400);
+        setBounds(100, 100, 640, 480);
         setVisible(true);
 
     }

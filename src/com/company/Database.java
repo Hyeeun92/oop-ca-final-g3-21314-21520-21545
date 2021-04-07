@@ -14,7 +14,7 @@ import java.util.List;
 public class Database {
     String DB_URL = "jdbc:mysql://localhost:3306/oop_final?serverTimezone=UTC";
     String DB_USER = "root";
-    String DB_PASSWORD = "ah447Sladl!";
+    String DB_PASSWORD =  "YES01@"; //"ah447Sladl!";
 
    public List<LoginInfo> getList() {
         List<LoginInfo> lists = new ArrayList<>();
