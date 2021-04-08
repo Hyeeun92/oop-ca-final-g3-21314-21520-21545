@@ -16,8 +16,10 @@ public class Main {
     public static void main(String[] args) {
        // Administrator administrator = new Administrator();
        // Course course = new Course();
-        Student student = new Student();
+       // Student student = new Student();
+        Results results = new Results();
  }
+
 
 
 
@@ -28,7 +30,9 @@ public class Main {
 
  }
 
+
  */
+
 
 
 
