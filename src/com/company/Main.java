@@ -6,25 +6,29 @@ package com.company;
  */
 
 public class Main {
-
-   /* public static void main(String[] args) {
+/*
+    public static void main(String[] args) {
         CalendarMemo calendarMemo = new CalendarMemo();
     }
 
-    */
+*/
 
-     /*
- public static void main(String[] args) {
-        Administrator administrator = new Administrator();
-    }
-    */
+    public static void main(String[] args) {
+       // Administrator administrator = new Administrator();
+       // Course course = new Course();
+        Student student = new Student();
+ }
 
 
+
+/*
  public static void main(String[] args) {
      LoginPage loginPage = new LoginPage();
 
 
  }
+
+ */
 
 
 

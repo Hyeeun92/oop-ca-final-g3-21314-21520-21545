@@ -1,5 +1,9 @@
 package com.company;
 
+/* 21545 - Hyeeun Lee
+21520 - Liubov Eremenko
+21314 - Nathalie Flores
+ */
 
 import javax.swing.*;
 import java.awt.*;
@@ -31,7 +35,7 @@ public class LoginPage extends Database { //action listener interface
         frame = new JFrame();
         title = new JLabel("Virtual Global College (VGC)",SwingConstants.CENTER);
         title.setBounds(0, 0, 640, 47);
-        title.setBackground(new Color(107, 142, 35));
+        title.setBackground(new Color(0 , 0, 130));
         title.setForeground(new Color(255, 250, 224));
         title.setFont(new Font("Serif", Font.ITALIC + Font.BOLD, 20));
         title.setOpaque(true);
@@ -48,11 +52,11 @@ public class LoginPage extends Database { //action listener interface
         lectureRadio = new JRadioButton("Lecture", false);
         studentRadio = new JRadioButton("Student", false);
 
-        adminRadio.setBounds(150, 100, 150, 50);
+        adminRadio.setBounds(150, 75, 150, 50);
         adminRadio.setFont(new Font(null, Font.BOLD, 12));
-        lectureRadio.setBounds(300, 100, 100, 50);
+        lectureRadio.setBounds(300, 75, 100, 50);
         lectureRadio.setFont(new Font(null, Font.BOLD, 12));
-        studentRadio.setBounds(420, 100, 100, 50);
+        studentRadio.setBounds(420, 75, 100, 50);
         studentRadio.setFont(new Font(null, Font.BOLD, 12));
 
         radioGroup = new ButtonGroup();
@@ -60,19 +64,19 @@ public class LoginPage extends Database { //action listener interface
         radioGroup.add(lectureRadio);
         radioGroup.add(studentRadio);
 
-        idLabel.setBounds(150, 150, 75, 25);
-        pswdLabel.setBounds(150, 200, 75, 25);
+        idLabel.setBounds(150, 200, 75, 25);
+        pswdLabel.setBounds(150, 250, 75, 25);
 
         messageLabel.setBounds(325, 250, 250, 35);
         messageLabel.setFont(new Font(null, Font.BOLD, 25));
 
-        idField.setBounds(225, 150, 200, 25);
-        pswdField.setBounds(225, 200, 200, 25);
+        idField.setBounds(225, 200, 200, 25);
+        pswdField.setBounds(225, 250, 200, 25);
 
-        btnLogin.setBounds(300, 250, 100, 25);
+        btnLogin.setBounds(300, 350, 100, 25);
         btnLogin.setFocusable(false);
 
-        btnReset.setBounds(150, 250, 100, 25);
+        btnReset.setBounds(150, 350, 100, 25);
         btnReset.setFocusable(false);
 
         frame.add(title);

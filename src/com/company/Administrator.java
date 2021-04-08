@@ -1,7 +1,7 @@
 package com.company;
 
 /* 21545 - Hyeeun Lee
-21520
+21520 - Liubov Eremenko
 21314 - Nathalie Flores
  */
 
@@ -28,7 +28,7 @@ public class Administrator extends Database { //action listener interface
         frame = new JFrame();
         title = new JLabel("Administrator Functions",SwingConstants.CENTER);
         title.setBounds(0, 0, 640, 47);
-        title.setBackground(new Color(107, 142, 35));
+        title.setBackground(new Color(0, 0, 130));
         title.setForeground(new Color(255, 250, 224));
         title.setFont(new Font("Serif", Font.ITALIC + Font.BOLD, 20));
         title.setOpaque(true);
@@ -43,7 +43,7 @@ public class Administrator extends Database { //action listener interface
         rdbCreateTimetable = new JRadioButton("Create timetable");
         rdbCreateTimetable.setFont(new Font("Serif", Font.BOLD, 20));
         rdbCreateTimetable.setBounds(100, 200, 175, 50);
-        rdbManageStudentInfo = new JRadioButton("Manage student information");
+        rdbManageStudentInfo = new JRadioButton("Manage of fees paid");
         rdbManageStudentInfo.setFont(new Font("Serif", Font.BOLD, 20));
         rdbManageStudentInfo.setBounds(100, 250, 375, 50);
 
@@ -65,7 +65,6 @@ public class Administrator extends Database { //action listener interface
 
          */
 
-         // SwingConstants.CENTER)
 
         frame.add(title);
         frame.add(rdbCreateStudent);
@@ -78,7 +77,6 @@ public class Administrator extends Database { //action listener interface
         frame.setLayout(null);
         frame.setSize(640, 480);
         frame.setVisible(true);
-
 
     }
 
