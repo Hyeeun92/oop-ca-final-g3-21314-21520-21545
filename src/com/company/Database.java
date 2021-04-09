@@ -6,20 +6,20 @@ package com.company;
 21314 - Nathalie Flores
 */
 
-
+import javax.swing.*;
+import javax.swing.table.DefaultTableModel;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
-
-
-public class Database {
+public class Database extends JFrame{
     String DB_URL = "jdbc:mysql://localhost:3306/oop_final?serverTimezone=UTC";
     String DB_USER = "root";
     String DB_PASSWORD =  "ah447Sladl!"; //"YES01@";
     Connection conn;
-    PreparedStatement pstmt;
+    PreparedStatement pstmt = null;
     ResultSet rs;
+    String SQL = null;
 
     public Database() {
         try {
@@ -33,7 +33,7 @@ public class Database {
     }
 
     public void getAdminLoginInfo(String id, String pswd) {
-        String SQL = "select administrator_password from administrator where administrator_id = ?";
+        SQL = "select administrator_password from administrator where administrator_id = ?";
         try {
             pstmt = conn.prepareStatement(SQL);
             pstmt.setString(1, id);
@@ -58,7 +58,7 @@ public class Database {
     }
 
     public void getLectureLoginInfo(String id, String pswd) {
-        String SQL = "select lecture_password from lecture where lecture_id = ?";
+        SQL = "select lecture_password from lecture where lecture_id = ?";
         try {
             pstmt = conn.prepareStatement(SQL);
             pstmt.setString(1, id);
@@ -66,7 +66,8 @@ public class Database {
             if (rs.next()) {
                 System.out.println(pstmt);
                 if (rs.getString(1).equals(pswd)) {
-                    System.out.println("in");
+                    CalendarMemo calendarMemo = new CalendarMemo();
+                    calendarMemo.CalendarForLecture(id, pswd);
                 } else {
                     System.out.println("!!");
                 }
@@ -83,15 +84,15 @@ public class Database {
     }
 
     public void getStudentLoginInfo(String id, String pswd) {
-        String SQL = "select student_password from student where student_id = ?";
+        SQL = "select student_password from student where student_id = ?";
         try {
             pstmt = conn.prepareStatement(SQL);
             pstmt.setString(1, id);
             rs = pstmt.executeQuery();
             if (rs.next()) {
-                System.out.println(pstmt);
                 if (rs.getString(1).equals(pswd)) {
-                    System.out.println("in");
+                    CalendarMemo calendarMemo = new CalendarMemo();
+                    calendarMemo.CalendarForStudent(id, pswd);
                 } else {
                     System.out.println("!!");
                 }
@@ -104,9 +105,69 @@ public class Database {
         } catch (Exception e) {
             System.out.println(e.toString());
         }
+    }
+
+    public void listOfStudents(String id, String pswd){
+        SQL = "select course_id from timetable where lecture_id like ?";
+
+        String getCourseId = null;
+        try {
+            pstmt = conn.prepareStatement(SQL);
+            pstmt.setString(1, id);
+            rs = pstmt.executeQuery();
+
+            while(rs.next()) {
+                    getCourseId=rs.getString(1);
+                Listing(getCourseId);
+                }
+
+        } catch (SQLException sqlException) {
+            System.out.println(sqlException);
+        } catch (Exception e) {
+            System.out.println(e);
+        }
+
+
 
     }
 
+
+    public void Listing(String getCourseId){
+        String[] columns = new String[] {
+                "Student Id", "Student name", "Student Email", "Student Address", "Student Gender", "Course Id"
+        };
+
+        DefaultTableModel model = new DefaultTableModel();
+        model.setColumnIdentifiers(columns);
+        JTable table = new JTable(model);
+
+        this.add(new JScrollPane(table));
+        this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        this.pack();
+        this.setVisible(true);
+
+        SQL = "select student_id, student_name, student_email, student_address, student_gender, course_id from student where course_id = ?" ;
+        try {
+            pstmt = conn.prepareStatement(SQL);
+            pstmt.setString(1, getCourseId);
+            rs = pstmt.executeQuery();
+
+            while(rs.next()){
+                String student_id = rs.getString("student_id");
+                String student_name = rs.getString("student_name");
+                String student_email = rs.getString("student_email");
+                String student_address = rs.getString("student_address");
+                String student_gender = rs.getString("student_gender");
+                String course_id = rs.getString("course_id");
+                model.addRow(new Object[]{student_id, student_name, student_email, student_address, student_gender, course_id});
+
+            }
+        } catch (SQLException sqlException) {
+            System.out.println(sqlException);
+        } catch (Exception e) {
+            System.out.println(e);
+        }
+    }
 }
 
 
