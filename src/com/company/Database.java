@@ -1,9 +1,10 @@
 package com.company;
 
-/* 21545 - Hyeeun Lee
+/*
+21545 - Hyeeun Lee
 21520 - Liubov Eremenko
 21314 - Nathalie Flores
- */
+*/
 
 
 import java.sql.*;
@@ -11,66 +12,103 @@ import java.util.ArrayList;
 import java.util.List;
 
 
+
 public class Database {
     String DB_URL = "jdbc:mysql://localhost:3306/oop_final?serverTimezone=UTC";
     String DB_USER = "root";
-    String DB_PASSWORD = "ah447Sladl!";
+    String DB_PASSWORD =  "ah447Sladl!"; //"YES01@";
+    Connection conn;
+    PreparedStatement pstmt;
+    ResultSet rs;
 
-   public List<LoginInfo> getList() {
-        List<LoginInfo> lists = new ArrayList<>();
-
+    public Database() {
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
-            Connection con = DriverManager.getConnection(DB_URL, DB_USER, DB_PASSWORD);
-            Statement stmt = con.createStatement();
+            conn = DriverManager.getConnection(DB_URL, DB_USER, DB_PASSWORD);
+        } catch (SQLException e) {
+            System.out.println(e.toString());
+        } catch (Exception e) {
+            System.out.println(e.toString());
+        }
+    }
 
-            String adminList = "select * from administrator";
-            ResultSet adminResult = stmt.executeQuery(adminList);
-
-
-            while(adminResult.next()) {
-                LoginInfo loginfoList = new LoginInfo();
-                loginfoList.type = "Admin";
-                loginfoList.id = adminResult.getString("administrator_id");
-                loginfoList.password = adminResult.getString("administrator_password");
-                lists.add(loginfoList);
-
+    public void getAdminLoginInfo(String id, String pswd) {
+        String SQL = "select administrator_password from administrator where administrator_id = ?";
+        try {
+            pstmt = conn.prepareStatement(SQL);
+            pstmt.setString(1, id);
+            rs = pstmt.executeQuery();
+            if (rs.next()) {
+                System.out.println(pstmt);
+                if (rs.getString(1).equals(pswd)) {
+                    Administrator admin = new Administrator();
+                } else {
+                    System.out.println("!!");
+                }
             }
-
-            String studentList = "select * from lecture";
-            ResultSet studentResult = stmt.executeQuery(studentList);
-
-            while(studentResult.next()) {
-                LoginInfo loginfoList = new LoginInfo();
-                loginfoList.type = "Lecture";
-                loginfoList.id = studentResult.getString("lecture_id");
-                loginfoList.password = studentResult.getString("lecture_password");
-                lists.add(loginfoList);
-                break;
+            else {
+                System.out.println("!!");
             }
-
-            String lectureList = "select * from student";
-            ResultSet lectureResult = stmt.executeQuery(lectureList);
-
-            while(lectureResult.next()) {
-                LoginInfo loginfoList = new LoginInfo();
-                loginfoList.type = "Student";
-                loginfoList.id = lectureResult.getString("student_id");
-                loginfoList.password = lectureResult.getString("student_password");
-                lists.add(loginfoList);
-                break;
-            }
-
         }catch (SQLException e) {
             System.out.println(e.toString());
         } catch (Exception e) {
-
+            System.out.println(e.toString());
         }
-        return lists;
+
+    }
+
+    public void getLectureLoginInfo(String id, String pswd) {
+        String SQL = "select lecture_password from lecture where lecture_id = ?";
+        try {
+            pstmt = conn.prepareStatement(SQL);
+            pstmt.setString(1, id);
+            rs = pstmt.executeQuery();
+            if (rs.next()) {
+                System.out.println(pstmt);
+                if (rs.getString(1).equals(pswd)) {
+                    System.out.println("in");
+                } else {
+                    System.out.println("!!");
+                }
+            }
+            else {
+                System.out.println("!!");
+            }
+        }catch (SQLException e) {
+            System.out.println(e.toString());
+        } catch (Exception e) {
+            System.out.println(e.toString());
+        }
+
+    }
+
+    public void getStudentLoginInfo(String id, String pswd) {
+        String SQL = "select student_password from student where student_id = ?";
+        try {
+            pstmt = conn.prepareStatement(SQL);
+            pstmt.setString(1, id);
+            rs = pstmt.executeQuery();
+            if (rs.next()) {
+                System.out.println(pstmt);
+                if (rs.getString(1).equals(pswd)) {
+                    System.out.println("in");
+                } else {
+                    System.out.println("!!");
+                }
+            }
+            else {
+                System.out.println("!!");
+            }
+        }catch (SQLException e) {
+            System.out.println(e.toString());
+        } catch (Exception e) {
+            System.out.println(e.toString());
+        }
 
     }
 
 }
+
 
 
 
