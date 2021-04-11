@@ -124,9 +124,6 @@ public class Student extends Database { //action listener interface
         //JScrollPane
         showListCourses();
 
-        //Created password
-        pin = createPassword(true);
-
         btnCancel.addActionListener(
                 new ActionListener() {
                     @Override
@@ -167,6 +164,7 @@ public class Student extends Database { //action listener interface
     private String createPassword(boolean _pin) {
         nameS = nameStudentF.getText();
         emailS = emailF.getText();
+        pin = createPassword(true);
 
         int iFirst = 1, iLast = 1;
 
