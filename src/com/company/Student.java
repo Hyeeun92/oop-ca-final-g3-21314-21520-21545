@@ -19,6 +19,8 @@ public class Student extends Database { //action listener interface
     JRadioButton rdbFemale,rdbMale, rdbFullyP, rdbInstP;
     JButton btnChangeScreen, btnCancel;
     JPanel controlPanel;
+    String nameS, emailS,pin;
+
 
     public Student(){
         Database db = new Database();
@@ -118,7 +120,12 @@ public class Student extends Database { //action listener interface
         frame.setSize(640, 480);
         frame.setVisible(true);
 
+
+        //JScrollPane
         showListCourses();
+
+        //Created password
+        pin = createPassword(true);
 
         btnCancel.addActionListener(
                 new ActionListener() {
@@ -134,7 +141,6 @@ public class Student extends Database { //action listener interface
 
     private void showListCourses(){
         //List<Course> getList = db.getList();
-        //demo list until populated our DateBase
 
         final DefaultListModel courseName = new DefaultListModel();
 
@@ -154,6 +160,36 @@ public class Student extends Database { //action listener interface
         JScrollPane courseListScrollPane = new JScrollPane(courseList);
 
         controlPanel.add(courseListScrollPane);
+
+    }
+
+
+    private String createPassword(boolean _pin) {
+        nameS = nameStudentF.getText();
+        emailS = emailF.getText();
+
+        int iFirst = 1, iLast = 1;
+
+        char[] letterArray = {'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k',
+                'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z'};
+
+        System.out.println();
+        for (int i = 0; i < letterArray.length; i++) {
+            if (Character.toLowerCase(nameS.charAt(0)) == letterArray[i]) {
+                iFirst += i;
+            }
+            if (Character.toLowerCase(emailS.charAt(0)) == letterArray[i]) {
+                iLast += i;
+            }
+
+        }
+
+        if (!_pin) {
+            return String.format("%c%c-%s-%02d-%02d", Character.toLowerCase(nameS.charAt(0)), Character.toLowerCase(emailS.charAt(0)),
+                    (nameS.length() + emailS.length()), iFirst, iLast);
+        } else {
+            return String.format("%02d%02d", iFirst, iLast);
+        }
 
     }
 
