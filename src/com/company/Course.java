@@ -7,21 +7,26 @@ package com.company;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 public class Course extends Database { //action listener interface
 
     JFrame frame;
     JLabel title, titleCourse, lectureName, otherInfo;
     JTextField titleCourseF, lectureNameF, otherInfoF;
-    JButton btnChangeScreen;
+    JButton btnSave, btnCancel;
+    String titleCourseS = null;
+    String lectureNameS = null;
+    Action otherInfoS = null;
 
-    public Course(){
+    public Course() {
         Database db = new Database();
         //List<AdmFunctions> getList = db.getList();
 
-       //create JFrame
+        //create JFrame
         frame = new JFrame();
-        title = new JLabel("Adm. - Create Course ",SwingConstants.CENTER);
+        title = new JLabel("Adm. - Create Course ", SwingConstants.CENTER);
         title.setBounds(0, 0, 640, 47);
         title.setBackground(new Color(39, 87, 144));
         title.setForeground(new Color(255, 250, 224));
@@ -43,20 +48,16 @@ public class Course extends Database { //action listener interface
         lectureNameF = new JTextField();
         lectureNameF.setBounds(200, 125, 300, 25);
         otherInfoF = new JTextField();
-        otherInfoF.setBounds(200, 200, 300, 140);
+        otherInfoF.setBounds(200, 200, 300, 120);
 
 
-        btnChangeScreen = new JButton("Register");
-        btnChangeScreen.setFont(new Font("Serif", Font.BOLD, 20));
-        btnChangeScreen.setBounds(200, 350, 175, 50);
+        btnSave = new JButton("Save");
+        btnSave.setFont(new Font("Serif", Font.BOLD, 20));
+        btnSave.setBounds(75, 350, 175, 50);
 
-
-        /*
-
-        btnChangeScreen.addActionListener();
-
-         */
-
+        btnCancel = new JButton("Cancel");
+        btnCancel.setFont(new Font("Serif", Font.BOLD, 20));
+        btnCancel.setBounds(350, 350, 175, 50);
 
         frame.add(title);
         frame.add(titleCourse);
@@ -65,13 +66,48 @@ public class Course extends Database { //action listener interface
         frame.add(lectureNameF);
         frame.add(otherInfo);
         frame.add(otherInfoF);
-        frame.add(btnChangeScreen);
+        frame.add(btnSave);
+        frame.add(btnCancel);
 
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setLayout(null);
         frame.setSize(640, 480);
         frame.setVisible(true);
 
-    }
+        btnCancel.addActionListener(
+                new ActionListener() {
+                    @Override
+                    public void actionPerformed(ActionEvent e) {
+                        Administrator administrator = new Administrator();
+                    }
+                }
+        );
 
+
+        btnSave.addActionListener(
+                new ActionListener() {
+                    @Override
+                    public void actionPerformed(ActionEvent e) {
+
+                        titleCourseS = titleCourseF.getText();
+                        lectureNameS = lectureNameF.getText();
+                        otherInfoS = otherInfoF.getAction();
+
+
+                        JOptionPane.showMessageDialog(frame,
+                                "New course create",
+                                "Information save in DB",
+                                JOptionPane.INFORMATION_MESSAGE
+                        );
+
+                        titleCourseF.setText("    ");
+                        lectureNameF.setText("    ");
+                        otherInfoF.setText("      ");
+                    }
+                }
+        );
+    }
 }
+
+
+
