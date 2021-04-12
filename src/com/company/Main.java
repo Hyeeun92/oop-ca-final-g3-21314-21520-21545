@@ -7,11 +7,12 @@ package com.company;
 
 public class Main {
 
-   /* public static void main(String[] args) {
+    /*
+   public static void main(String[] args) {
         CalendarMemo calendarMemo = new CalendarMemo();
     }
+*/
 
-    */
 
 
     public static void main(String[] args) {

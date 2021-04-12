@@ -69,20 +69,22 @@ public class Course extends Database { //action listener interface
         frame.add(btnSave);
         frame.add(btnCancel);
 
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         frame.setLayout(null);
         frame.setSize(640, 480);
-        frame.setVisible(true);
+        frame.setLocationRelativeTo(null);
 
         btnCancel.addActionListener(
                 new ActionListener() {
                     @Override
                     public void actionPerformed(ActionEvent e) {
-                        Administrator administrator = new Administrator();
+                        frame.setVisible(false);
+                        dispose();
                     }
                 }
         );
 
+        frame.setVisible(true);
 
         btnSave.addActionListener(
                 new ActionListener() {

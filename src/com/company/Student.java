@@ -115,11 +115,10 @@ public class Student extends Database { //action listener interface
         frame.add(headerCourse);
         frame.add(controlPanel);
 
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         frame.setLayout(null);
         frame.setSize(640, 480);
-        frame.setVisible(true);
-
+        frame.setLocationRelativeTo(null);
 
         //JScrollPane
         showListCourses();
@@ -128,13 +127,17 @@ public class Student extends Database { //action listener interface
                 new ActionListener() {
                     @Override
                     public void actionPerformed(ActionEvent e) {
+                        frame.setVisible(false);
+                        dispose();
 
-                        Administrator administrator = new Administrator();
                     }
                 }
         );
 
+        frame.setVisible(true);
+
     }
+
 
     private void showListCourses(){
         //List<Course> getList = db.getList();

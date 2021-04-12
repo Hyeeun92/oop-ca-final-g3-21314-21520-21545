@@ -74,14 +74,19 @@ public class Administrator extends Database { //action listener interface
         frame.setSize(640, 480);
         frame.setVisible(true);
 
+       // Need to be connected first log out class
+        /*
         btnCancel.addActionListener(
                 new ActionListener() {
                     @Override
                     public void actionPerformed(ActionEvent e) {
-                        LoginPage loginPage = new LoginPage();
+                        frame.setVisible(false);
+                        dispose();
                     }
                 }
         );
+
+         */
 
 
         btnContinue.addActionListener(
