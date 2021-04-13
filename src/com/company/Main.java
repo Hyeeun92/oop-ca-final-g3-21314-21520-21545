@@ -14,19 +14,22 @@ public class Main {
 */
 
 
-
+/*
     public static void main(String[] args) {
         Administrator administrator = new Administrator();
     }
 
-
+*/
 /*
     public static void main(String[] args) {
      LoginPage loginPage = new LoginPage();
 
-     }
+     } */
 
- */
+    public static void main(String[] args) {
+        RenewLogin renewLogin = new RenewLogin();
+
+    }
 
 
 
