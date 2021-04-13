@@ -95,6 +95,7 @@ public class LoginPage extends JFrame{
         frame.setSize(640, 480);
         frame.setLayout(null);
         frame.setVisible(true);
+        frame.setLocationRelativeTo(null);
 
         btnLogin.addActionListener(
                 new ActionListener() {
@@ -105,10 +106,13 @@ public class LoginPage extends JFrame{
 
                         if (adminRadio.isSelected()) {
                             db.getAdminLoginInfo(id, pswd);
+                            frame.setVisible(false);
                         } else if (lectureRadio.isSelected()) {
                             db.getLectureLoginInfo(id, pswd);
+                            frame.setVisible(false);
                         } else if (studentRadio.isSelected()) {
                             db.getStudentLoginInfo(id,pswd);
+                            frame.setVisible(false);
                         }
                     }
                 }
