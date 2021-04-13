@@ -73,20 +73,19 @@ public class Administrator extends Database { //action listener interface
         frame.setLayout(null);
         frame.setSize(640, 480);
         frame.setVisible(true);
+        frame.setLocationRelativeTo(null);
 
-       // Need to be connected first log out class
-        /*
-        btnCancel.addActionListener(
+         btnCancel.addActionListener(
                 new ActionListener() {
                     @Override
                     public void actionPerformed(ActionEvent e) {
                         frame.setVisible(false);
+                        LoginPage loginPage = new LoginPage();
                         dispose();
                     }
                 }
         );
 
-         */
 
 
         btnContinue.addActionListener(
@@ -96,8 +95,10 @@ public class Administrator extends Database { //action listener interface
 
                             if (rdbCreateStudent.isSelected()) {
                                 Student student = new Student();
+                                frame.setVisible(false);
                             } else if (rdbCreateCourse.isSelected()) {
                                 Course course = new Course();
+                                frame.setVisible(false);
                             } else if (rdbCreateTimetable.isSelected()) {
 
                             } else if (rdbManageStudentInfo.isSelected()) {

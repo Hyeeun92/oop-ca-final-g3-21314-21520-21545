@@ -69,7 +69,7 @@ public class Course extends Database { //action listener interface
         frame.add(btnSave);
         frame.add(btnCancel);
 
-        frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setLayout(null);
         frame.setSize(640, 480);
         frame.setLocationRelativeTo(null);
@@ -79,6 +79,7 @@ public class Course extends Database { //action listener interface
                     @Override
                     public void actionPerformed(ActionEvent e) {
                         frame.setVisible(false);
+                        Administrator administrator = new Administrator();
                         dispose();
                     }
                 }
