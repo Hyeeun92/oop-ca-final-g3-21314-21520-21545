@@ -1,15 +1,15 @@
 package com.company;
 
 /* 21545 - Hyeeun Lee
-21520
+21520 - Liubov Eremenko
 21314 - Nathalie Flores
  */
 
 import javax.swing.*;
+import javax.swing.plaf.basic.BasicBorders;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.util.List;
+import java.awt.event.*;
+import java.util.*;
 
 public class Administrator extends Database { //action listener interface
 
@@ -17,22 +17,22 @@ public class Administrator extends Database { //action listener interface
     JLabel title;
     ButtonGroup radioGroup;
     JRadioButton rdbCreateStudent, rdbCreateCourse, rdbCreateTimetable, rdbManageStudentInfo;
-    JButton btnChangeScreen;
+    JButton btnContinue, btnCancel;
 
 
     public Administrator(){
+
         Database db = new Database();
         //List<AdmFunctions> getList = db.getList();
 
-       //create JFrame
+        //create JFrame
         frame = new JFrame();
         title = new JLabel("Administrator Functions",SwingConstants.CENTER);
         title.setBounds(0, 0, 640, 47);
-        title.setBackground(new Color(107, 142, 35));
+        title.setBackground(new Color(0, 0, 130));
         title.setForeground(new Color(255, 250, 224));
         title.setFont(new Font("Serif", Font.ITALIC + Font.BOLD, 20));
         title.setOpaque(true);
-
 
         rdbCreateStudent = new JRadioButton("Create student");
         rdbCreateStudent.setFont(new Font("Serif", Font.BOLD, 20));
@@ -43,13 +43,17 @@ public class Administrator extends Database { //action listener interface
         rdbCreateTimetable = new JRadioButton("Create timetable");
         rdbCreateTimetable.setFont(new Font("Serif", Font.BOLD, 20));
         rdbCreateTimetable.setBounds(100, 200, 175, 50);
-        rdbManageStudentInfo = new JRadioButton("Manage student information");
+        rdbManageStudentInfo = new JRadioButton("Manage of fees paid");
         rdbManageStudentInfo.setFont(new Font("Serif", Font.BOLD, 20));
         rdbManageStudentInfo.setBounds(100, 250, 375, 50);
 
-        btnChangeScreen = new JButton("Continue");
-        btnChangeScreen.setFont(new Font("Serif", Font.BOLD, 20));
-        btnChangeScreen.setBounds(400, 350, 175, 50);
+        btnContinue = new JButton("Continue");
+        btnContinue.setFont(new Font("Serif", Font.BOLD, 20));
+        btnContinue.setBounds(400, 350, 175, 50);
+
+        btnCancel = new JButton("Log out");
+        btnCancel.setFont(new Font("Serif", Font.BOLD, 20));
+        btnCancel.setBounds(100, 350, 175, 50);
 
         radioGroup= new ButtonGroup();
         radioGroup.add(rdbCreateStudent);
@@ -57,29 +61,50 @@ public class Administrator extends Database { //action listener interface
         radioGroup.add(rdbCreateTimetable);
         radioGroup.add(rdbManageStudentInfo);
 
-        /*rdbCreateStudent.addActionListener();
-        rdbCreateCourse.addActionListener();
-        rdbCreateTimetable.addActionListener();
-        rdbManageStudentInfo.addActionListener();
-        btnChangeScreen.addActionListener();
-
-         */
-
-         // SwingConstants.CENTER)
-
         frame.add(title);
         frame.add(rdbCreateStudent);
         frame.add(rdbCreateCourse);
         frame.add(rdbCreateTimetable);
         frame.add(rdbManageStudentInfo);
-        frame.add(btnChangeScreen);
+        frame.add(btnContinue);
+        frame.add(btnCancel);
 
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setLayout(null);
         frame.setSize(640, 480);
         frame.setVisible(true);
 
+       // Need to be connected first log out class
+        /*
+        btnCancel.addActionListener(
+                new ActionListener() {
+                    @Override
+                    public void actionPerformed(ActionEvent e) {
+                        frame.setVisible(false);
+                        dispose();
+                    }
+                }
+        );
 
+         */
+
+
+        btnContinue.addActionListener(
+                new ActionListener() {
+                    @Override
+                    public void actionPerformed(ActionEvent e) {
+
+                            if (rdbCreateStudent.isSelected()) {
+                                Student student = new Student();
+                            } else if (rdbCreateCourse.isSelected()) {
+                                Course course = new Course();
+                            } else if (rdbCreateTimetable.isSelected()) {
+
+                            } else if (rdbManageStudentInfo.isSelected()) {
+
+                            }
+                    }
+                }
+        );
     }
-
 }
