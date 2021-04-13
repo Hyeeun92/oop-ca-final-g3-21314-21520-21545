@@ -101,8 +101,10 @@ public class Administrator extends Database { //action listener interface
                                 frame.setVisible(false);
                             } else if (rdbCreateTimetable.isSelected()) {
 
+                                frame.setVisible(false);
                             } else if (rdbManageStudentInfo.isSelected()) {
-
+                                ManagementFees managementFees = new ManagementFees();
+                                frame.setVisible(false);
                             }
                     }
                 }

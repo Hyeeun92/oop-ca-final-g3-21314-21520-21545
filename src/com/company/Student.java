@@ -13,10 +13,10 @@ import java.awt.event.ActionListener;
 public class Student extends Database { //action listener interface
 
     JFrame frame;
-    JLabel title, nameStudent, lastname, email, address, gender,amount, headerCourse;
-    JTextField nameStudentF,lastnameF, emailF, addressF, amountF;
-    ButtonGroup radioGroupGender, radioGroupFee;
-    JRadioButton rdbFemale,rdbMale, rdbFullyP, rdbInstP;
+    JLabel title, nameStudent, lastname, email, address, gender,headerCourse;
+    JTextField nameStudentF,lastnameF, emailF, addressF;
+    ButtonGroup radioGroupGender;
+    JRadioButton rdbFemale,rdbMale;
     JButton btnChangeScreen, btnCancel;
     JPanel controlPanel;
     String nameS, lastnameS,pin;
@@ -47,13 +47,10 @@ public class Student extends Database { //action listener interface
         address.setBounds(50, 180, 175, 20);
         address.setFont(new Font("Serif", Font.BOLD, 15));
         gender = new JLabel("Gender");
-        gender.setBounds(150, 220, 175, 20);
+        gender.setBounds(450, 75, 175, 20);
         gender.setFont(new Font("Serif", Font.BOLD, 18));
-        amount = new JLabel("Amount Fee Paid");
-        amount.setBounds(50, 375, 175, 20);
-        amount.setFont(new Font("Serif", Font.BOLD, 15));
         headerCourse = new JLabel("COURSES AVAILABLE");
-        headerCourse.setBounds(365, 75, 225, 20);
+        headerCourse.setBounds(150, 220, 225, 20);
         headerCourse.setFont(new Font("Serif", Font.BOLD, 20));
 
         nameStudentF = new JTextField();
@@ -64,42 +61,28 @@ public class Student extends Database { //action listener interface
         emailF.setBounds(150, 145, 200, 25);
         addressF = new JTextField();
         addressF.setBounds(150, 180, 200, 25);
-        amountF = new JTextField();
-        amountF.setBounds(180, 375, 100, 25);
 
         rdbFemale = new JRadioButton("Female");
         rdbFemale.setFont(new Font("Serif", Font.BOLD, 15));
-        rdbFemale.setBounds(150, 250, 100, 25);
+        rdbFemale.setBounds(450, 110, 100, 25);
         rdbMale = new JRadioButton("Male");
         rdbMale.setFont(new Font("Serif", Font.BOLD, 15));
-        rdbMale.setBounds(150, 275, 100, 25);
+        rdbMale.setBounds(450, 145, 100, 25);
 
         radioGroupGender= new ButtonGroup();
         radioGroupGender.add(rdbFemale);
         radioGroupGender.add(rdbMale);
 
-        rdbFullyP= new JRadioButton("Fully paid");
-        rdbFullyP.setFont(new Font("Serif", Font.BOLD, 12));
-        rdbFullyP.setBounds(50, 340, 100, 25);
-        rdbInstP= new JRadioButton("Instalments paid");
-        rdbInstP.setFont(new Font("Serif", Font.BOLD, 12));
-        rdbInstP.setBounds(175, 340, 150, 25);
-
-        radioGroupFee= new ButtonGroup();
-        radioGroupFee.add(rdbFullyP);
-        radioGroupFee.add(rdbInstP);
-
-        btnChangeScreen = new JButton("Register");
+        btnChangeScreen = new JButton("Save");
         btnChangeScreen.setFont(new Font("Serif", Font.BOLD, 20));
-        btnChangeScreen.setBounds(400, 350, 175, 50);
-
+        btnChangeScreen.setBounds(400, 370, 175, 50);
         btnCancel = new JButton("Cancel");
         btnCancel.setFont(new Font("Serif", Font.BOLD, 20));
-        btnCancel.setBounds(400, 275, 175, 50);
+        btnCancel.setBounds(200, 370, 175, 50);
 
         controlPanel = new JPanel();
         controlPanel.setLayout(new FlowLayout());
-        controlPanel.setBounds(365, 100, 200, 200);
+        controlPanel.setBounds(150, 250, 200, 200);
 
         frame.add(title);
         frame.add(nameStudent);
@@ -113,10 +96,6 @@ public class Student extends Database { //action listener interface
         frame.add(gender);
         frame.add(rdbFemale);
         frame.add(rdbMale);
-        frame.add(rdbFullyP);
-        frame.add(rdbInstP);
-        frame.add(amount);
-        frame.add(amountF);
         frame.add(btnChangeScreen);
         frame.add(btnCancel);
         frame.add(headerCourse);
