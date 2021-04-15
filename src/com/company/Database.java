@@ -15,7 +15,7 @@ import java.util.List;
 public class Database extends JFrame{
     String DB_URL = "jdbc:mysql://localhost:3306/oop_final?serverTimezone=UTC";
     String DB_USER = "root";
-    String DB_PASSWORD =  "YES01@";//"ah447Sladl!//";
+    String DB_PASSWORD = "ah447Sladl!";// "YES01@";
     Connection conn;
     PreparedStatement pstmt = null;
     ResultSet rs;
@@ -107,7 +107,7 @@ public class Database extends JFrame{
         }
     }
 
-    public void listOfStudents(String id, String pswd){
+    public void listOfStudents(String id){
         SQL = "select course_id from timetable where lecture_id like ?";
 
         String getCourseId = null;
@@ -117,9 +117,9 @@ public class Database extends JFrame{
             rs = pstmt.executeQuery();
 
             while(rs.next()) {
-                    getCourseId=rs.getString(1);
+                getCourseId=rs.getString(1);
                 Listing(getCourseId);
-                }
+            }
 
         } catch (SQLException sqlException) {
             System.out.println(sqlException);
@@ -130,7 +130,6 @@ public class Database extends JFrame{
 
 
     }
-
 
     public void Listing(String getCourseId){
         String[] columns = new String[] {
@@ -168,11 +167,62 @@ public class Database extends JFrame{
             System.out.println(e);
         }
     }
+
+    public void calDBAdd(String id, String date, String information, String type) {
+
+        SQL = "select * from timetable where lecture_id = ?";
+        String courseId, classId, className;
+
+        try {
+            pstmt = conn.prepareStatement(SQL);
+            pstmt.setString(1, id);
+            rs = pstmt.executeQuery();
+            while(rs.next()) {
+                courseId = rs.getString("course_id");
+                classId = rs.getString("class_id");
+                className = rs.getString("className");
+            }
+        } catch (SQLException sqlException) {
+            System.out.println(sqlException);
+        } catch (Exception e) {
+            System.out.println(e);
+        }
+
+        if (information.equals("")) {
+            JOptionPane.showMessageDialog(null, "Please input information");
+            return;
+        }
+
+        SQL = "insert into schedule()";
+
+    }
+
+    public void getMessageError(){
+        JOptionPane.showMessageDialog(null, "NOT LOG IN. Error!");
+    }
+
+    public void getCourseCreateInfo(String courseId, String titleCourseS, String otherInfoS) {
+        //my mysql insert statement
+        SQL = "INSERT INTO course (course_id, course_name, course_price)" + "values (?,?,?)";
+
+        try{
+            //create my mysql insert preparedStatement
+            pstmt = conn.prepareStatement(SQL);
+            pstmt.clearParameters();
+            pstmt.setString(1, courseId);
+            pstmt.setString(2, titleCourseS);
+            pstmt.setString(3, otherInfoS);
+
+            // execute the pstmt
+            pstmt.execute();
+            conn.close();
+
+        }catch (SQLException e) {
+            System.out.println(e.toString());
+        } catch (Exception e) {
+            System.out.println(e.toString());
+        }
+
+    }
 }
-
-
-
-
-
-
 

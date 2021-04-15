@@ -11,7 +11,7 @@ import java.awt.*;
 import java.awt.event.*;
 import java.util.*;
 
-public class Administrator extends Database { //action listener interface
+public class Administrator implements ActionListener { //action listener interface
 
     JFrame frame;
     JLabel title;
@@ -19,15 +19,14 @@ public class Administrator extends Database { //action listener interface
     JRadioButton rdbCreateStudent, rdbCreateCourse, rdbCreateTimetable, rdbManageStudentInfo;
     JButton btnContinue, btnCancel;
 
-
-    public Administrator(){
+    public Administrator() {
 
         Database db = new Database();
         //List<AdmFunctions> getList = db.getList();
 
         //create JFrame
         frame = new JFrame();
-        title = new JLabel("Administrator Functions",SwingConstants.CENTER);
+        title = new JLabel("Administrator Functions - CREATING", SwingConstants.CENTER);
         title.setBounds(0, 0, 640, 47);
         title.setBackground(new Color(0, 0, 130));
         title.setForeground(new Color(255, 250, 224));
@@ -55,7 +54,7 @@ public class Administrator extends Database { //action listener interface
         btnCancel.setFont(new Font("Serif", Font.BOLD, 20));
         btnCancel.setBounds(100, 350, 175, 50);
 
-        radioGroup= new ButtonGroup();
+        radioGroup = new ButtonGroup();
         radioGroup.add(rdbCreateStudent);
         radioGroup.add(rdbCreateCourse);
         radioGroup.add(rdbCreateTimetable);
@@ -73,38 +72,34 @@ public class Administrator extends Database { //action listener interface
         frame.setLayout(null);
         frame.setSize(640, 480);
         frame.setVisible(true);
+        frame.setLocationRelativeTo(null);
 
-       // Need to be connected first log out class
-        /*
-        btnCancel.addActionListener(
-                new ActionListener() {
-                    @Override
-                    public void actionPerformed(ActionEvent e) {
-                        frame.setVisible(false);
-                        dispose();
-                    }
-                }
-        );
+        btnCancel.addActionListener(this);
+        btnContinue.addActionListener(this);
 
-         */
+    }
 
 
-        btnContinue.addActionListener(
-                new ActionListener() {
-                    @Override
-                    public void actionPerformed(ActionEvent e) {
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        if (e.getSource() == btnCancel) {
+            this.frame.setVisible(false);
+            LoginPage loginPage = new LoginPage();
+        } else if (e.getSource() == btnContinue) {
+            if (this.rdbCreateStudent.isSelected()) {
+                Student student = new Student();
+                frame.setVisible(false);
+            } else if (this.rdbCreateCourse.isSelected()) {
+                Course course = new Course();
+                frame.setVisible(false);
+            } else if (this.rdbCreateTimetable.isSelected()) {
 
-                            if (rdbCreateStudent.isSelected()) {
-                                Student student = new Student();
-                            } else if (rdbCreateCourse.isSelected()) {
-                                Course course = new Course();
-                            } else if (rdbCreateTimetable.isSelected()) {
+                frame.setVisible(false);
+            } else if (this.rdbManageStudentInfo.isSelected()) {
+                ManagementFees managementFees = new ManagementFees();
+                frame.setVisible(false);
 
-                            } else if (rdbManageStudentInfo.isSelected()) {
-
-                            }
-                    }
-                }
-        );
+            }
+        }
     }
 }

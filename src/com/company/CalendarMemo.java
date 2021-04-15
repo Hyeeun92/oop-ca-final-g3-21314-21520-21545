@@ -13,6 +13,7 @@ import java.awt.event.*;
 import java.util.*;
 
 public class CalendarMemo extends JFrame implements ActionListener {
+
     String[] days = {"Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"};
     int year = 0;
     int month = 0;
@@ -45,7 +46,13 @@ public class CalendarMemo extends JFrame implements ActionListener {
     JTextField textYear;
     JTextField textWrite;
 
+    String information;
+    String inputId = null;
+    String inputPswd = null;
+    String pickDate = null;
+
     Database db = new Database();
+
     public CalendarMemo() {
 
 
@@ -81,7 +88,7 @@ public class CalendarMemo extends JFrame implements ActionListener {
         add(panWest, "West");
 
         panEast = new JPanel();
-        panEast.add(textWrite = new JTextField());
+        panEast.add(textWrite = new JTextField(null));
         textWrite.setEditable(false);
         textWrite.setPreferredSize(new Dimension(200, 250));
         add(panEast, "East");
@@ -118,6 +125,8 @@ public class CalendarMemo extends JFrame implements ActionListener {
     }
 
     public void CalendarForLecture(String id, String pswd) {
+        inputId = id;
+        inputPswd = pswd;
         today = Calendar.getInstance();
         cal = new GregorianCalendar();
 
@@ -158,15 +167,13 @@ public class CalendarMemo extends JFrame implements ActionListener {
         panSouth.add(btnDelete = new JButton("DELETE MEMO"));
         add(panSouth, "South");
 
-        btnBefore.addActionListener(this);
-        btnAfter.addActionListener(this);
-        btnAdd.addActionListener(this);
-        btnDelete.addActionListener(this);
-
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setTitle("CALENDAR");
         setBounds(100, 100, 640, 480);
         setVisible(true);
+
+        btnBefore.addActionListener(this);
+        btnAfter.addActionListener(this);
 
         btnAttendManage.addActionListener(new ActionListener() {
             @Override
@@ -177,16 +184,17 @@ public class CalendarMemo extends JFrame implements ActionListener {
             @Override
             public void actionPerformed(ActionEvent e) {
                 SwingUtilities.invokeLater(new Runnable() {
-                @Override
+                    @Override
                     public void run() {
-                    db.listOfStudents(id, pswd);
-                }
+                        db.listOfStudents(id);
+                    }
                 });
             }
         });
+
     }
 
-    private void calSet() {
+    public void calSet() {
         cal.set(Calendar.YEAR, year);
         cal.set(Calendar.MONTH,(month-1));
         cal.set(Calendar.DATE,1);
@@ -226,7 +234,6 @@ public class CalendarMemo extends JFrame implements ActionListener {
             calBtn[i+6+hopping].setText((i) + "");
         }
     }
-
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == btnBefore) {
             this.panWest.removeAll();
@@ -246,20 +253,29 @@ public class CalendarMemo extends JFrame implements ActionListener {
             this.textYear.setText(year + "");
             this.textMonth.setText(month + "");
         }
-        else if (e.getSource() == btnAdd) {
-            textWrite.setText("");
-        }
-        else if (e.getSource() == btnDelete) {
-            textWrite.setText("");
-        }
         else if (Integer.parseInt(e.getActionCommand()) >= 1 && Integer.parseInt(e.getActionCommand()) <=31) {
             day = Integer.parseInt(e.getActionCommand());
-            System.out.println(day + "/" + month + "/" + year);
+            pickDate = day+"/"+month+"/"+year;
+            System.out.println(pickDate);
+            if (pickDate!= null) {
+                btnAdd.addActionListener(new ActionListener() {
+                    @Override
+                    public void actionPerformed(ActionEvent e) {
+                        information = textWrite.getText();
+                        if (information!= null) {
+                            checkpanel(inputId, pickDate, information);
+                        }else {
+
+                        }
+                    }
+
+                });
+            }
             calSet();
         }
     }
 
-    private void gridInit() {
+    public void gridInit() {
         for (int i = 0; i < days.length; i++) {
             panWest.add(calBtn[i] = new JButton(days[i]));
         }
@@ -284,6 +300,49 @@ public class CalendarMemo extends JFrame implements ActionListener {
             month = 1;
             year = year+1;
         }
+    }
+
+    private void checkpanel(String inputId, String pickDate, String information) {
+
+        JFrame frame = new JFrame();
+        frame.setLayout(new FlowLayout());
+        setLayout(new FlowLayout());
+        frame.setSize(500, 200);
+        JTextField dateText = new JTextField(null);
+        JTextField infoText = new JTextField(null);
+        dateText.setEditable(false);
+        infoText.setEditable(false);
+        dateText.setText("Date: " + pickDate);
+        infoText.setText("Information: " + information);
+        JRadioButton btnCa = new JRadioButton("CA", false);
+        JRadioButton btnExam = new JRadioButton("EXAM", false);
+        ButtonGroup caExam = new ButtonGroup();
+        caExam.add(btnExam);
+        caExam.add(btnCa);
+        JButton btnSave = new JButton("Save");
+        frame.add(dateText);
+        frame.add(infoText);
+        frame.add(btnExam);
+        frame.add(btnCa);
+        frame.add(btnSave);
+        frame.setVisible(true);
+        frame.show();
+
+        btnSave.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if (btnCa.isSelected()) {
+                    String type = "ca";
+                    frame.dispose();
+                    System.out.println(inputId + pickDate + information + type);
+                } else if (btnExam.isSelected()) {
+                    String type = "Exam";
+                    db.calDBAdd(inputId, pickDate, information, type);
+                    frame.dispose();
+                }
+            }
+        });
+
     }
 
 
