@@ -10,7 +10,7 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-public class Student extends Database { //action listener interface
+public class Student implements ActionListener { //action listener interface
 
     JFrame frame;
     JLabel title, nameStudent, lastname, email, address, gender,headerCourse;
@@ -19,11 +19,11 @@ public class Student extends Database { //action listener interface
     JRadioButton rdbFemale,rdbMale;
     JButton btnChangeScreen, btnCancel;
     JPanel controlPanel;
-    String nameS, lastnameS,pin;
+    String nameS, lastnameS,createPassword;
 
+    Database db = new Database();
 
     public Student(){
-        Database db = new Database();
 
        //create JFrame
         frame = new JFrame();
@@ -110,17 +110,8 @@ public class Student extends Database { //action listener interface
         //JScrollPane
         showListCourses();
 
-        btnCancel.addActionListener(
-                new ActionListener() {
-                    @Override
-                    public void actionPerformed(ActionEvent e) {
-                        frame.setVisible(false);
-                        Administrator administrator = new Administrator();
-                        dispose();
-
-                    }
-                }
-        );
+        btnCancel.addActionListener(this);
+        btnChangeScreen.addActionListener(this);
 
 
     }
@@ -145,40 +136,46 @@ public class Student extends Database { //action listener interface
         courseList.setFixedCellWidth(175);
 
         JScrollPane courseListScrollPane = new JScrollPane(courseList);
-
+        createPassword();
         controlPanel.add(courseListScrollPane);
 
     }
-
-
-    private String createPassword(boolean _pin) {
-        nameS = nameStudentF.getText();
-        lastnameS = lastnameF.getText();
-        pin = createPassword(true);
-
-        int iFirst = 1, iLast = 1;
-
-        char[] letterArray = {'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k',
-                'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z'};
-
-        System.out.println();
-        for (int i = 0; i < letterArray.length; i++) {
-            if (Character.toLowerCase(nameS.charAt(0)) == letterArray[i]) {
-                iFirst += i;
-            }
-            if (Character.toLowerCase(lastnameS.charAt(0)) == letterArray[i]) {
-                iLast += i;
-            }
-
-        }
-
-        if (!_pin) {
-            return String.format("%c%c-%s-%02d-%02d", Character.toLowerCase(nameS.charAt(0)), Character.toLowerCase(lastnameS.charAt(0)),
-                    (nameS.length() + lastnameS.length()), iFirst, iLast);
-        } else {
-            return String.format("%02d%02d", iFirst, iLast);
-        }
+    public void cleanFields(){
 
     }
 
+    private void createPassword() {
+        createPassword2();
+    }
+
+    private String createPassword2() {
+        nameS = nameStudentF.getText();
+        lastnameS = lastnameF.getText();
+
+
+        String sample = new String("ABCDEFGHIJKLMNOPQRSTUVWXYZ");
+
+        String code1 = String.valueOf((sample.indexOf(nameS.charAt(0))) + 1);
+        String code2 = String.valueOf((sample.indexOf(lastnameS.charAt(0))) + 1);
+        String codeA = nameS.substring(0, 1).toUpperCase() + nameS.substring(1).toLowerCase();
+        String codeB = lastnameS.substring(0, 1).toUpperCase() + lastnameS.substring(1).toLowerCase();
+        String code3 = nameS.substring(0, 1).toLowerCase() + lastnameS.substring(0, 1).toLowerCase();
+        String code4 = String.valueOf(nameS.length() + lastnameS.length());
+
+        createPassword = String.join(code1,code2,code3,code4,codeA,codeB);
+
+        return createPassword;
+
+    }
+
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        if (e.getSource() == btnCancel) {
+            this.frame.setVisible(false);
+            Administrator administrator = new Administrator();
+        } else if (e.getSource() ==  btnChangeScreen) {
+
+
+        }
+    }
 }

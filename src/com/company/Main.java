@@ -20,18 +20,18 @@ public class Main {
     }
 
 */
-/*
+
     public static void main(String[] args) {
      LoginPage loginPage = new LoginPage();
 
-     } */
-
+     }
+/*
     public static void main(String[] args) {
         RenewLogin renewLogin = new RenewLogin();
 
     }
 
-
+*/
 
 
 }

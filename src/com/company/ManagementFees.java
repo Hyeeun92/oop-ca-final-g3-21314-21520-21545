@@ -5,7 +5,7 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-public class ManagementFees extends Database {
+public class ManagementFees implements ActionListener {
     JFrame frame;
     JLabel title, amount;
     JTextField amountF;
@@ -69,11 +69,15 @@ public class ManagementFees extends Database {
                     public void actionPerformed(ActionEvent e) {
                         frame.setVisible(false);
                         Administrator administrator = new Administrator();
-                        dispose();
 
                     }
                 }
         );
+
+    }
+
+    @Override
+    public void actionPerformed(ActionEvent e) {
 
     }
 }

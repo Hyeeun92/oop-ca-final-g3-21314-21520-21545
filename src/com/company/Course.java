@@ -10,7 +10,8 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-public class Course extends Database { //action listener interface
+
+public class Course implements ActionListener { //action listener interface
 
     JFrame frame;
     JLabel title, titleCourse, lectureName, otherInfo;
@@ -18,7 +19,10 @@ public class Course extends Database { //action listener interface
     JButton btnSave, btnCancel;
     String titleCourseS = null;
     String lectureNameS = null;
-    Action otherInfoS = null;
+    String otherInfoS = null;
+    String courseId;
+
+    Database db = new Database();
 
     public Course() {
         Database db = new Database();
@@ -36,10 +40,10 @@ public class Course extends Database { //action listener interface
         titleCourse = new JLabel("Course Name");
         titleCourse.setBounds(50, 75, 175, 20);
         titleCourse.setFont(new Font("Serif", Font.BOLD, 20));
-        lectureName = new JLabel("Lecture Name");
+        lectureName = new JLabel("Lecture ID");
         lectureName.setBounds(50, 125, 175, 20);
         lectureName.setFont(new Font("Serif", Font.BOLD, 20));
-        otherInfo = new JLabel("Other information");
+        otherInfo = new JLabel("Course Price");
         otherInfo.setBounds(50, 175, 175, 20);
         otherInfo.setFont(new Font("Serif", Font.BOLD, 20));
 
@@ -48,7 +52,7 @@ public class Course extends Database { //action listener interface
         lectureNameF = new JTextField();
         lectureNameF.setBounds(200, 125, 300, 25);
         otherInfoF = new JTextField();
-        otherInfoF.setBounds(200, 200, 300, 120);
+        otherInfoF.setBounds(200, 200, 300, 25);
 
 
         btnSave = new JButton("Save");
@@ -73,42 +77,58 @@ public class Course extends Database { //action listener interface
         frame.setLayout(null);
         frame.setSize(640, 480);
         frame.setLocationRelativeTo(null);
-
-        btnCancel.addActionListener(
-                new ActionListener() {
-                    @Override
-                    public void actionPerformed(ActionEvent e) {
-                        frame.setVisible(false);
-                        Administrator administrator = new Administrator();
-                        dispose();
-                    }
-                }
-        );
-
         frame.setVisible(true);
 
-        btnSave.addActionListener(
-                new ActionListener() {
-                    @Override
-                    public void actionPerformed(ActionEvent e) {
+        btnCancel.addActionListener(this);
+        btnSave.addActionListener(this);
 
-                        titleCourseS = titleCourseF.getText();
-                        lectureNameS = lectureNameF.getText();
-                        otherInfoS = otherInfoF.getAction();
+    }
 
 
-                        JOptionPane.showMessageDialog(frame,
-                                "New course create",
-                                "Information save in DB",
-                                JOptionPane.INFORMATION_MESSAGE
-                        );
+    public void cleanFields(){
+    titleCourseS = titleCourseF.getText();
+    //lectureNameS = lectureNameF.getText();
+    otherInfoS = otherInfoF.getText();
 
-                        titleCourseF.setText("    ");
-                        lectureNameF.setText("    ");
-                        otherInfoF.setText("      ");
-                    }
-                }
-        );
+    createCourseId();
+
+    db.getCourseCreateInfo( courseId,titleCourseS, otherInfoS );
+
+    JOptionPane.showMessageDialog(frame,
+            "New course create",
+            "Information save in DateBase",
+    JOptionPane.INFORMATION_MESSAGE );
+
+    titleCourseF.setText("    ");
+    lectureNameF.setText("    ");
+    otherInfoF.setText("      ");
+     }
+
+    private void createCourseId() {
+        createCourseId2();
+    }
+
+    private String createCourseId2() {
+        titleCourseS = titleCourseF.getText();
+
+        String sample = new String("ABCDEFGHIJKLMNOPQRSTUVWXYZ");
+
+        String code = String.valueOf((sample.indexOf(titleCourseS.charAt(0))) + 1);
+
+        courseId = String.join(code);
+
+        return courseId;
+    }
+
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        if (e.getSource() == btnCancel) {
+            this.frame.setVisible(false);
+            Administrator administrator = new Administrator();
+        } else if (e.getSource() ==  btnSave) {
+            this.cleanFields();
+
+        }
     }
 }
 

@@ -15,7 +15,7 @@ import java.util.List;
 public class Database extends JFrame{
     String DB_URL = "jdbc:mysql://localhost:3306/oop_final?serverTimezone=UTC";
     String DB_USER = "root";
-    String DB_PASSWORD =  "Memory1979@";//YES01@";//"ah447Sladl!//";
+    String DB_PASSWORD =  "YES01@"; //"ah447Sladl!"; "Memory1979@";
     Connection conn;
     PreparedStatement pstmt = null;
     ResultSet rs;
@@ -48,6 +48,8 @@ public class Database extends JFrame{
             }
             else {
                 System.out.println("!!");
+                getMessageError();
+                LoginPage loginPage = new LoginPage();
             }
         }catch (SQLException e) {
             System.out.println(e.toString());
@@ -74,6 +76,8 @@ public class Database extends JFrame{
             }
             else {
                 System.out.println("!!");
+                getMessageError();
+                LoginPage loginPage = new LoginPage();
             }
         }catch (SQLException e) {
             System.out.println(e.toString());
@@ -99,6 +103,8 @@ public class Database extends JFrame{
             }
             else {
                 System.out.println("!!");
+                getMessageError();
+                LoginPage loginPage = new LoginPage();
             }
         }catch (SQLException e) {
             System.out.println(e.toString());
@@ -167,6 +173,34 @@ public class Database extends JFrame{
         } catch (Exception e) {
             System.out.println(e);
         }
+    }
+
+    public void getMessageError(){
+        JOptionPane.showMessageDialog(null, "NOT LOG IN. Error!");
+    }
+
+    public void getCourseCreateInfo(String courseId, String titleCourseS, String otherInfoS) {
+        //my mysql insert statement
+        SQL = "INSERT INTO course (course_id, course_name, course_price)" + "values (?,?,?)";
+
+        try{
+            //create my mysql insert preparedStatement
+            pstmt = conn.prepareStatement(SQL);
+            pstmt.clearParameters();
+            pstmt.setString(1, courseId);
+            pstmt.setString(2, titleCourseS);
+            pstmt.setString(3, otherInfoS);
+
+            // execute the pstmt
+            pstmt.execute();
+            conn.close();
+
+        }catch (SQLException e) {
+            System.out.println(e.toString());
+        } catch (Exception e) {
+            System.out.println(e.toString());
+        }
+
     }
 }
 
