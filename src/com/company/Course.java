@@ -112,9 +112,9 @@ public class Course implements ActionListener { //action listener interface
 
         String sample = new String("ABCDEFGHIJKLMNOPQRSTUVWXYZ");
 
-        String code = String.valueOf((sample.indexOf(titleCourseS.charAt(0))) + 1);
+        String courseP = String.valueOf((sample.indexOf(titleCourseS.charAt(0))) + 1);
 
-        courseId = String.join(code);
+        courseId = courseP;
 
         return courseId;
     }

@@ -15,7 +15,7 @@ import java.util.List;
 public class Database extends JFrame{
     String DB_URL = "jdbc:mysql://localhost:3306/oop_final?serverTimezone=UTC";
     String DB_USER = "root";
-    String DB_PASSWORD = "ah447Sladl!";// "YES01@";
+    String DB_PASSWORD =  "YES01@"; //"ah447Sladl!";
     Connection conn;
     PreparedStatement pstmt = null;
     ResultSet rs;
@@ -44,10 +44,14 @@ public class Database extends JFrame{
                     Administrator admin = new Administrator();
                 } else {
                     System.out.println("!!");
+                    getMessageError();
+                    LoginPage loginPage = new LoginPage();
                 }
             }
             else {
                 System.out.println("!!");
+                getMessageError();
+                LoginPage loginPage = new LoginPage();
             }
         }catch (SQLException e) {
             System.out.println(e.toString());
@@ -70,10 +74,14 @@ public class Database extends JFrame{
                     calendarMemo.CalendarForLecture(id, pswd);
                 } else {
                     System.out.println("!!");
+                    getMessageError();
+                    LoginPage loginPage = new LoginPage();
                 }
             }
             else {
                 System.out.println("!!");
+                getMessageError();
+                LoginPage loginPage = new LoginPage();
             }
         }catch (SQLException e) {
             System.out.println(e.toString());
@@ -95,10 +103,14 @@ public class Database extends JFrame{
                     calendarMemo.CalendarForStudent(id, pswd);
                 } else {
                     System.out.println("!!");
+                    getMessageError();
+                    LoginPage loginPage = new LoginPage();
                 }
             }
             else {
                 System.out.println("!!");
+                getMessageError();
+                LoginPage loginPage = new LoginPage();
             }
         }catch (SQLException e) {
             System.out.println(e.toString());
@@ -198,6 +210,7 @@ public class Database extends JFrame{
     }
 
     public void getMessageError(){
+
         JOptionPane.showMessageDialog(null, "NOT LOG IN. Error!");
     }
 
