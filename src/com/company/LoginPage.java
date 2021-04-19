@@ -106,13 +106,13 @@ public class LoginPage extends JFrame{
 
                         if (adminRadio.isSelected()) {
                             db.getAdminLoginInfo(id, pswd);
-                            frame.setVisible(false);
+                            frame.dispose();
                         } else if (lectureRadio.isSelected()) {
                             db.getLectureLoginInfo(id, pswd);
-                            frame.setVisible(false);
+                            frame.dispose();
                         } else if (studentRadio.isSelected()) {
                             db.getStudentLoginInfo(id,pswd);
-                            frame.setVisible(false);
+                            frame.dispose();
                         }
                     }
                 }

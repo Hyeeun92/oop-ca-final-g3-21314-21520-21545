@@ -25,7 +25,7 @@ public class Student implements ActionListener { //action listener interface
 
     public Student(){
 
-       //create JFrame
+        //create JFrame
         frame = new JFrame();
         title = new JLabel("Adm. - Create Student ",SwingConstants.CENTER);
         title.setBounds(0, 0, 640, 47);
@@ -127,7 +127,7 @@ public class Student implements ActionListener { //action listener interface
         courseName.addElement("Mathematics II");
         courseName.addElement("Systems Operations");
         courseName.addElement("Mobile II");
-        
+
         final JList courseList = new JList(courseName);
         courseList.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
         courseList.setSelectedIndex(0);

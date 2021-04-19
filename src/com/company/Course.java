@@ -10,7 +10,6 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-
 public class Course implements ActionListener { //action listener interface
 
     JFrame frame;
@@ -86,23 +85,23 @@ public class Course implements ActionListener { //action listener interface
 
 
     public void cleanFields(){
-    titleCourseS = titleCourseF.getText();
-    //lectureNameS = lectureNameF.getText();
-    otherInfoS = otherInfoF.getText();
+        titleCourseS = titleCourseF.getText();
+        //lectureNameS = lectureNameF.getText();
+        otherInfoS = otherInfoF.getText();
 
-    createCourseId();
+        createCourseId();
 
-    db.getCourseCreateInfo( courseId,titleCourseS, otherInfoS );
+        db.getCourseCreateInfo( courseId,titleCourseS, otherInfoS );
 
-    JOptionPane.showMessageDialog(frame,
-            "New course create",
-            "Information save in DateBase",
-    JOptionPane.INFORMATION_MESSAGE );
+        JOptionPane.showMessageDialog(frame,
+                "New course create",
+                "Information save in DateBase",
+                JOptionPane.INFORMATION_MESSAGE );
 
-    titleCourseF.setText("    ");
-    lectureNameF.setText("    ");
-    otherInfoF.setText("      ");
-     }
+        titleCourseF.setText("    ");
+        lectureNameF.setText("    ");
+        otherInfoF.setText("      ");
+    }
 
     private void createCourseId() {
         createCourseId2();
@@ -131,6 +130,3 @@ public class Course implements ActionListener { //action listener interface
         }
     }
 }
-
-
-

@@ -86,23 +86,23 @@ public class RenewLogin extends JFrame {
         frame.setLayout(null);
         frame.setVisible(true);
 
-       // btnSave.addActionListener(
-          //      new ActionListener() {
-           //         @Override
-           //         public void actionPerformed(ActionEvent e) {
+        // btnSave.addActionListener(
+        //      new ActionListener() {
+        //         @Override
+        //         public void actionPerformed(ActionEvent e) {
 
-             //           id = oldField.getPassword();
-            //            pswd = String.valueOf(newField.getPassword());
+        //           id = oldField.getPassword();
+        //            pswd = String.valueOf(newField.getPassword());
 
-               //         if (adminRadio.isSelected()) {
-                  //          db.getAdminLoginInfo(id, pswd);
-                 //       } else if (lectureRadio.isSelected()) {
-                  //          db.getLectureLoginInfo(id, pswd);
-                    //    } else if (studentRadio.isSelected()) {
-                      //      db.getStudentLoginInfo(id,pswd);
-                   //     }
-                  //  }
-                //}
+        //         if (adminRadio.isSelected()) {
+        //          db.getAdminLoginInfo(id, pswd);
+        //       } else if (lectureRadio.isSelected()) {
+        //          db.getLectureLoginInfo(id, pswd);
+        //    } else if (studentRadio.isSelected()) {
+        //      db.getStudentLoginInfo(id,pswd);
+        //     }
+        //  }
+        //}
         //);
     }
 
