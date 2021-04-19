@@ -83,6 +83,10 @@ public class Course implements ActionListener { //action listener interface
 
     }
 
+    public String getCourseName() {
+        titleCourseS = titleCourseF.getText();
+        return titleCourseS;
+    }
 
     public void cleanFields(){
         titleCourseS = titleCourseF.getText();

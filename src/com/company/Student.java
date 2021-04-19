@@ -9,6 +9,8 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.*;
+import java.util.ArrayList;
 
 public class Student implements ActionListener { //action listener interface
 
@@ -19,7 +21,7 @@ public class Student implements ActionListener { //action listener interface
     JRadioButton rdbFemale,rdbMale;
     JButton btnChangeScreen, btnCancel;
     JPanel controlPanel;
-    String nameS, lastnameS,createPassword;
+    String nameStudentS,lastnameS,student_id, student_name, student_email, student_address, student_gender, student_password;
 
     Database db = new Database();
 
@@ -107,8 +109,11 @@ public class Student implements ActionListener { //action listener interface
         frame.setLocationRelativeTo(null);
         frame.setVisible(true);
 
-        //JScrollPane
-        showListCourses();
+
+        nameStudentS = nameStudentF.getText();
+        lastnameS = lastnameF.getText();
+        student_email = emailF.getText();
+        student_address = addressF.getText();
 
         btnCancel.addActionListener(this);
         btnChangeScreen.addActionListener(this);
@@ -116,7 +121,7 @@ public class Student implements ActionListener { //action listener interface
 
     }
 
-
+/*
     private void showListCourses(){
         //List<Course> getList = db.getList();
 
@@ -136,35 +141,107 @@ public class Student implements ActionListener { //action listener interface
         courseList.setFixedCellWidth(175);
 
         JScrollPane courseListScrollPane = new JScrollPane(courseList);
-        createPassword();
+
         controlPanel.add(courseListScrollPane);
 
     }
-    public void cleanFields(){
 
-    }
-
-    private void createPassword() {
-        createPassword2();
-    }
-
-    private String createPassword2() {
-        nameS = nameStudentF.getText();
-        lastnameS = lastnameF.getText();
-
+*/
+     public String createPassword() {
 
         String sample = new String("ABCDEFGHIJKLMNOPQRSTUVWXYZ");
 
-        String code1 = String.valueOf((sample.indexOf(nameS.charAt(0))) + 1);
+        String code1 = String.valueOf((sample.indexOf(nameStudentS.charAt(0))) + 1);
         String code2 = String.valueOf((sample.indexOf(lastnameS.charAt(0))) + 1);
-        String codeA = nameS.substring(0, 1).toUpperCase() + nameS.substring(1).toLowerCase();
+        String codeA = nameStudentS.substring(0, 1).toUpperCase() + nameStudentS.substring(1).toLowerCase();
         String codeB = lastnameS.substring(0, 1).toUpperCase() + lastnameS.substring(1).toLowerCase();
-        String code3 = nameS.substring(0, 1).toLowerCase() + lastnameS.substring(0, 1).toLowerCase();
-        String code4 = String.valueOf(nameS.length() + lastnameS.length());
+        String code3 = nameStudentS.substring(0, 1).toLowerCase() + lastnameS.substring(0, 1).toLowerCase();
+        String code4 = String.valueOf(nameStudentS.length() + lastnameS.length());
 
-        createPassword = String.join(code1,code2,code3,code4,codeA,codeB);
+        student_password = String.join(code1, code2, code3, code4, codeA, codeB);
 
-        return createPassword;
+        return student_password;
+
+    }
+
+    public void getStudentPassword() {
+        createPassword();
+    }
+
+    public String createStudentId() {
+
+        student_id = String.valueOf(nameStudentS.length() + lastnameS.length());
+
+        return student_id;
+
+    }
+
+    public void getStudentId(){
+       createStudentId();
+    }
+
+
+    public String createStudentName() {
+
+        String nam1 = nameStudentS.substring(0, 1).toUpperCase() + nameStudentS.substring(1).toLowerCase();
+        String nam2 = lastnameS.substring(0, 1).toUpperCase() + lastnameS.substring(1).toLowerCase();
+
+        student_name = String.join(nam1,nam2);
+
+        return student_name;
+
+    }
+    public void getStudentName(){
+        createStudentName();
+    }
+
+    public String studentEmail() {
+        return student_email;
+    }
+    public void getEmail() {
+        studentEmail();
+    }
+
+    public String studentAddress() {
+        return student_address;
+    }
+    public void getStudentAddress() {
+        studentAddress();
+    }
+
+    public String studentGender(){
+
+        if (this.rdbFemale.isSelected()){
+            student_gender = "F";
+        } else if (this.rdbMale.isSelected()){
+            student_gender = "M";
+        }
+
+        return student_gender;
+    }
+
+    public void getStudentGender(){
+         studentGender();
+    }
+
+    public void cleanFields(){
+        getStudentPassword();
+        getStudentId();
+        getStudentName();
+        getEmail();
+        getStudentAddress();
+        getStudentGender();
+        db.getStudentCreateInfo( student_id, student_name, student_email, student_address, student_gender, student_password);
+
+        JOptionPane.showMessageDialog(frame,
+                "New student create",
+                "Information save in DateBase",
+                JOptionPane.INFORMATION_MESSAGE );
+
+        nameStudentF.setText("    ");
+        lastnameF.setText("    ");
+        emailF.setText("      ");
+        addressF.setText("      ");
 
     }
 
@@ -174,8 +251,7 @@ public class Student implements ActionListener { //action listener interface
             this.frame.setVisible(false);
             Administrator administrator = new Administrator();
         } else if (e.getSource() ==  btnChangeScreen) {
-
-
+            this.cleanFields();
         }
     }
 }

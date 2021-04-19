@@ -45,7 +45,7 @@ public class LoginPage extends JFrame{
         messageLabel = new JLabel();
 
         adminRadio = new JRadioButton("Administrator", false);
-        lectureRadio = new JRadioButton("Lecture", false);
+        lectureRadio = new JRadioButton("Lecturer", false);
         studentRadio = new JRadioButton("Student", false);
 
         adminRadio.setBounds(65, 75, 175, 50);

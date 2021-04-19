@@ -237,5 +237,32 @@ public class Database extends JFrame{
         }
 
     }
+
+
+    public void getStudentCreateInfo(String student_id, String student_name, String student_email, String student_address, String student_gender, String student_password) {
+
+        SQL = "INSERT INTO course (student_id, student_name, student_email, student_address, student_gender, student_password)" + "values (?,?,?,?,?,?)";
+
+        try{
+            //create my mysql insert preparedStatement
+            pstmt = conn.prepareStatement(SQL);
+            pstmt.clearParameters();
+            pstmt.setString(1, student_id);
+            pstmt.setString(2, student_name);
+            pstmt.setString(3, student_email);
+            pstmt.setString(4, student_address);
+            pstmt.setString(5, student_gender);
+            pstmt.setString(6, student_password);
+
+            // execute the pstmt
+            pstmt.execute();
+            conn.close();
+
+        }catch (SQLException e) {
+            System.out.println(e.toString());
+        } catch (Exception e) {
+            System.out.println(e.toString());
+        }
+    }
 }
 
