@@ -10,6 +10,7 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.*;
+import java.sql.SQLException;
 import java.util.ArrayList;
 
 public class Student implements ActionListener { //action listener interface
@@ -148,17 +149,21 @@ public class Student implements ActionListener { //action listener interface
 
 */
      public String createPassword() {
+         nameStudentS = nameStudentF.getText();
+         lastnameS = lastnameF.getText();
 
-        String sample = new String("ABCDEFGHIJKLMNOPQRSTUVWXYZ");
+             String sample = new String("ABCDEFGHIJKLMNOPQRSTUVWXYZ");
 
-        String code1 = String.valueOf((sample.indexOf(nameStudentS.charAt(0))) + 1);
-        String code2 = String.valueOf((sample.indexOf(lastnameS.charAt(0))) + 1);
-        String codeA = nameStudentS.substring(0, 1).toUpperCase() + nameStudentS.substring(1).toLowerCase();
-        String codeB = lastnameS.substring(0, 1).toUpperCase() + lastnameS.substring(1).toLowerCase();
-        String code3 = nameStudentS.substring(0, 1).toLowerCase() + lastnameS.substring(0, 1).toLowerCase();
-        String code4 = String.valueOf(nameStudentS.length() + lastnameS.length());
+             String code1 = String.valueOf((sample.indexOf(nameStudentS.charAt(0))) + 1);
+             String code2 = String.valueOf((sample.indexOf(lastnameS.charAt(0))) + 1);
+             String codeA = nameStudentS.substring(0, 1).toUpperCase() + nameStudentS.substring(1).toLowerCase();
+             String codeB = lastnameS.substring(0, 1).toUpperCase() + lastnameS.substring(1).toLowerCase();
+             String code3 = nameStudentS.substring(0, 1).toLowerCase() + lastnameS.substring(0, 1).toLowerCase();
+             String code4 = String.valueOf(nameStudentS.length() + lastnameS.length());
 
-        student_password = String.join(code1, code2, code3, code4, codeA, codeB);
+             student_password = String.join(code3, code4, codeA, codeB);
+
+
 
         return student_password;
 
@@ -224,7 +229,7 @@ public class Student implements ActionListener { //action listener interface
          studentGender();
     }
 
-    public void cleanFields(){
+    public void cleanFields() {
         getStudentPassword();
         getStudentId();
         getStudentName();
@@ -251,7 +256,7 @@ public class Student implements ActionListener { //action listener interface
             this.frame.setVisible(false);
             Administrator administrator = new Administrator();
         } else if (e.getSource() ==  btnChangeScreen) {
-            this.cleanFields();
-        }
+             this.cleanFields();
+          }
     }
 }

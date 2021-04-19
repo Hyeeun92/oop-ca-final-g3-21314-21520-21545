@@ -239,9 +239,9 @@ public class Database extends JFrame{
     }
 
 
-    public void getStudentCreateInfo(String student_id, String student_name, String student_email, String student_address, String student_gender, String student_password) {
+    public void getStudentCreateInfo(String student_id, String student_name, String student_email, String student_address, String student_gender, String student_password)  {
 
-        SQL = "INSERT INTO course (student_id, student_name, student_email, student_address, student_gender, student_password)" + "values (?,?,?,?,?,?)";
+        SQL = "INSERT INTO student (student_id, student_name, student_email, student_address, student_gender, student_password)" + "values (?,?,?,?,?,?)";
 
         try{
             //create my mysql insert preparedStatement
@@ -257,8 +257,9 @@ public class Database extends JFrame{
             // execute the pstmt
             pstmt.execute();
             conn.close();
-
-        }catch (SQLException e) {
+        }catch ( IndexOutOfBoundsException e) {
+            System.out.println("Exception occurred . . . . . . . . ");
+        } catch (SQLException e) {
             System.out.println(e.toString());
         } catch (Exception e) {
             System.out.println(e.toString());
