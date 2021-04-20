@@ -110,10 +110,6 @@ public class RenewLogin extends JFrame {
                   if (pswdNew.equals(pswdConfirm)){
 
                             try {
-
-
-
-
                                 st=con.prepareStatement(db.getStudentLoginInfo(id, pswd);
                                 if() {
                                     st=con.prepareStatement("update login set password = ? where id = ?" );
