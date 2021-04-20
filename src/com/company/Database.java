@@ -11,6 +11,7 @@ import javax.swing.table.DefaultTableModel;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 public class Database extends JFrame{
     String DB_URL = "jdbc:mysql://localhost:3306/oop_final?serverTimezone=UTC";
@@ -210,8 +211,10 @@ public class Database extends JFrame{
     }
 
     public void getMessageError(){
-
-        JOptionPane.showMessageDialog(null, "NOT LOG IN. Error!");
+        JOptionPane optionPane = new JOptionPane("NOT LOG IN. Error!", JOptionPane.ERROR_MESSAGE);
+        JDialog dialog = optionPane.createDialog("Failure");
+        dialog.setAlwaysOnTop(true);
+        dialog.setVisible(true);
     }
 
     public void getCourseCreateInfo(String courseId, String titleCourseS, String otherInfoS) {
@@ -239,7 +242,7 @@ public class Database extends JFrame{
     }
 
 
-    public void getStudentCreateInfo(String student_id, String student_name, String student_email, String student_address, String student_gender, String student_password)  {
+    public void getStudentCreateInfo(String student_id, String student_name, String student_email, String student_address, String student_gender, String student_password) {
 
         SQL = "INSERT INTO student (student_id, student_name, student_email, student_address, student_gender, student_password)" + "values (?,?,?,?,?,?)";
 
@@ -257,13 +260,17 @@ public class Database extends JFrame{
             // execute the pstmt
             pstmt.execute();
             conn.close();
-        }catch ( IndexOutOfBoundsException e) {
-            System.out.println("Exception occurred . . . . . . . . ");
-        } catch (SQLException e) {
+
+        }catch (SQLException e) {
             System.out.println(e.toString());
         } catch (Exception e) {
             System.out.println(e.toString());
         }
+
+
     }
+
+
+
 }
 

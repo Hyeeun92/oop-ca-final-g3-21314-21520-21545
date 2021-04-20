@@ -11,26 +11,28 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.*;
 import java.sql.SQLException;
+import java.time.LocalDate;
 import java.util.ArrayList;
 
 public class Student implements ActionListener { //action listener interface
 
     JFrame frame;
-    JLabel title, nameStudent, lastname, email, address, gender,headerCourse;
-    JTextField nameStudentF,lastnameF, emailF, addressF;
+    JLabel title, nameStudent, lastname, email, address, gender, headerCourse;
+    JTextField nameStudentF, lastnameF, emailF, addressF;
     ButtonGroup radioGroupGender;
-    JRadioButton rdbFemale,rdbMale;
+    JRadioButton rdbFemale, rdbMale;
     JButton btnChangeScreen, btnCancel;
     JPanel controlPanel;
-    String nameStudentS,lastnameS,student_id, student_name, student_email, student_address, student_gender, student_password;
+    String nameStudentS, lastnameS, student_id, student_name, student_email, student_address, student_gender, student_password;
+
 
     Database db = new Database();
 
-    public Student(){
+    public Student() {
 
         //create JFrame
         frame = new JFrame();
-        title = new JLabel("Adm. - Create Student ",SwingConstants.CENTER);
+        title = new JLabel("Adm. - Create Student ", SwingConstants.CENTER);
         title.setBounds(0, 0, 640, 47);
         title.setBackground(new Color(39, 87, 144));
         title.setForeground(new Color(255, 250, 224));
@@ -72,7 +74,7 @@ public class Student implements ActionListener { //action listener interface
         rdbMale.setFont(new Font("Serif", Font.BOLD, 15));
         rdbMale.setBounds(450, 145, 100, 25);
 
-        radioGroupGender= new ButtonGroup();
+        radioGroupGender = new ButtonGroup();
         radioGroupGender.add(rdbFemale);
         radioGroupGender.add(rdbMale);
 
@@ -110,6 +112,7 @@ public class Student implements ActionListener { //action listener interface
         frame.setLocationRelativeTo(null);
         frame.setVisible(true);
 
+        showListCourses();
 
         nameStudentS = nameStudentF.getText();
         lastnameS = lastnameF.getText();
@@ -122,52 +125,58 @@ public class Student implements ActionListener { //action listener interface
 
     }
 
-/*
-    private void showListCourses(){
-        //List<Course> getList = db.getList();
 
-        final DefaultListModel courseName = new DefaultListModel();
+        private void showListCourses(){
+            //List<Course> getList = db.getList();
 
-        courseName.addElement("Computer science");
-        courseName.addElement("Business");
-        courseName.addElement("Mathematics II");
-        courseName.addElement("Systems Operations");
-        courseName.addElement("Mobile II");
+            final DefaultListModel courseName = new DefaultListModel();
 
-        final JList courseList = new JList(courseName);
-        courseList.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
-        courseList.setSelectedIndex(0);
-        courseList.setVisibleRowCount(3);
-        courseList.setFixedCellHeight(30);
-        courseList.setFixedCellWidth(175);
+            courseName.addElement("Computer science");
+            courseName.addElement("Business");
+            courseName.addElement("Mathematics II");
+            courseName.addElement("Systems Operations");
+            courseName.addElement("Mobile II");
 
-        JScrollPane courseListScrollPane = new JScrollPane(courseList);
+            final JList courseList = new JList(courseName);
+            courseList.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
+            courseList.setSelectedIndex(0);
+            courseList.setVisibleRowCount(3);
+            courseList.setFixedCellHeight(30);
+            courseList.setFixedCellWidth(175);
 
-        controlPanel.add(courseListScrollPane);
+            JScrollPane courseListScrollPane = new JScrollPane(courseList);
 
-    }
+            controlPanel.add(courseListScrollPane);
 
-*/
-     public String createPassword() {
-         nameStudentS = nameStudentF.getText();
-         lastnameS = lastnameF.getText();
-
-             String sample = new String("ABCDEFGHIJKLMNOPQRSTUVWXYZ");
-
-             String code1 = String.valueOf((sample.indexOf(nameStudentS.charAt(0))) + 1);
-             String code2 = String.valueOf((sample.indexOf(lastnameS.charAt(0))) + 1);
-             String codeA = nameStudentS.substring(0, 1).toUpperCase() + nameStudentS.substring(1).toLowerCase();
-             String codeB = lastnameS.substring(0, 1).toUpperCase() + lastnameS.substring(1).toLowerCase();
-             String code3 = nameStudentS.substring(0, 1).toLowerCase() + lastnameS.substring(0, 1).toLowerCase();
-             String code4 = String.valueOf(nameStudentS.length() + lastnameS.length());
-
-             student_password = String.join(code3, code4, codeA, codeB);
+        }
 
 
+    public String createPassword() {
+        nameStudentS = nameStudentF.getText();
+        lastnameS = lastnameF.getText();
+
+        int iFirst = 1, iLast = 1;
+
+        char[] letterArray = {'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k',
+                'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z'};
+
+        System.out.println();
+        for (int i = 0; i < letterArray.length; i++) {
+            if (Character.toLowerCase(nameStudentS.charAt(0)) == letterArray[i]) {
+                iFirst += i;
+            }
+            if (Character.toLowerCase(lastnameS.charAt(0)) == letterArray[i]) {
+                iLast += i;
+            }
+
+        }
+        student_password = String.format("%c%c-%s-%02d%02d", Character.toLowerCase(nameStudentS.charAt(0)), Character.toLowerCase(lastnameS.charAt(0)),
+                (nameStudentS.length() + lastnameS.length()), iFirst, iLast);
 
         return student_password;
 
     }
+
 
     public void getStudentPassword() {
         createPassword();
@@ -175,14 +184,19 @@ public class Student implements ActionListener { //action listener interface
 
     public String createStudentId() {
 
-        student_id = String.valueOf(nameStudentS.length() + lastnameS.length());
+
+        String year = "2020";
+
+        String nameNumber = String.valueOf(nameStudentS.length() + lastnameS.length());
+
+        student_id = (nameNumber + "-" + year);
 
         return student_id;
 
     }
 
-    public void getStudentId(){
-       createStudentId();
+    public void getStudentId() {
+        createStudentId();
     }
 
 
@@ -191,42 +205,52 @@ public class Student implements ActionListener { //action listener interface
         String nam1 = nameStudentS.substring(0, 1).toUpperCase() + nameStudentS.substring(1).toLowerCase();
         String nam2 = lastnameS.substring(0, 1).toUpperCase() + lastnameS.substring(1).toLowerCase();
 
-        student_name = String.join(nam1,nam2);
+
+        student_name = (nam1 + "  " + nam2);
 
         return student_name;
 
     }
-    public void getStudentName(){
+
+    public void getStudentName() {
         createStudentName();
     }
 
     public String studentEmail() {
+
+        student_email = emailF.getText();
+
         return student_email;
     }
+
     public void getEmail() {
         studentEmail();
     }
 
     public String studentAddress() {
+
+        student_address = addressF.getText();
+
         return student_address;
     }
+
     public void getStudentAddress() {
         studentAddress();
     }
 
-    public String studentGender(){
+    public String studentGender() {
 
-        if (this.rdbFemale.isSelected()){
+        if (this.rdbFemale.isSelected()) {
             student_gender = "F";
-        } else if (this.rdbMale.isSelected()){
+        } else if (this.rdbMale.isSelected()) {
             student_gender = "M";
         }
 
         return student_gender;
     }
 
-    public void getStudentGender(){
-         studentGender();
+    public void getStudentGender() {
+        studentGender();
     }
 
     public void cleanFields() {
@@ -236,12 +260,22 @@ public class Student implements ActionListener { //action listener interface
         getEmail();
         getStudentAddress();
         getStudentGender();
-        db.getStudentCreateInfo( student_id, student_name, student_email, student_address, student_gender, student_password);
+        db.getStudentCreateInfo(student_id, student_name, student_email, student_address, student_gender, student_password);
+
+
+        String messageStudentInfo = "\n *** INFORMATION ****"
+                + "\n Student number: " + "  " + student_id
+                + "\n **Temporarily password: " + "  " + student_password
+                + "\n Name: " + " " + student_name
+                + "\n Email: " + "  " + student_email
+                + "\n Address: " + "  " + student_address
+                + "\n Gender: " + "  " + student_gender;
 
         JOptionPane.showMessageDialog(frame,
-                "New student create",
-                "Information save in DateBase",
-                JOptionPane.INFORMATION_MESSAGE );
+                "NEW STUDENT CREATE" +
+                     messageStudentInfo,
+                "INFORMATION SAVE DATABASES",
+                JOptionPane.INFORMATION_MESSAGE);
 
         nameStudentF.setText("    ");
         lastnameF.setText("    ");
@@ -255,8 +289,8 @@ public class Student implements ActionListener { //action listener interface
         if (e.getSource() == btnCancel) {
             this.frame.setVisible(false);
             Administrator administrator = new Administrator();
-        } else if (e.getSource() ==  btnChangeScreen) {
-             this.cleanFields();
-          }
+        } else if (e.getSource() == btnChangeScreen) {
+            this.cleanFields();
+        }
     }
 }

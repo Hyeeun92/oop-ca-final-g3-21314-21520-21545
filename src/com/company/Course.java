@@ -83,12 +83,7 @@ public class Course implements ActionListener { //action listener interface
 
     }
 
-    public String getCourseName() {
-        titleCourseS = titleCourseF.getText();
-        return titleCourseS;
-    }
-
-    public void cleanFields(){
+       public void cleanFields(){
         titleCourseS = titleCourseF.getText();
         //lectureNameS = lectureNameF.getText();
         otherInfoS = otherInfoF.getText();
@@ -107,6 +102,7 @@ public class Course implements ActionListener { //action listener interface
         otherInfoF.setText("      ");
     }
 
+
     private void createCourseId() {
         createCourseId2();
     }
@@ -116,12 +112,13 @@ public class Course implements ActionListener { //action listener interface
 
         String sample = new String("ABCDEFGHIJKLMNOPQRSTUVWXYZ");
 
-        String courseP = String.valueOf((sample.indexOf(titleCourseS.charAt(0))) + 1);
+        String code = String.valueOf((sample.indexOf(titleCourseS.charAt(0))) + 1);
 
-        courseId = courseP;
+        courseId = String.join(code);
 
         return courseId;
     }
+
 
     @Override
     public void actionPerformed(ActionEvent e) {
