@@ -16,7 +16,7 @@ public class Administrator implements ActionListener { //action listener interfa
     JFrame frame;
     JLabel title;
     ButtonGroup radioGroup;
-    JRadioButton rdbCreateStudent, rdbCreateCourse, rdbCreateTimetable, rdbManageStudentInfo;
+    JRadioButton rdbCreateStudent, rdbCreateCourse, rdbCreateLecturer,  rdbCreateTimetable, rdbManageStudentInfo;
     JButton btnContinue, btnCancel;
 
     public Administrator() {
@@ -35,10 +35,15 @@ public class Administrator implements ActionListener { //action listener interfa
 
         rdbCreateStudent = new JRadioButton("Create student");
         rdbCreateStudent.setFont(new Font("Serif", Font.BOLD, 20));
-        rdbCreateStudent.setBounds(100, 100, 175, 50);
+        rdbCreateStudent.setBounds(100, 50, 175, 50);
         rdbCreateCourse = new JRadioButton("Create course");
         rdbCreateCourse.setFont(new Font("Serif", Font.BOLD, 20));
-        rdbCreateCourse.setBounds(100, 150, 175, 50);
+        rdbCreateCourse.setBounds(100, 100, 175, 50);
+
+        rdbCreateLecturer = new JRadioButton("Create Lecturer");
+        rdbCreateLecturer.setFont(new Font("Serif", Font.BOLD, 20));
+        rdbCreateLecturer.setBounds(100, 150, 175, 50);
+
         rdbCreateTimetable = new JRadioButton("Create timetable");
         rdbCreateTimetable.setFont(new Font("Serif", Font.BOLD, 20));
         rdbCreateTimetable.setBounds(100, 200, 175, 50);
@@ -57,12 +62,14 @@ public class Administrator implements ActionListener { //action listener interfa
         radioGroup = new ButtonGroup();
         radioGroup.add(rdbCreateStudent);
         radioGroup.add(rdbCreateCourse);
+        radioGroup.add(rdbCreateLecturer);
         radioGroup.add(rdbCreateTimetable);
         radioGroup.add(rdbManageStudentInfo);
 
         frame.add(title);
         frame.add(rdbCreateStudent);
         frame.add(rdbCreateCourse);
+        frame.add(rdbCreateLecturer);
         frame.add(rdbCreateTimetable);
         frame.add(rdbManageStudentInfo);
         frame.add(btnContinue);
@@ -91,6 +98,9 @@ public class Administrator implements ActionListener { //action listener interfa
                 frame.setVisible(false);
             } else if (this.rdbCreateCourse.isSelected()) {
                 Course course = new Course();
+                frame.setVisible(false);
+            } else if (this.rdbCreateLecturer.isSelected()) {
+                Lecturer lecturer = new Lecturer();
                 frame.setVisible(false);
             } else if (this.rdbCreateTimetable.isSelected()) {
 
