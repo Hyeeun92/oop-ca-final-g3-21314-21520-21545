@@ -70,10 +70,13 @@ public class RenewLogin extends JFrame {
 
 
         frame.add(title);
+        frame.add(idLable);
         frame.add(oldLabel);
         frame.add(newLabel);
         frame.add(confirmLabel);
         frame.add(messageLabel);
+
+        frame.add(idField)
         frame.add(oldField);
         frame.add(newField);
         frame.add(confirmField);
