@@ -95,9 +95,9 @@ public class RenewLogin extends JFrame {
         frame.setLayout(null);
         frame.setVisible(true);
 
-        btnSave.addActionListener(
-               new ActionListener() {
-                  @Override
+        /*btnSave.addActionListener(
+           //new ActionListener() {
+               /*   @Override
                   public void actionPerformed(ActionEvent e) {
                         String id, pswdOld, pswdNew, pswdConfirm;
                         id = idField.getText();
@@ -138,16 +138,16 @@ public class RenewLogin extends JFrame {
                         id = pswdField.getPassword();
                         pswd = String.valueOf(newField.getPassword());
 
-                        /*if (adminRadio.isSelected()) {
+                        *//*if (adminRadio.isSelected()) {
                            db.getAdminLoginInfo(id, pswd);
                         } else if (lectureRadio.isSelected()) {
                             db.getLectureLoginInfo(id, pswd);
                         } else if (studentRadio.isSelected()) {
-                          db.getStudentLoginInfo(id,pswd);*/
+                          db.getStudentLoginInfo(id,pswd);*//*
                        }
                     }
                }
-        );
+        );*/
     }
 
 

@@ -16,7 +16,7 @@ import java.util.concurrent.TimeUnit;
 public class Database extends JFrame{
     String DB_URL = "jdbc:mysql://localhost:3306/oop_final?serverTimezone=UTC";
     String DB_USER = "root";
-    String DB_PASSWORD =  "YES01@"; //"ah447Sladl!";
+    String DB_PASSWORD =  "Memory1979@";//YES01@"; //"ah447Sladl!";
     Connection conn;
     PreparedStatement pstmt = null;
     ResultSet rs;
