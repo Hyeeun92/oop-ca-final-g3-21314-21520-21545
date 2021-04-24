@@ -33,12 +33,12 @@ public class LoginPage extends JFrame{
 
         Database db = new Database();
 
-        title = new JLabel("Virtual Global College (VGC)");
+        title = new JLabel("  Virtual Global College (VGC)  ");
         title.setSize(640, 50);
         title.setBackground(new Color(26, 53, 8));
         title.setForeground(new Color(255, 250, 224));
         SpringLayout.Constraints labelCons = layout.getConstraints(title);
-        labelCons.setX(Spring.constant(45));
+        labelCons.setX(Spring.constant(15));
         labelCons.setY(Spring.constant(0));
         title.setFont(new Font("Serif", Font.ITALIC + Font.BOLD, 45));
         title.setOpaque(true);
@@ -73,7 +73,7 @@ public class LoginPage extends JFrame{
         panel2.add(pswdField);
         background.add(panel2);
 
-        typeOfUser = new JLabel("Select one:       ");
+        typeOfUser = new JLabel("   Select one:     ");
         typeOfUser.setSize(50, 50);
         typeOfUser.setBackground(new Color(255, 250, 224));
         typeOfUser.setForeground(Color.BLACK);
@@ -84,7 +84,7 @@ public class LoginPage extends JFrame{
         typeOfUser.setOpaque(true);
         background.add(typeOfUser);
 
-        adminRadio = new JRadioButton("Employee      ", false);
+        adminRadio = new JRadioButton("Administrative", false);
         adminRadio.setFont(new Font(null, Font.BOLD, 10));
         adminRadio.setForeground(Color.BLACK);
         adminRadio.setBackground(new Color(255, 250, 224));
@@ -98,7 +98,7 @@ public class LoginPage extends JFrame{
         background.add(panelR1);
 
 
-        lectureRadio = new JRadioButton("Lecturer        ", false);
+        lectureRadio = new JRadioButton("Lecturer          ", false);
         lectureRadio.setFont(new Font(null, Font.BOLD, 10));
         lectureRadio.setForeground(Color.BLACK);
         lectureRadio.setBackground(new Color(255, 250, 224));
@@ -112,7 +112,7 @@ public class LoginPage extends JFrame{
         background.add(panelR2);
 
 
-        studentRadio = new JRadioButton("Student         ", false);
+        studentRadio = new JRadioButton("Student           ", false);
         studentRadio.setFont(new Font(null, Font.BOLD, 10));
         studentRadio.setForeground(Color.BLACK);
         studentRadio.setBackground(new Color(255, 250, 224));
