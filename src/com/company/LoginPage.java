@@ -6,96 +6,157 @@ package com.company;
 21314 - Nathalie Flores
 */
 
+import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.IOException;
+import java.net.http.WebSocket;
 
 public class LoginPage extends JFrame{
 
     ButtonGroup radioGroup;
-    JFrame frame;
     JButton btnLogin, btnReset;
     JTextField idField;
     JPasswordField pswdField;
-    JLabel title,idLabel, pswdLabel, messageLabel;
+    JLabel title, typeOfUser, idLabel, pswdLabel, messageLabel;
     JRadioButton adminRadio, lectureRadio, studentRadio;
     String id = null;
     String pswd = null;
+    JPanel panel1, panel2, panelR1, panelR2, panelR3, panelB1,panelB2;
 
-    public LoginPage() {
+    public LoginPage(){
+        JLabel background=new JLabel(new ImageIcon(getClass().getResource("college.jpg")));
+        add(background);
+
+        SpringLayout layout = new SpringLayout();
+        background.setLayout(layout);
 
         Database db = new Database();
 
-        //create JFrame
-        frame = new JFrame();
-        title = new JLabel("Virtual Global College (VGC)",SwingConstants.CENTER);
-        title.setBounds(0, 0, 640, 47);
-        title.setBackground(new Color(0, 0, 130));
+        title = new JLabel("Virtual Global College (VGC)");
+        title.setSize(640, 50);
+        title.setBackground(new Color(26, 53, 8));
         title.setForeground(new Color(255, 250, 224));
-        title.setFont(new Font("Serif", Font.ITALIC + Font.BOLD, 20));
+        SpringLayout.Constraints labelCons = layout.getConstraints(title);
+        labelCons.setX(Spring.constant(45));
+        labelCons.setY(Spring.constant(0));
+        title.setFont(new Font("Serif", Font.ITALIC + Font.BOLD, 45));
         title.setOpaque(true);
+        background.add(title);
 
-        btnLogin = new JButton("Login");
-        btnReset = new JButton("Reset");
-        idField = new JTextField(null);
-        pswdField = new JPasswordField(null);
-        idLabel = new JLabel("User ID:");
-        pswdLabel = new JLabel("Password:");
-        messageLabel = new JLabel();
+        idLabel = new JLabel("User ID:    ");
+        idLabel.setFont(new Font("Serif", Font.BOLD, 20));
+        idLabel.setForeground(Color.BLACK);
+        idField = new JTextField("", 20);
+        panel1 = new JPanel();
+        panel1.setBackground(new Color(255, 250, 222));
+        layout.putConstraint(SpringLayout.WEST, panel1, 25, SpringLayout.WEST, background);
+        SpringLayout.Constraints labelCons1 = layout.getConstraints(panel1);
+        labelCons1.setX(Spring.constant(200));
+        labelCons1.setY(Spring.constant(175));
+        panel1.add(idLabel);
+        panel1.add(idField);
+        background.add(panel1);
 
-        adminRadio = new JRadioButton("Administrator", false);
-        lectureRadio = new JRadioButton("Lecturer", false);
-        studentRadio = new JRadioButton("Student", false);
 
-        adminRadio.setBounds(65, 75, 175, 50);
-        adminRadio.setFont(new Font(null, Font.BOLD, 20));
-        lectureRadio.setBounds(250, 75, 150, 50);
-        lectureRadio.setFont(new Font(null, Font.BOLD, 20));
-        studentRadio.setBounds(400, 75, 175, 50);
-        studentRadio.setFont(new Font(null, Font.BOLD, 20));
+        pswdLabel = new JLabel("Password: ");
+        pswdLabel.setFont(new Font("Serif", Font.BOLD, 20));
+        pswdLabel.setForeground(Color.BLACK);
+        pswdField = new JPasswordField("", 20);
+        panel2 = new JPanel();
+        panel2.setBackground(new Color(255, 250, 222));
+        layout.putConstraint(SpringLayout.WEST, panel2, 25, SpringLayout.WEST, background);
+        SpringLayout.Constraints labelCons2 = layout.getConstraints(panel2);
+        labelCons2.setX(Spring.constant(200));
+        labelCons2.setY(Spring.constant(225));
+        panel2.add(pswdLabel);
+        panel2.add(pswdField);
+        background.add(panel2);
+
+        typeOfUser = new JLabel("Select one:       ");
+        typeOfUser.setSize(50, 50);
+        typeOfUser.setBackground(new Color(255, 250, 224));
+        typeOfUser.setForeground(Color.BLACK);
+        SpringLayout.Constraints labelConsS = layout.getConstraints(typeOfUser);
+        labelConsS.setX(Spring.constant(15));
+        labelConsS.setY(Spring.constant(100));
+        typeOfUser.setFont(new Font("Serif", Font.ITALIC + Font.BOLD, 15));
+        typeOfUser.setOpaque(true);
+        background.add(typeOfUser);
+
+        adminRadio = new JRadioButton("Employee      ", false);
+        adminRadio.setFont(new Font(null, Font.BOLD, 10));
+        adminRadio.setForeground(Color.BLACK);
+        adminRadio.setBackground(new Color(255, 250, 224));
+        panelR1 = new JPanel();
+        panelR1.setBackground(new Color(255, 250, 224));
+        layout.putConstraint(SpringLayout.WEST, panelR1, 5, SpringLayout.WEST, background);
+        SpringLayout.Constraints labelConsR0 = layout.getConstraints(panelR1);
+        labelConsR0.setX(Spring.constant(15));
+        labelConsR0.setY(Spring.constant(120));;
+        panelR1.add(adminRadio);
+        background.add(panelR1);
+
+
+        lectureRadio = new JRadioButton("Lecturer        ", false);
+        lectureRadio.setFont(new Font(null, Font.BOLD, 10));
+        lectureRadio.setForeground(Color.BLACK);
+        lectureRadio.setBackground(new Color(255, 250, 224));
+        panelR2 = new JPanel();
+        panelR2.setBackground(new Color(255, 250, 224));
+        layout.putConstraint(SpringLayout.WEST, panelR2, 5, SpringLayout.WEST, background);
+        SpringLayout.Constraints labelConsR1 = layout.getConstraints(panelR2);
+        labelConsR1.setX(Spring.constant(15));
+        labelConsR1.setY(Spring.constant(145));;
+        panelR2.add(lectureRadio);
+        background.add(panelR2);
+
+
+        studentRadio = new JRadioButton("Student         ", false);
+        studentRadio.setFont(new Font(null, Font.BOLD, 10));
+        studentRadio.setForeground(Color.BLACK);
+        studentRadio.setBackground(new Color(255, 250, 224));
+        panelR3 = new JPanel();
+        panelR3.setBackground(new Color(255, 250, 224));
+        layout.putConstraint(SpringLayout.WEST, panelR3, 5, SpringLayout.WEST, background);
+        SpringLayout.Constraints labelConsR2 = layout.getConstraints(panelR3);
+        labelConsR2.setX(Spring.constant(15));
+        labelConsR2.setY(Spring.constant(170));;
+        panelR3.add(studentRadio);
+        background.add(panelR3);
+
 
         radioGroup = new ButtonGroup();
         radioGroup.add(adminRadio);
         radioGroup.add(lectureRadio);
         radioGroup.add(studentRadio);
 
-        idLabel.setBounds(100, 175, 150, 25);
-        idLabel.setFont(new Font("Serif", Font.BOLD, 20));
-        pswdLabel.setBounds(100, 225, 150, 25);
-        pswdLabel.setFont(new Font("Serif", Font.BOLD, 20));
 
-        messageLabel.setBounds(325, 250, 250, 35);
-        messageLabel.setFont(new Font(null, Font.BOLD, 25));
-
-        idField.setBounds(225, 175, 300, 25);
-        pswdField.setBounds(225, 225, 300, 25);
-
-        btnLogin.setBounds(375, 350, 175, 50);
-        btnLogin.setFont(new Font("Serif", Font.BOLD, 20));
+        btnLogin = new JButton("Login");
+        btnLogin.setFont(new Font("Serif", Font.BOLD, 15));
         btnLogin.setFocusable(false);
+        panelB1 = new JPanel();
+        panelB1.setBackground(new Color(255, 250, 224));
+        layout.putConstraint(SpringLayout.WEST, panelB1, 5, SpringLayout.WEST, background);
+        SpringLayout.Constraints labelConsB1 = layout.getConstraints(panelB1);
+        labelConsB1.setX(Spring.constant(490));
+        labelConsB1.setY(Spring.constant(375));;
+        panelB1.add(btnLogin);
+        background.add(panelB1);
 
-        btnReset.setFont(new Font("Serif", Font.BOLD, 20));
-        btnReset.setBounds(75, 350, 175, 50);
+        btnReset = new JButton("Reset");
+        btnReset.setFont(new Font("Serif", Font.BOLD, 15));
         btnReset.setFocusable(false);
-
-        frame.add(title);
-        frame.add(idLabel);
-        frame.add(pswdLabel);
-        frame.add(messageLabel);
-        frame.add(idField);
-        frame.add(pswdField);
-        frame.add(btnLogin);
-        frame.add(btnReset);
-        frame.add(adminRadio);
-        frame.add(lectureRadio);
-        frame.add(studentRadio);
-
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setSize(640, 480);
-        frame.setLayout(null);
-        frame.setVisible(true);
-        frame.setLocationRelativeTo(null);
+        panelB2 = new JPanel();
+        panelB2.setBackground(new Color(255, 250, 224));
+        layout.putConstraint(SpringLayout.WEST, panelB2, 5, SpringLayout.WEST, background);
+        SpringLayout.Constraints labelConsB2 = layout.getConstraints(panelB2);
+        labelConsB2.setX(Spring.constant(390));
+        labelConsB2.setY(Spring.constant(375));;
+        panelB2.add(btnReset);
+        background.add(panelB2);
 
         btnLogin.addActionListener(
                 new ActionListener() {
@@ -106,16 +167,17 @@ public class LoginPage extends JFrame{
 
                         if (adminRadio.isSelected()) {
                             db.getAdminLoginInfo(id, pswd);
-                            frame.dispose();
+
                         } else if (lectureRadio.isSelected()) {
                             db.getLectureLoginInfo(id, pswd);
-                            frame.dispose();
+
                         } else if (studentRadio.isSelected()) {
-                            db.getStudentLoginInfo(id,pswd);
-                            frame.dispose();
+                            db.getStudentLoginInfo(id, pswd);
+
                         }
                     }
                 }
         );
     }
+
 }
