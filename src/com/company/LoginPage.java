@@ -6,13 +6,11 @@ package com.company;
 21314 - Nathalie Flores
 */
 
-import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.IOException;
-import java.net.http.WebSocket;
+
 
 public class LoginPage extends JFrame{
 
@@ -27,7 +25,7 @@ public class LoginPage extends JFrame{
     JPanel panel1, panel2, panelR1, panelR2, panelR3, panelB1,panelB2;
 
     public LoginPage(){
-        JLabel background=new JLabel(new ImageIcon(getClass().getResource("college.jpg")));
+        JLabel background=new JLabel(new ImageIcon(getClass().getResource("university.jpg")));
         add(background);
 
         SpringLayout layout = new SpringLayout();
