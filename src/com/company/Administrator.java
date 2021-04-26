@@ -253,17 +253,19 @@ public class Administrator  extends JFrame implements ActionListener { //action 
 
         background2.add(panelLeftDown);
 
-        //btnAdd, btnUpdate, btnClear,
 
-        btnAdd = new JButton("Add Record");
+        btnAdd = new JButton(" Add ");
         btnAdd.setFont(new Font("Serif", Font.BOLD, 10));
         btnAdd.setIcon(new ImageIcon(getClass().getResource("saveIcon.png")));
-        btnAdd.setBounds(0, 0, 120, 20);
-
+        btnAdd.setBounds(0, 0, 100, 20);
         btnUpdate = new JButton("Update");
-        btnUpdate.setFont(new Font("Serif", Font.BOLD, 20));
-        btnUpdate.setBounds(100, 350, 175, 50);
-
+        btnUpdate.setFont(new Font("Serif", Font.BOLD, 10));
+        btnUpdate.setIcon(new ImageIcon(getClass().getResource("updateIcon.png")));
+        btnUpdate.setBounds(100, 0, 100, 20);
+        btnClear= new JButton("Delete");
+        btnClear.setFont(new Font("Serif", Font.BOLD, 10));
+        btnClear.setIcon(new ImageIcon(getClass().getResource("eraseIcon.png")));
+        btnClear.setBounds(200, 0, 100, 20);
         panelRightDown = new JPanel();
         panelRightDown.setBorder(new EmptyBorder(5, 5, 5, 5));
         setContentPane(panelRightDown);
@@ -271,9 +273,10 @@ public class Administrator  extends JFrame implements ActionListener { //action 
         panelRightDown.setBounds(370,270,300,270);
         panelRightDown.setBackground(new Color(65, 46, 108));
         panelRightDown.add(btnAdd,BorderLayout.EAST);
+        panelRightDown.add(btnUpdate,BorderLayout.EAST);
+        panelRightDown.add(btnClear,BorderLayout.EAST);
 
         background2.add(panelRightDown);
-
 
 
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
