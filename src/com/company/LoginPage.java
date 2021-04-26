@@ -14,6 +14,7 @@ import java.awt.event.ActionListener;
 
 public class LoginPage extends JFrame{
 
+    JFrame frameLogin;
     ButtonGroup radioGroup;
     JButton btnLogin, btnReset;
     JTextField idField;
@@ -25,8 +26,10 @@ public class LoginPage extends JFrame{
     JPanel panel1, panel2, panelR1, panelR2, panelR3, panelB1,panelB2;
 
     public LoginPage(){
+
+        frameLogin = new JFrame();
         JLabel background=new JLabel(new ImageIcon(getClass().getResource("university.jpg")));
-        add(background);
+        frameLogin.add(background);
 
         SpringLayout layout = new SpringLayout();
         background.setLayout(layout);
@@ -155,6 +158,13 @@ public class LoginPage extends JFrame{
         labelConsB2.setY(Spring.constant(375));;
         panelB2.add(btnReset);
         background.add(panelB2);
+
+        frameLogin.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frameLogin.setResizable(false); //prevent frame from being resized
+        frameLogin.setSize(640, 480);
+        frameLogin.setTitle("LOGIN PAGE");
+        frameLogin.setVisible(true);
+        frameLogin.setLocationRelativeTo(null); // make the frame center
 
         btnLogin.addActionListener(
                 new ActionListener() {
