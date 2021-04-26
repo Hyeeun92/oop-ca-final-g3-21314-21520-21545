@@ -266,6 +266,29 @@ public class Database extends JFrame{
 
     }
 
+    public void listOfListCourses(){
+        SQL = "SELECT course_name FROM course";
+
+        String course_name = null;
+
+        try {
+            pstmt = conn.prepareStatement(SQL);
+            pstmt.setString(1, course_name);
+            rs = pstmt.executeQuery();
+
+            while(rs.next()) {
+                course_name=rs.getString(1);
+                Listing(course_name);
+            }
+
+        } catch (SQLException sqlException) {
+            System.out.println(sqlException);
+        } catch (Exception e) {
+            System.out.println(e);
+        }
+    }
+
+
 
 
 }
