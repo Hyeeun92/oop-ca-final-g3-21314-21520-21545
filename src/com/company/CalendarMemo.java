@@ -51,7 +51,7 @@ public class CalendarMemo extends JFrame implements ActionListener {
     String inputPswd = null;
     String pickDate = null;
 
-    //SpringLayout layout;
+    SpringLayout layout;
     //SpringLayout.Constraints labelCons2;
 
     Database db = new Database();
@@ -63,13 +63,14 @@ public class CalendarMemo extends JFrame implements ActionListener {
 
     public void CalendarForStudent(String id, String pswd) {
 
-        /*
+
         JLabel backgroundS = new JLabel(new ImageIcon(getClass().getResource("greenChalkboard.jpg")));
         backgroundS.setSize(960,533);
         add(backgroundS);
+
         layout = new SpringLayout();
         backgroundS.setLayout(layout);
-        */
+
 
         inputId = id;
         inputPswd = pswd;
@@ -94,37 +95,37 @@ public class CalendarMemo extends JFrame implements ActionListener {
         textYear.setFont(f);
         textMonth.setFont(f);
 
-        add(panNorth, "North");
-        /*panNorth.setBackground(Color.GREEN);
+        //add(panNorth, "North");
+        panNorth.setBackground(Color.GREEN);
         layout.putConstraint(SpringLayout.NORTH, panNorth, 5, SpringLayout.NORTH, backgroundS);
         SpringLayout.Constraints labelCons1 = layout.getConstraints(panNorth);
         labelCons1.setX(Spring.constant(280));
         labelCons1.setY(Spring.constant(100));
         backgroundS.add(panNorth);
-        */
+
 
         panWest = new JPanel(new GridLayout(7,7));
         f = new Font("Serif", Font.BOLD, 12);
 
         gridInit();
         calSet();
-        add(panWest, "West");
+        //add(panWest, "West");
 
-        /* panWest.setBackground(Color.MAGENTA);
+        panWest.setBackground(Color.MAGENTA);
         layout.putConstraint(SpringLayout.WEST, panWest, 5, SpringLayout.WEST, backgroundS);
-        labelCons2 = layout.getConstraints(panWest);
+        SpringLayout.Constraints labelCons2 = layout.getConstraints(panWest);
         labelCons2.setX(Spring.constant(280));
         labelCons2.setY(Spring.constant(150));
         backgroundS.add(panWest);
-        */
+
 
         panEast = new JPanel();
         panEast.add(textWrite = new JTextField(null));
         textWrite.setEditable(false);
         textWrite.setPreferredSize(new Dimension(180, 180));
 
-        add(panEast, "East");
-        /*panEast.setBackground(Color.BLUE);
+        //add(panEast, "East");
+        panEast.setBackground(Color.BLUE);
         layout.putConstraint(SpringLayout.EAST, panEast, 5, SpringLayout.EAST, backgroundS);
         SpringLayout.Constraints labelCons3 = layout.getConstraints(panEast);
         labelCons3.setHeight(Spring.constant(180));
@@ -132,57 +133,35 @@ public class CalendarMemo extends JFrame implements ActionListener {
         labelCons3.setX(Spring.constant(730));
         labelCons3.setY(Spring.constant(120));
         backgroundS.add(panEast);
-        */
+
 
         panSouth = new JPanel();
-        panSouth.add(listResult = new JButton("List of Results"));
-        panSouth.add(listAttendance = new JButton("List of Attendance"));
-        panSouth.add(changePswd = new JButton("Change Password"));
-        add(panSouth, "South");
-
-        /*
-        listResult.setIcon(new ImageIcon(getClass().getResource("grades.jpg")));
-        listResult.setSize(50,50);
-        panSouth.setBackground(Color.black);
+       panSouth.add(listResult = new JButton());
+       listResult.setIcon(new ImageIcon(getClass().getResource("grades.jpg")));
+       listResult.setSize(20,20);
+       panSouth.add(listAttendance = new JButton());
+       listAttendance.setSize(20,20);
+        listAttendance.setIcon(new ImageIcon(getClass().getResource("attandance.jpg")));
+       panSouth.add(changePswd = new JButton());
+        changePswd.setIcon(new ImageIcon(getClass().getResource("password.jpg")));
+        changePswd.setSize(20,20);
+        //add(panSouth, "South");
+        panSouth.setBackground(Color.YELLOW);
         layout.putConstraint(SpringLayout.SOUTH, panSouth, 1, SpringLayout.SOUTH, backgroundS);
         SpringLayout.Constraints labelCons4 = layout.getConstraints(panSouth);
         labelCons4.setHeight(Spring.constant(120));
-        labelCons4.setWidth(Spring.constant(130));
+        labelCons4.setWidth(Spring.constant(450));
         labelCons4.setX(Spring.constant(350));
         labelCons4.setY(Spring.constant(400));
         backgroundS.add(panSouth);
 
-        panSouth1 = new JPanel();
-        panSouth1.add(listAttendance = new JButton());
-        listAttendance.setIcon(new ImageIcon(getClass().getResource("attandance.jpg")));
-        listAttendance.setSize(50,50);
-        layout.putConstraint(SpringLayout.SOUTH, panSouth1, 1, SpringLayout.SOUTH, backgroundS);
-        SpringLayout.Constraints labelCons5 = layout.getConstraints(panSouth1);
-        labelCons5.setHeight(Spring.constant(120));
-        labelCons5.setWidth(Spring.constant(130));
-        labelCons5.setX(Spring.constant(500));
-        labelCons5.setY(Spring.constant(400));
-        backgroundS.add(panSouth1);
-
-        panSouth2 = new JPanel();
-        panSouth2.add(changePswd = new JButton());
-        changePswd.setIcon(new ImageIcon(getClass().getResource("password.jpg")));
-        changePswd.setSize(50,50);
-        layout.putConstraint(SpringLayout.SOUTH, panSouth2, 1, SpringLayout.SOUTH, backgroundS);
-        SpringLayout.Constraints labelCons6 = layout.getConstraints(panSouth2);
-        labelCons6.setHeight(Spring.constant(120));
-        labelCons6.setWidth(Spring.constant(130));
-        labelCons6.setX(Spring.constant(650));
-        labelCons6.setY(Spring.constant(400));
-        backgroundS.add(panSouth2);
-        */
 
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        //setResizable(false);
+        setResizable(false);
         setTitle("CALENDAR");
         setSize(1000,600);
         setVisible(true);
-        //setLocationRelativeTo(null);
+        setLocationRelativeTo(null);
 
         btnBefore.addActionListener(this);
         btnAfter.addActionListener(this);
