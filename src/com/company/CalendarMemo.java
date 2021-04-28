@@ -181,7 +181,7 @@ public class CalendarMemo extends JFrame implements ActionListener {
         changePswd.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-
+                RenewLogin renewLogin = new RenewLogin(id, pswd);
             }
         });
     }
@@ -236,6 +236,15 @@ public class CalendarMemo extends JFrame implements ActionListener {
 
         btnBefore.addActionListener(this);
         btnAfter.addActionListener(this);
+        btnAdd.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                information = textWrite.getText();
+                if (pickDate!= null && information!= null) {
+                    checkpanel(inputId, pickDate, information);
+                }
+            }
+        });
 
         btnAttendManage.addActionListener(new ActionListener() {
             @Override
@@ -319,20 +328,7 @@ public class CalendarMemo extends JFrame implements ActionListener {
             day = Integer.parseInt(e.getActionCommand());
             pickDate = day+"/"+month+"/"+year;
             System.out.println(pickDate);
-            if (pickDate!= null) {
-                btnAdd.addActionListener(new ActionListener() {
-                    @Override
-                    public void actionPerformed(ActionEvent e) {
-                        information = textWrite.getText();
-                        if (information!= null) {
-                            checkpanel(inputId, pickDate, information);
-                        }else {
 
-                        }
-                    }
-
-                });
-            }
             calSet();
         }
     }
