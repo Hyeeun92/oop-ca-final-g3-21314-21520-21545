@@ -59,6 +59,21 @@ public class CalendarMemo extends JFrame implements ActionListener {
     }
 
     public void CalendarForStudent(String id, String pswd) {
+
+
+        JLabel backgroundS = new JLabel(new ImageIcon(getClass().getResource("greenChalkboard.jpg")));
+        backgroundS.setSize(960,533);
+        add(backgroundS);
+
+        SpringLayout layout = new SpringLayout();
+        backgroundS.setLayout(layout);
+
+        inputId = id;
+        inputPswd = pswd;
+        today = Calendar.getInstance();
+        cal = new GregorianCalendar();
+
+
         today = Calendar.getInstance();
         cal = new GregorianCalendar();
 
@@ -70,6 +85,7 @@ public class CalendarMemo extends JFrame implements ActionListener {
         panNorth.add(textMonth = new JTextField(month + ""));
         panNorth.add(textYear = new JTextField(year + ""));
 
+
         textYear.setEnabled(false);
         textMonth.setEditable(false);
 
@@ -78,31 +94,71 @@ public class CalendarMemo extends JFrame implements ActionListener {
         textYear.setFont(f);
         textMonth.setFont(f);
 
-        add(panNorth, "North");
+        //add(panNorth, "North");
+
+        panNorth.setBackground(Color.GREEN);
+        layout.putConstraint(SpringLayout.NORTH, panNorth, 5, SpringLayout.NORTH, backgroundS);
+        SpringLayout.Constraints labelCons1 = layout.getConstraints(panNorth);
+        labelCons1.setX(Spring.constant(280));
+        labelCons1.setY(Spring.constant(100));
+        backgroundS.add(panNorth);
 
         panWest = new JPanel(new GridLayout(7,7));
         f = new Font("Serif", Font.BOLD, 12);
 
         gridInit();
         calSet();
-        add(panWest, "West");
+
+        //add(panWest, "West");
+        panWest.setBackground(Color.MAGENTA);
+        layout.putConstraint(SpringLayout.WEST, panWest, 5, SpringLayout.WEST, backgroundS);
+        SpringLayout.Constraints labelCons2 = layout.getConstraints(panWest);
+        labelCons2.setX(Spring.constant(280));
+        labelCons2.setY(Spring.constant(150));
+        backgroundS.add(panWest);
 
         panEast = new JPanel();
         panEast.add(textWrite = new JTextField(null));
         textWrite.setEditable(false);
-        textWrite.setPreferredSize(new Dimension(200, 250));
-        add(panEast, "East");
+        textWrite.setPreferredSize(new Dimension(180, 180));
+
+        //add(panEast, "East");
+        panEast.setBackground(Color.BLUE);
+        layout.putConstraint(SpringLayout.EAST, panEast, 5, SpringLayout.EAST, backgroundS);
+        SpringLayout.Constraints labelCons3 = layout.getConstraints(panEast);
+        labelCons3.setHeight(Spring.constant(180));
+        labelCons3.setWidth(Spring.constant(180));
+        labelCons3.setX(Spring.constant(730));
+        labelCons3.setY(Spring.constant(120));
+        backgroundS.add(panEast);
 
         panSouth = new JPanel();
-        panSouth.add(listResult = new JButton("List of Results"));
-        panSouth.add(listAttendance = new JButton("List of Attendance"));
-        panSouth.add(changePswd = new JButton("Change Password"));
-        add(panSouth, "South");
+        panSouth.add(listResult = new JButton());
+        listResult.setIcon(new ImageIcon(getClass().getResource("grades.jpg")));
+        listResult.setSize(50,50);
+        panSouth.add(listAttendance = new JButton());
+        listAttendance.setIcon(new ImageIcon(getClass().getResource("attandance.jpg")));
+        listAttendance.setSize(50,50);
+        panSouth.add(changePswd = new JButton());
+        changePswd.setIcon(new ImageIcon(getClass().getResource("password.jpg")));
+        changePswd.setSize(50,50);
+
+        //add(panSouth, "South");  /*  WORKING ON **** Nathalie
+        panSouth.setBackground(Color.YELLOW);
+        layout.putConstraint(SpringLayout.SOUTH, panSouth, 1, SpringLayout.SOUTH, backgroundS);
+        SpringLayout.Constraints labelCons4 = layout.getConstraints(panSouth);
+        labelCons4.setHeight(Spring.constant(100));
+        labelCons4.setWidth(Spring.constant(400));
+        labelCons4.setX(Spring.constant(270));
+        labelCons4.setY(Spring.constant(400));
+        //backgroundS.add(panSouth);
 
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setResizable(false);
         setTitle("CALENDAR");
-        setBounds(100, 100, 640, 480);
+        setSize(1000,600);
         setVisible(true);
+        setLocationRelativeTo(null);
 
         listResult.addActionListener(new ActionListener() {
             @Override

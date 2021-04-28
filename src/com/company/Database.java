@@ -43,6 +43,7 @@ public class Database extends JFrame{
                 System.out.println(pstmt);
                 if (rs.getString(1).equals(pswd)) {
                     Administrator admin = new Administrator();
+
                 } else {
                     System.out.println("!!");
                     getMessageError();
@@ -51,6 +52,7 @@ public class Database extends JFrame{
             else {
                 System.out.println("!!");
                 getMessageError();
+
 
             }
         }catch (SQLException e) {
@@ -70,6 +72,7 @@ public class Database extends JFrame{
             if (rs.next()) {
                 System.out.println(pstmt);
                 if (rs.getString(1).equals(pswd)) {
+                    dispose();
                     CalendarMemo calendarMemo = new CalendarMemo();
                     calendarMemo.CalendarForLecture(id, pswd);
                 } else {
@@ -80,6 +83,7 @@ public class Database extends JFrame{
             else {
                 System.out.println("!!");
                 getMessageError();
+
             }
         }catch (SQLException e) {
             System.out.println(e.toString());
@@ -97,6 +101,7 @@ public class Database extends JFrame{
             rs = pstmt.executeQuery();
             if (rs.next()) {
                 if (rs.getString(1).equals(pswd)) {
+                    dispose();
                     CalendarMemo calendarMemo = new CalendarMemo();
                     calendarMemo.CalendarForStudent(id, pswd);
                 } else {
@@ -107,7 +112,7 @@ public class Database extends JFrame{
             else {
                 System.out.println("!!");
                 getMessageError();
-                LoginPage loginPage = new LoginPage();
+
             }
         }catch (SQLException e) {
             System.out.println(e.toString());
@@ -266,27 +271,8 @@ public class Database extends JFrame{
 
     }
 
-    public void listOfListCourses(){
-        SQL = "SELECT course_name FROM course";
 
-        String course_name = null;
 
-        try {
-            pstmt = conn.prepareStatement(SQL);
-            pstmt.setString(1, course_name);
-            rs = pstmt.executeQuery();
-
-            while(rs.next()) {
-                course_name=rs.getString(1);
-                Listing(course_name);
-            }
-
-        } catch (SQLException sqlException) {
-            System.out.println(sqlException);
-        } catch (Exception e) {
-            System.out.println(e);
-        }
-    }
 
 
 

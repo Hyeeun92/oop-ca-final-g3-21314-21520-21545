@@ -7,20 +7,24 @@ package com.company;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
+import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.awt.event.*;
+import java.sql.SQLException;
 
 
 public class Administrator  extends JFrame implements ActionListener { //action listener interface
 
     JFrame frame;
-    JLabel branch, form,name, lastname, email, address, mobile, gender, headerCourse, courseID, courseName, coursePrice, courseComments, manageStudentFee, createTimetable;
-    JTextField nameF, lastnameF, emailF, addressF, mobileF, courseIDF, courseNameF, coursePriceF, courseCommentsF;
-    JPanel panelUp, panelRight, panelLeft,panelLef2, panelLeftDown,panelRightDown,controlPanel;
-    JComboBox comboBoxBranch;
+    JLabel branch, form, name, lastname, email, address, gender, headerCourse, courseID, courseName, coursePrice, courseComments, manageStudentFee, createTimetable;
+    JTextField nameF, lastnameF, emailF, addressF, courseIDF, courseNameF, coursePriceF, courseCommentsF;
+    JPanel panelUp, panelRight, panelLeft, panelLef2, panelLeftDown, panelRightDown, controlPanel, panelLogOut;
+    JComboBox<String> comboBoxBranch;
     ButtonGroup radioGroup, radioGroupGender;
-    JRadioButton rdbCreateStudent, rdbCreateLecturer,rdbCreateAdministrative,rdbCreateCourse, rdbFemale, rdbMale;
-    JButton btnAdd, btnUpdate, btnClear,btnLogOut, btnManaFee, btnTimetables;
+    JRadioButton rdbCreateStudent, rdbCreateLecturer, rdbCreateAdministrative, rdbCreateCourse, rdbFemale, rdbMale;
+    JButton btnAdd, btnUpdate, btnClear, btnLogOut, btnManaFee, btnTimetables;
+
+    JScrollPane scrollPane;
 
     Database db = new Database();
 
@@ -32,7 +36,7 @@ public class Administrator  extends JFrame implements ActionListener { //action 
         //create JFrame
         frame = new JFrame();
 
-        JLabel background2 =new JLabel(new ImageIcon(getClass().getResource("adm_background.jpg")));
+        JLabel background2 = new JLabel(new ImageIcon(getClass().getResource("adm_background.jpg")));
         frame.add(background2);
 
         form = new JLabel(" Type of Form to create:   ");
@@ -65,11 +69,11 @@ public class Administrator  extends JFrame implements ActionListener { //action 
         branch.setFont(new Font("Serif", Font.ITALIC + Font.BOLD, 15));
         branch.setBounds(660, 0, 70, 20);
         branch.setOpaque(true);
-        comboBoxBranch = new JComboBox();
-        comboBoxBranch.setModel(new DefaultComboBoxModel(new String[] {"VGC-1", "VGC-2", "VGC-3"}));
+        comboBoxBranch = new JComboBox<String>();
         comboBoxBranch.setFont(new Font("Serif", Font.ITALIC + Font.BOLD, 10));
-        // comboBoxBranch.setBounds(7, 0, 75, 20);
+        comboBoxBranch.setBounds(7, 0, 75, 20);
         comboBoxBranch.setForeground(Color.BLUE);
+        addBranchInComboBox();
 
         radioGroup = new ButtonGroup();
         radioGroup.add(rdbCreateStudent);
@@ -78,24 +82,17 @@ public class Administrator  extends JFrame implements ActionListener { //action 
         radioGroup.add(rdbCreateCourse);
 
         panelUp = new JPanel();
-        panelUp.setBounds(0,10,700,30);
+        panelUp.setBounds(0, 10, 900, 30);
         panelUp.setBackground(new Color(120, 97, 201));
-        panelUp.add(form,BorderLayout.CENTER);
-        panelUp.add(rdbCreateAdministrative,BorderLayout.CENTER);
-        panelUp.add(rdbCreateLecturer,BorderLayout.CENTER);
-        panelUp.add(rdbCreateStudent,BorderLayout.CENTER);
-        panelUp.add(rdbCreateCourse,BorderLayout.CENTER);
-        panelUp.add(branch,BorderLayout.CENTER);
-        panelUp.add(comboBoxBranch,BorderLayout.CENTER);
+        panelUp.add(form, BorderLayout.CENTER);
+        panelUp.add(rdbCreateAdministrative, BorderLayout.CENTER);
+        panelUp.add(rdbCreateLecturer, BorderLayout.CENTER);
+        panelUp.add(rdbCreateStudent, BorderLayout.CENTER);
+        panelUp.add(rdbCreateCourse, BorderLayout.CENTER);
+        panelUp.add(branch, BorderLayout.CENTER);
+        panelUp.add(comboBoxBranch, BorderLayout.CENTER);
 
         background2.add(panelUp);
-
-        name = new JLabel("Name");
-        name.setBounds(10, 10, 50, 20);
-        name.setFont(new Font("Serif", Font.BOLD, 15));
-        name.setForeground(Color.WHITE);
-        nameF = new JTextField();
-        nameF.setBounds(80, 10, 180, 20);
 
         name = new JLabel("Name");
         name.setBounds(10, 10, 50, 20);
@@ -128,60 +125,50 @@ public class Administrator  extends JFrame implements ActionListener { //action 
         address.setForeground(Color.WHITE);
         addressF = new JTextField("", 10);
         addressF.setBounds(80, 130, 180, 20);
-        mobile = new JLabel("Mobile");
-        mobile.setBounds(10, 170, 60, 20);
-        mobile.setFont(new Font("Serif", Font.BOLD, 15));
-        mobile.setForeground(Color.WHITE);
-        mobileF= new JTextField("", 10);
-        mobileF.setBounds(80, 170, 180, 20);
         email = new JLabel("Email");
-        email.setBounds(10, 210, 50, 20);
+        email.setBounds(10, 170, 50, 20);
         email.setFont(new Font("Serif", Font.BOLD, 15));
         email.setForeground(Color.WHITE);
         emailF = new JTextField("", 10);
-        emailF.setBounds(80, 210, 180, 20);
+        emailF.setBounds(80, 170, 180, 20);
 
         panelLeft = new JPanel();
         panelLeft.setBorder(new EmptyBorder(5, 5, 5, 5));
         setContentPane(panelLeft);
         panelLeft.setLayout(null);
-        panelLeft.setBounds(50,50,270,240);
+        panelLeft.setBounds(20, 60, 275, 200);
         panelLeft.setBackground(Color.BLACK);
-        panelLeft.add(name,BorderLayout.EAST);
-        panelLeft.add(nameF,BorderLayout.EAST);
+        panelLeft.add(name, BorderLayout.EAST);
+        panelLeft.add(nameF, BorderLayout.EAST);
         panelLeft.add(lastname, BorderLayout.EAST);
-        panelLeft.add(lastnameF,BorderLayout.EAST);
+        panelLeft.add(lastnameF, BorderLayout.EAST);
         panelLeft.add(email, BorderLayout.EAST);
-        panelLeft.add(emailF,BorderLayout.EAST);
+        panelLeft.add(emailF, BorderLayout.EAST);
         panelLeft.add(address, BorderLayout.EAST);
-        panelLeft.add(addressF,BorderLayout.EAST);
-        panelLeft.add(mobile, BorderLayout.EAST);
-        panelLeft.add(mobileF,BorderLayout.EAST);
-        panelLeft.add(gender,BorderLayout.EAST);
-        panelLeft.add(rdbFemale,BorderLayout.EAST);
-        panelLeft.add(rdbMale,BorderLayout.EAST);
+        panelLeft.add(addressF, BorderLayout.EAST);
+        panelLeft.add(gender, BorderLayout.EAST);
+        panelLeft.add(rdbFemale, BorderLayout.EAST);
+        panelLeft.add(rdbMale, BorderLayout.EAST);
 
         background2.add(panelLeft);
-
-
-        headerCourse = new JLabel("Courses Available");
-        headerCourse.setBounds(10, 0, 175, 20);
-        headerCourse.setFont(new Font("Serif", Font.BOLD, 15));
-        headerCourse.setForeground(Color.WHITE);
-        controlPanel = new JPanel();
-        controlPanel.setLayout(new FlowLayout());
-        controlPanel.setBounds(30, 25, 200, 60);
 
         panelLef2 = new JPanel();
         panelLef2.setBorder(new EmptyBorder(5, 5, 5, 5));
         setContentPane(panelLef2);
         panelLef2.setLayout(null);
-        panelLef2.setBounds(50,290,270,100);
-        panelLef2.setBackground(Color.BLACK);
-        panelLef2.add(headerCourse,BorderLayout.EAST);
-        panelLef2.add(controlPanel);
+        panelLef2.setBounds(20, 270, 285, 270);
+        panelLef2.setBackground(new Color(65, 46, 108));
+        //listCourse();
+        scrollPane = new JScrollPane();
+        scrollPane.setBounds(10, 64, 366, 107);
 
+        panelLef2.add(scrollPane);
+
+        // panelLef2.add();
+        // panelLef2.add(btnUpdate, BorderLayout.EAST);
+        // panelLef2.add(btnClear, BorderLayout.EAST);
         background2.add(panelLef2);
+
 
         courseID = new JLabel("Course ID:");
         courseID.setBounds(10, 10, 100, 20);
@@ -204,7 +191,7 @@ public class Administrator  extends JFrame implements ActionListener { //action 
         courseComments = new JLabel("Comments:");
         courseComments.setBounds(10, 130, 100, 20);
         courseComments.setFont(new Font("Serif", Font.BOLD, 15));
-        courseComments .setForeground(Color.WHITE);
+        courseComments.setForeground(Color.WHITE);
         courseCommentsF = new JTextField();
         courseCommentsF.setBounds(110, 130, 150, 50);
 
@@ -212,19 +199,36 @@ public class Administrator  extends JFrame implements ActionListener { //action 
         panelRight.setBorder(new EmptyBorder(5, 5, 5, 5));
         setContentPane(panelRight);
         panelRight.setLayout(null);
-        panelRight.setBounds(370,60,270,200);
+        panelRight.setBounds(580, 60, 270, 200);
         panelRight.setBackground(Color.BLACK);
-        panelRight.add(courseID,BorderLayout.WEST);
-        panelRight.add(courseIDF,BorderLayout.WEST);
-        panelRight.add(courseName,BorderLayout.WEST);
-        panelRight.add(courseNameF,BorderLayout.WEST);
-        panelRight.add(coursePrice,BorderLayout.WEST);
-        panelRight.add(coursePriceF,BorderLayout.WEST);
-        panelRight.add(courseComments,BorderLayout.WEST);
-        panelRight.add(courseCommentsF,BorderLayout.WEST);
+        panelRight.add(courseID, BorderLayout.WEST);
+        panelRight.add(courseIDF, BorderLayout.WEST);
+        panelRight.add(courseName, BorderLayout.WEST);
+        panelRight.add(courseNameF, BorderLayout.WEST);
+        panelRight.add(coursePrice, BorderLayout.WEST);
+        panelRight.add(coursePriceF, BorderLayout.WEST);
+        panelRight.add(courseComments, BorderLayout.WEST);
+        panelRight.add(courseCommentsF, BorderLayout.WEST);
 
         background2.add(panelRight);
 
+        headerCourse = new JLabel("Course Availables");
+        headerCourse.setBounds(10, 0, 175, 20);
+        headerCourse.setFont(new Font("Serif", Font.BOLD, 15));
+        headerCourse.setForeground(Color.WHITE);
+        controlPanel = new JPanel();
+        controlPanel.setLayout(new FlowLayout());
+        controlPanel.setBounds(30, 25, 200, 60);
+
+        panelRightDown = new JPanel();
+        panelRightDown.setBorder(new EmptyBorder(5, 5, 5, 5));
+        setContentPane(panelRightDown);
+        panelRightDown.setLayout(null);
+        panelRightDown.setBounds(580, 270, 285, 270);
+        panelLef2.setBackground(new Color(65, 46, 108));
+        panelRightDown.add(headerCourse, BorderLayout.EAST);
+        panelRightDown.add(controlPanel);
+        background2.add(panelRightDown);
 
         manageStudentFee = new JLabel(" Management Fees ");
         manageStudentFee.setBounds(5, 5, 150, 20);
@@ -234,97 +238,148 @@ public class Administrator  extends JFrame implements ActionListener { //action 
         btnManaFee.setIcon(new ImageIcon(getClass().getResource("manaFee.jpg"))); // NOI18N
         btnManaFee.setBounds(20, 30, 100, 103);
         createTimetable = new JLabel(" Created Timetables ");
-        createTimetable.setBounds(150, 5, 150, 20);
+        createTimetable.setBounds(5, 150, 150, 20);
         createTimetable.setFont(new Font("Serif", Font.BOLD, 15));
         createTimetable.setForeground(Color.WHITE);
         btnTimetables = new JButton();
         btnTimetables.setIcon(new ImageIcon(getClass().getResource("calendarIcon.jpg"))); // NOI18N
-        btnTimetables.setBounds(170, 30, 100, 103);
+        btnTimetables.setBounds(20, 180, 100, 103);
         panelLeftDown = new JPanel();
         panelLeftDown.setBorder(new EmptyBorder(5, 5, 5, 5));
         setContentPane(panelLeftDown);
         panelLeftDown.setLayout(null);
-        panelLeftDown.setBounds(40,395,300,150);
+        panelLeftDown.setBounds(380, 60, 150, 300);
         panelLeftDown.setBackground(new Color(65, 46, 108));
-        panelLeftDown.add(btnManaFee,BorderLayout.WEST);
-        panelLeftDown.add(manageStudentFee,BorderLayout.WEST);
-        panelLeftDown.add(btnTimetables,BorderLayout.WEST);
-        panelLeftDown.add(createTimetable,BorderLayout.WEST);
+        panelLeftDown.add(btnManaFee, BorderLayout.WEST);
+        panelLeftDown.add(manageStudentFee, BorderLayout.WEST);
+        panelLeftDown.add(btnTimetables, BorderLayout.WEST);
+        panelLeftDown.add(createTimetable, BorderLayout.WEST);
 
         background2.add(panelLeftDown);
-
 
         btnAdd = new JButton(" Add ");
         btnAdd.setFont(new Font("Serif", Font.BOLD, 10));
         btnAdd.setIcon(new ImageIcon(getClass().getResource("saveIcon.png")));
-        btnAdd.setBounds(0, 0, 100, 20);
+        btnAdd.setBounds(0, 0, 100, 40);
         btnUpdate = new JButton("Update");
         btnUpdate.setFont(new Font("Serif", Font.BOLD, 10));
         btnUpdate.setIcon(new ImageIcon(getClass().getResource("updateIcon.png")));
-        btnUpdate.setBounds(100, 0, 100, 20);
-        btnClear= new JButton("Delete");
+        btnUpdate.setBounds(100, 0, 100, 40);
+        btnClear = new JButton("Delete");
         btnClear.setFont(new Font("Serif", Font.BOLD, 10));
         btnClear.setIcon(new ImageIcon(getClass().getResource("eraseIcon.png")));
-        btnClear.setBounds(200, 0, 100, 20);
-        panelRightDown = new JPanel();
-        panelRightDown.setBorder(new EmptyBorder(5, 5, 5, 5));
-        setContentPane(panelRightDown);
-        panelRightDown.setLayout(null);
-        panelRightDown.setBounds(370,270,300,270);
-        panelRightDown.setBackground(new Color(65, 46, 108));
-        panelRightDown.add(btnAdd,BorderLayout.EAST);
-        panelRightDown.add(btnUpdate,BorderLayout.EAST);
-        panelRightDown.add(btnClear,BorderLayout.EAST);
+        btnClear.setBounds(0, 40, 100, 40);
+        btnLogOut = new JButton("Log out");
+        btnLogOut.setBounds(100, 40, 100, 40);
+        panelLogOut = new JPanel();
+        panelLogOut.setBorder(new EmptyBorder(5, 5, 5, 5));
+        setContentPane(panelLogOut);
+        panelLogOut.setLayout(null);
+        panelLogOut.setBounds(350, 400, 200, 80);
+        panelLogOut.add(btnAdd);
+        panelLogOut.add(btnUpdate);
+        panelLogOut.add(btnClear);
+        panelLogOut.add(btnLogOut);
 
-        background2.add(panelRightDown);
+        background2.add(panelLogOut);
 
 
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setLayout(new FlowLayout());
-        frame.setSize(700, 600);
+        frame.setSize(900, 600);
         frame.setLocationRelativeTo(null);
         frame.setResizable(false);
         frame.setTitle("ADMINISTRATIVE FUNCTIONS");
         frame.setVisible(true);
 
-        showListCourses();
+
+        btnLogOut.addActionListener(this);
+
+        btnManaFee.addActionListener(this);
+        btnTimetables.addActionListener(this);
+
+
+        btnAdd.addActionListener(this);
+        btnClear.addActionListener(this);
+
 
         btnUpdate.addActionListener(this);
-        btnAdd.addActionListener(this);
-
-
 
     }
 
     @Override
     public void actionPerformed(ActionEvent e) {
+        if (e.getSource() == btnLogOut) {
+            this.frame.setVisible(false);
+            LoginPage loginPage = new LoginPage();
+        } else if (e.getSource() == btnManaFee) {
+            this.frame.setVisible(false);
+            ManagementFees managementFees = new ManagementFees();
+        } else if (e.getSource() == btnTimetables) {
+            this.frame.setVisible(false);
+
+        }
+    }
+
+    public void addBranchInComboBox() {
+        try {
+
+            String query = "select * from branch";
+            db.pstmt = db.conn.prepareStatement(query);
+            db.rs = db.pstmt.executeQuery();
+
+            while (db.rs.next()) {
+
+                comboBoxBranch.addItem(db.rs.getString("branch_Bno"));
+            }
+        } catch (SQLException exe) {
+            exe.printStackTrace();
+        }
 
     }
 
-    private void showListCourses(){
-        final DefaultListModel courseName = new DefaultListModel();
+    void clearAllControls() {
 
-        //courseName.getList = db.listOfListCourses());
-        courseName.addElement("Computer science");
-        courseName.addElement("Business");
-        courseName.addElement("Mathematics II");
-        courseName.addElement("Systems Operations");
-        courseName.addElement("Mobile II");
-
-
-        final JList courseList = new JList(courseName);
-        courseList.setSelectionMode(ListSelectionModel.SINGLE_INTERVAL_SELECTION);
-        courseList.setSelectedIndex(0);
-        courseList.setVisibleRowCount(2);
-        courseList.setFixedCellHeight(20);
-        courseList.setFixedCellWidth(175);
-
-        JScrollPane courseListScrollPane = new JScrollPane(courseList);
-
-        controlPanel.add(courseListScrollPane);
+        nameF.setText("");
+        lastnameF.setText("");
+        emailF.setText("");
+        addressF.setText("");
+        courseIDF.setText("");
+        courseNameF.setText("");
+        coursePriceF.setText("");
+        courseCommentsF.setText("");
+        comboBoxBranch.setSelectedIndex(-1);
 
     }
 
+    /*  WORKING ON **** Nathalie
+    public final void listCourse() {
+
+        String[] columnNames = {"Course ID", "Course Name", "Course Price", "Course Comments", "Branch"};
+        DefaultTableModel tableModel = new DefaultTableModel(columnNames, 0);
+        tableModel.setColumnIdentifiers(columnNames);
+        tableModel.setRowCount(0);
+
+        JTable table = new JTable(tableModel);
+        this.add(new JScrollPane(table));
+
+        try {
+
+            String query = "select * from course";
+            db.pstmt = db.conn.prepareStatement(query);
+            db.rs = db.pstmt.executeQuery();
+
+            while (db.rs.next()) {
+
+                Object o[] = {db.rs.getInt("course_id"),db.rs.getInt("course_name"),db.rs.getInt("course_price"),db.rs.getInt("course_comments"),db.rs.getInt("branch_Bno")};
+                tableModel.addRow(o);
+            }
+        } catch (SQLException exe) {
+            exe.printStackTrace();
+        }
+    }
+
+     */
 
 
 

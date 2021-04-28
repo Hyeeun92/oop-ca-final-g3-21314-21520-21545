@@ -6,11 +6,13 @@ package com.company;
 21314 - Nathalie Flores
 */
 
+import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-
+import java.io.IOException;
+import java.net.http.WebSocket;
 
 public class LoginPage extends JFrame{
 
@@ -28,7 +30,9 @@ public class LoginPage extends JFrame{
     public LoginPage(){
 
         frameLogin = new JFrame();
-        JLabel background=new JLabel(new ImageIcon(getClass().getResource("university.jpg")));
+
+
+        JLabel background=new JLabel(new ImageIcon(getClass().getResource("college.jpg")));
         frameLogin.add(background);
 
         SpringLayout layout = new SpringLayout();
@@ -135,7 +139,7 @@ public class LoginPage extends JFrame{
         radioGroup.add(studentRadio);
 
 
-        btnLogin = new JButton("Login");
+        btnLogin = new JButton("Log in");
         btnLogin.setFont(new Font("Serif", Font.BOLD, 15));
         btnLogin.setFocusable(false);
         panelB1 = new JPanel();
@@ -183,9 +187,12 @@ public class LoginPage extends JFrame{
                             db.getStudentLoginInfo(id, pswd);
 
                         }
+
                     }
                 }
         );
     }
+
+
 
 }
