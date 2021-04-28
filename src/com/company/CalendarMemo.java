@@ -74,7 +74,6 @@ public class CalendarMemo extends JFrame implements ActionListener {
         inputId = id;
         inputPswd = pswd;
 
-
         today = Calendar.getInstance();
         cal = new GregorianCalendar();
 
@@ -109,8 +108,8 @@ public class CalendarMemo extends JFrame implements ActionListener {
 
         gridInit();
         calSet();
-
         add(panWest, "West");
+
         /* panWest.setBackground(Color.MAGENTA);
         layout.putConstraint(SpringLayout.WEST, panWest, 5, SpringLayout.WEST, backgroundS);
         labelCons2 = layout.getConstraints(panWest);
@@ -184,6 +183,9 @@ public class CalendarMemo extends JFrame implements ActionListener {
         setSize(1000,600);
         setVisible(true);
         //setLocationRelativeTo(null);
+
+        btnBefore.addActionListener(this);
+        btnAfter.addActionListener(this);
 
         listResult.addActionListener(new ActionListener() {
             @Override
