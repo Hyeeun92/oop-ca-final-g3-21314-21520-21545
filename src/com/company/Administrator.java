@@ -311,7 +311,7 @@ public class Administrator  extends JFrame implements ActionListener { //action 
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == btnLogOut) {
             this.frame.setVisible(false);
-            LoginPage loginPage = new LoginPage();
+            //LoginPage loginPage = new LoginPage();
         } else if (e.getSource() == btnManaFee) {
             this.frame.setVisible(false);
             ManagementFees managementFees = new ManagementFees();
