@@ -14,7 +14,8 @@ import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 public class Database extends JFrame{
-    String DB_URL = "jdbc:mysql://localhost:3306/oop_final?serverTimezone=UTC";
+    String DB_URL = "jdbc:mysql://localhost:3306/oop_final?";
+    String unicode = "useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC";
     String DB_USER = "root";
     String DB_PASSWORD =  "YES01@"; //"ah447Sladl!";  "Memory1979@";
     Connection conn;
@@ -25,11 +26,11 @@ public class Database extends JFrame{
     public Database() {
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
-            conn = DriverManager.getConnection(DB_URL, DB_USER, DB_PASSWORD);
-        } catch (SQLException e) {
-            System.out.println(e.toString());
-        } catch (Exception e) {
-            System.out.println(e.toString());
+            conn = DriverManager.getConnection(DB_URL+unicode, DB_USER,DB_PASSWORD);
+        } catch (ClassNotFoundException exe) {
+            exe.printStackTrace();
+        } catch (SQLException exe) {
+            exe.printStackTrace();
         }
     }
 
@@ -218,17 +219,77 @@ public class Database extends JFrame{
         dialog.setVisible(true);
     }
 
-    public void getCourseCreateInfo(String courseId, String titleCourseS, String otherInfoS) {
+    public void getCourseCreateInfo(String course_id, String course_name, String course_price, String course_comments, String branch_Bno) {
+
+        SQL = "INSERT INTO course (course_id, course_name, course_price, course_comments, branch_Bno)" + "values (?,?,?,?,?)";
+
+        try{
+            //create my mysql insert preparedStatement
+            pstmt = conn.prepareStatement(SQL);
+            pstmt.clearParameters();
+            pstmt.setString(1, course_id);
+            pstmt.setString(2, course_name);
+            pstmt.setString(3, course_price);
+            pstmt.setString(4, course_comments);
+            pstmt.setString(5, branch_Bno);
+
+            // execute the pstmt
+            pstmt.execute();
+            conn.close();
+
+        }catch (SQLException e) {
+            System.out.println(e.toString());
+        } catch (Exception e) {
+            System.out.println(e.toString());
+        }
+
+    }
+
+    public void getAdmInfo(String administrator_id, String administrator_password, String administrator_name, String administrator_Lname, String administrator_email, String administrator_address, String administrator_gender, String branch_Bno) {
+
+        SQL = "INSERT INTO administrator (administrator_id, administrator_password, administrator_name, administrator_Lname, administrator_email, administrator_address, administrator_gender, branch_Bno)" + "values (?,?,?,?,?,?,?,?)";
+
+        try{
+            //create my mysql insert preparedStatement
+            pstmt = conn.prepareStatement(SQL);
+            pstmt.clearParameters();
+            pstmt.setString(1, administrator_id);
+            pstmt.setString(2, administrator_password);
+            pstmt.setString(3, administrator_name);
+            pstmt.setString(4, administrator_Lname);
+            pstmt.setString(5, administrator_email);
+            pstmt.setString(6, administrator_address);
+            pstmt.setString(7, administrator_gender);
+            pstmt.setString(8, branch_Bno);
+
+            // execute the pstmt
+            pstmt.execute();
+            conn.close();
+
+        }catch (SQLException e) {
+            System.out.println(e.toString());
+        } catch (Exception e) {
+            System.out.println(e.toString());
+        }
+
+    }
+
+    public void getLetInfo(String lecture_id, String lecture_password, String lecture_name, String lecture_Lname, String lecture_email, String lecture_address, String lecture_gender, String branch_Bno) {
         //my mysql insert statement
-        SQL = "INSERT INTO course (course_id, course_name, course_price)" + "values (?,?,?)";
+        SQL = "INSERT INTO lecture (lecture_id, lecture_password, lecture_name, lecture_Lname, lecture_email, lecture_address, lecture_gender, branch_Bno)" + "values (?,?,?,?,?,?,?,?)";
 
         try{
             //create my mysql insert preparedStatement
             pstmt = conn.prepareStatement(SQL);
             pstmt.clearParameters();
-            pstmt.setString(1, courseId);
-            pstmt.setString(2, titleCourseS);
-            pstmt.setString(3, otherInfoS);
+            pstmt.setString(1, lecture_id);
+            pstmt.setString(2, lecture_password);
+            pstmt.setString(3, lecture_name);
+            pstmt.setString(4, lecture_Lname);
+            pstmt.setString(5, lecture_email);
+            pstmt.setString(6, lecture_address);
+            pstmt.setString(7, lecture_gender);
+            pstmt.setString(8, branch_Bno);
 
             // execute the pstmt
             pstmt.execute();
@@ -241,39 +302,6 @@ public class Database extends JFrame{
         }
 
     }
-
-
-    public void getStudentCreateInfo(String student_id, String student_name, String student_email, String student_address, String student_gender, String student_password) {
-
-        SQL = "INSERT INTO student (student_id, student_name, student_email, student_address, student_gender, student_password)" + "values (?,?,?,?,?,?)";
-
-        try{
-            //create my mysql insert preparedStatement
-            pstmt = conn.prepareStatement(SQL);
-            pstmt.clearParameters();
-            pstmt.setString(1, student_id);
-            pstmt.setString(2, student_name);
-            pstmt.setString(3, student_email);
-            pstmt.setString(4, student_address);
-            pstmt.setString(5, student_gender);
-            pstmt.setString(6, student_password);
-
-            // execute the pstmt
-            pstmt.execute();
-            conn.close();
-
-        }catch (SQLException e) {
-            System.out.println(e.toString());
-        } catch (Exception e) {
-            System.out.println(e.toString());
-        }
-
-
-    }
-
-
-
-
 
 
 

@@ -7,7 +7,6 @@ package com.company;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
-import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.awt.event.*;
 import java.sql.SQLException;
@@ -28,10 +27,21 @@ public class Administrator  extends JFrame implements ActionListener { //action 
 
     Database db = new Database();
 
-    public Administrator() {
+    String nameS, lastnameS, emailS, addressS, createId , branchS, selectionGender, password ;
+    // String lecture_id, lecture_password, lecture_name, lecture_Lname, lecture_email, lecture_address, lecture_gender;
 
+    // String  student_name, student_Lname, studentr_email, student_address;
+    String course_id, course_name, course_price, course_comments, branch_Bno;
+
+    public Administrator() {
+        createdForms();
         Database db = new Database();
-        //List<AdmFunctions> getList = db.getList();
+        addBranchInComboBox();
+        clearAllControls();
+
+    }
+
+    public void createdForms(){
 
         //create JFrame
         frame = new JFrame();
@@ -39,9 +49,9 @@ public class Administrator  extends JFrame implements ActionListener { //action 
         JLabel background2 = new JLabel(new ImageIcon(getClass().getResource("adm_background.jpg")));
         frame.add(background2);
 
-        form = new JLabel(" Type of Form to create:   ");
+        form = new JLabel("YOU MUST SELECT     "+"     1.Type of Form:   ");
         form.setForeground(Color.WHITE);
-        form.setBackground(new Color(120, 97, 201));
+        form.setBackground(new Color(210, 31, 78));
         form.setFont(new Font("Serif", Font.ITALIC + Font.BOLD, 15));
         form.setBounds(0, 0, 210, 20);
         form.setOpaque(true);
@@ -62,10 +72,16 @@ public class Administrator  extends JFrame implements ActionListener { //action 
         rdbCreateCourse.setFont(new Font("Serif", Font.BOLD, 10));
         rdbCreateCourse.setBounds(485, 0, 75, 20);
         rdbCreateCourse.setForeground(Color.BLUE);
+        radioGroup = new ButtonGroup();
+        radioGroup.add(rdbCreateStudent);
+        radioGroup.add(rdbCreateAdministrative);
+        radioGroup.add(rdbCreateLecturer);
+        radioGroup.add(rdbCreateCourse);
 
-        branch = new JLabel(" Select Branch:  ");
+
+        branch = new JLabel(" 2.Branch:  ");
         branch.setForeground(Color.WHITE);
-        branch.setBackground(new Color(120, 97, 201));
+        branch.setBackground(new Color(210, 31, 78));
         branch.setFont(new Font("Serif", Font.ITALIC + Font.BOLD, 15));
         branch.setBounds(660, 0, 70, 20);
         branch.setOpaque(true);
@@ -73,17 +89,24 @@ public class Administrator  extends JFrame implements ActionListener { //action 
         comboBoxBranch.setFont(new Font("Serif", Font.ITALIC + Font.BOLD, 10));
         comboBoxBranch.setBounds(7, 0, 75, 20);
         comboBoxBranch.setForeground(Color.BLUE);
-        addBranchInComboBox();
-
-        radioGroup = new ButtonGroup();
-        radioGroup.add(rdbCreateStudent);
-        radioGroup.add(rdbCreateAdministrative);
-        radioGroup.add(rdbCreateLecturer);
-        radioGroup.add(rdbCreateCourse);
+        comboBoxBranch.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if (comboBoxBranch.getItemCount() > 0 && comboBoxBranch.getSelectedItem() != null) {
+                    if (comboBoxBranch.getSelectedItem().equals("VGC-1") == true) {
+                        branchS = "VGC-1";
+                    } else if (comboBoxBranch.getSelectedItem().equals("VGC-2") == true) {
+                        branchS = "VGC-2";
+                    } else if (comboBoxBranch.getSelectedItem().equals("VGC-3") == true) {
+                        branchS = "VGC-3";
+                    }
+                }
+            }
+        });
 
         panelUp = new JPanel();
         panelUp.setBounds(0, 10, 900, 30);
-        panelUp.setBackground(new Color(120, 97, 201));
+        panelUp.setBackground(new Color(210, 31, 78));
         panelUp.add(form, BorderLayout.CENTER);
         panelUp.add(rdbCreateAdministrative, BorderLayout.CENTER);
         panelUp.add(rdbCreateLecturer, BorderLayout.CENTER);
@@ -163,10 +186,7 @@ public class Administrator  extends JFrame implements ActionListener { //action 
         scrollPane.setBounds(10, 64, 366, 107);
 
         panelLef2.add(scrollPane);
-
         // panelLef2.add();
-        // panelLef2.add(btnUpdate, BorderLayout.EAST);
-        // panelLef2.add(btnClear, BorderLayout.EAST);
         background2.add(panelLef2);
 
 
@@ -227,7 +247,7 @@ public class Administrator  extends JFrame implements ActionListener { //action 
         panelRightDown.setBounds(580, 270, 285, 270);
         panelLef2.setBackground(new Color(65, 46, 108));
         panelRightDown.add(headerCourse, BorderLayout.EAST);
-        panelRightDown.add(controlPanel);
+        // panelRightDown.add(controlPanel);
         background2.add(panelRightDown);
 
         manageStudentFee = new JLabel(" Management Fees ");
@@ -309,6 +329,7 @@ public class Administrator  extends JFrame implements ActionListener { //action 
 
     @Override
     public void actionPerformed(ActionEvent e) {
+
         if (e.getSource() == btnLogOut) {
             this.frame.setVisible(false);
             //LoginPage loginPage = new LoginPage();
@@ -318,8 +339,31 @@ public class Administrator  extends JFrame implements ActionListener { //action 
         } else if (e.getSource() == btnTimetables) {
             this.frame.setVisible(false);
 
+        } else if (e.getSource() == btnAdd) {
+            if (rdbCreateCourse.isSelected()) {
+                db.getCourseCreateInfo(getCourseIdS(), getCourseNameS(), getCoursePriceS(), getCourseCommentsS(), getBranch());
+                getAddToDBmessage1();
+                clearAllControls();
+
+            } else if (rdbCreateAdministrative.isSelected()) {
+                db.getAdmInfo(getCreateId(), getCreatePassword(), getNameS(), getLastnameS(), getEmailS(), getAddressS(), getGender(), getBranch());
+                getAddToDBmessage2();
+                clearAllControls();
+
+            } else if (rdbCreateLecturer.isSelected()) {
+                db.getLetInfo(getCreateId(), getCreatePassword(), getNameS(), getLastnameS(), getEmailS(), getAddressS(), getGender(), getBranch());
+                getAddToDBmessage2();
+                clearAllControls();
+
+            } else if (rdbCreateStudent.isSelected()) {
+                //db.getStudInfo(getCreateId(),getCreatePassword(),getNameS(),getLastnameS(),getEmailS(),getAddressS(),getGender(),getBranch());
+                getAddToDBmessage2();
+                clearAllControls();
+            }
         }
+
     }
+
 
     public void addBranchInComboBox() {
         try {
@@ -332,25 +376,186 @@ public class Administrator  extends JFrame implements ActionListener { //action 
 
                 comboBoxBranch.addItem(db.rs.getString("branch_Bno"));
             }
-        } catch (SQLException exe) {
-            exe.printStackTrace();
+        }catch (SQLException e) {
+            System.out.println(e.toString());
+        } catch (Exception e) {
+            System.out.println(e.toString());
         }
 
     }
 
-    void clearAllControls() {
 
-        nameF.setText("");
-        lastnameF.setText("");
-        emailF.setText("");
-        addressF.setText("");
-        courseIDF.setText("");
-        courseNameF.setText("");
-        coursePriceF.setText("");
-        courseCommentsF.setText("");
-        comboBoxBranch.setSelectedIndex(-1);
+    public void clearAllControls() {
+        try {
+            nameF.setText("");
+            lastnameF.setText("");
+            emailF.setText("");
+            addressF.setText("");
+            courseIDF.setText("");
+            courseNameF.setText("");
+            coursePriceF.setText("");
+            courseCommentsF.setText("");
+            comboBoxBranch.setSelectedIndex(-1);
+            radioGroup.clearSelection();
+        } catch (Exception e) {
+            System.out.println(e.toString());
+        }
 
     }
+
+    // String course_comments, String branch_Bno
+
+
+    public String getBranch(){
+        branch_Bno = branchS;
+        return branch_Bno;
+    }
+
+    public String getCourseIdS() {
+        course_id = courseIDF.getText();
+        return course_id;
+    }
+
+    public String getCourseNameS() {
+        course_name = courseNameF.getText();
+        return course_name;
+    }
+
+    public String getCoursePriceS() {
+        course_price= coursePriceF.getText();
+        return course_price;
+    }
+
+    public String getCourseCommentsS() {
+        course_comments = courseCommentsF.getText();
+        return course_comments;
+    }
+
+
+    public String getNameS() {
+        nameS = nameF.getText();
+        return nameS;
+    }
+
+    public String getLastnameS() {
+        lastnameS = lastnameF.getText();
+        return lastnameS;
+    }
+    public String getEmailS() {
+        emailS = emailF.getText();
+        return emailS;
+    }
+    public String getAddressS() {
+        addressS = addressF.getText();
+        return addressS;
+    }
+
+    public String getGender() {
+        try{
+
+            if (this.rdbFemale.isSelected()) {
+                selectionGender = "F";
+            } else if (this.rdbMale.isSelected()) {
+                selectionGender = "M";
+            }
+
+        } catch (Exception e) {
+            System.out.println(e.toString());
+        }
+
+        return selectionGender;
+    }
+
+    public String getCreatePassword() {
+
+        nameS = nameF.getText();
+        lastnameS = lastnameF.getText();
+
+        try{
+            int iFirst = 1, iLast = 1;
+
+            char[] letterArray = {'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k',
+                    'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z'};
+
+            System.out.println();
+            for (int i = 0; i < letterArray.length; i++) {
+                if (Character.toLowerCase(nameS.charAt(0)) == letterArray[i]) {
+                    iFirst += i;
+                }
+                if (Character.toLowerCase(lastnameS.charAt(0)) == letterArray[i]) {
+                    iLast += i;
+                }
+
+            }
+            password = String.format("%c%c-%s-%02d%02d", Character.toLowerCase(nameS.charAt(0)), Character.toLowerCase(lastnameS.charAt(0)),
+                    (nameS.length() + lastnameS.length()), iFirst, iLast);
+
+        } catch (Exception e) {
+            System.out.println(e.toString());
+        }
+        return password;
+
+    }
+
+    public String getCreateId() {
+        nameS = nameF.getText();
+        lastnameS = lastnameF.getText();
+
+        try{
+
+            if (this.rdbCreateAdministrative.isSelected()){
+                String studentId = "Adm-";
+                String nam1 = nameS.substring(0, 1).toUpperCase();
+                String nameNumber = String.valueOf(nameS.length() + lastnameS.length());
+                createId = (studentId+nam1+nameNumber);
+            } else if (this.rdbCreateLecturer.isSelected()) {
+                String studentId = "st21-";
+                String nam1 = nameS.substring(0, 1).toUpperCase();
+                String nameNumber = String.valueOf(nameS.length() + lastnameS.length());
+                createId = (studentId+nam1+nameNumber);
+
+            }else if (this.rdbCreateStudent.isSelected()) {
+                String studentId = "lect-";
+                String nam1 = nameS.substring(0, 1).toUpperCase();
+                String nameNumber = String.valueOf(nameS.length() + lastnameS.length());
+                createId = (studentId+nam1+nameNumber);
+            }
+
+        } catch (Exception e) {
+            System.out.println(e.toString());
+        }
+        return createId;
+
+    }
+
+    public void getAddToDBmessage1(){
+        JOptionPane.showMessageDialog(frame,
+                "New information SAVE in the DateBases",
+                "Successfully connection",
+                JOptionPane.INFORMATION_MESSAGE );
+    }
+
+    public void getAddToDBmessage2() {
+
+        String messagePersonInfo = "\n *** INFORMATION ****"
+                + "\n Student number: " + "  " + createId
+                + "\n *Temporarily PASSWORD: " + "  " + password
+                + "\n Name: " + " " + nameS + " " + lastnameS
+                + "\n Email: " + "  " + emailS
+                + "\n Address: " + "  " + addressS
+                + "\n Gender: " + "  " + selectionGender;
+
+        JOptionPane.showMessageDialog(frame,
+                "NEW STUDENT CREATE" +
+                        messagePersonInfo,
+                "INFORMATION SAVE DATABASES",
+                JOptionPane.INFORMATION_MESSAGE);
+
+    }
+
+
+
+
 
     /*  WORKING ON **** Nathalie
     public final void listCourse() {
