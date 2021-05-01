@@ -22,7 +22,6 @@ public class Database extends JFrame{
     PreparedStatement pstmt = null;
     ResultSet rs;
     String SQL = null;
-    CalendarMemo cm = new CalendarMemo();
 
     public Database() {
         try {
@@ -217,6 +216,20 @@ public class Database extends JFrame{
     }
 
     public void calDBDel(String id, String date){
+
+        SQL = "DELETE FROM schedule WHERE finish_date = ? and lecture_id = ? ";
+        try {
+            pstmt = conn.prepareStatement(SQL);
+            pstmt.setString(1, date);
+            pstmt.setString(2, id);
+            rs = pstmt.executeQuery();
+
+        } catch (SQLException sqlException) {
+            System.out.println(sqlException);
+        } catch (Exception e) {
+            System.out.println(e);
+        }
+
 
     }
 
