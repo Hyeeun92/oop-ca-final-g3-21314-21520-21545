@@ -61,8 +61,7 @@ public class CalendarMemo extends JFrame implements ActionListener {
 
     }
 
-    public void CalendarForStudent(String id, String pswd) {
-
+    public void CalendarForStudent(String id) {
 
         JLabel backgroundS = new JLabel(new ImageIcon(getClass().getResource("greenChalkboard.jpg")));
         backgroundS.setSize(960,533);
@@ -71,9 +70,7 @@ public class CalendarMemo extends JFrame implements ActionListener {
         layout = new SpringLayout();
         backgroundS.setLayout(layout);
 
-
         inputId = id;
-        inputPswd = pswd;
 
         today = Calendar.getInstance();
         cal = new GregorianCalendar();
@@ -85,7 +82,6 @@ public class CalendarMemo extends JFrame implements ActionListener {
         panNorth.add(btnBefore = new JButton("<"));
         panNorth.add(textMonth = new JTextField(month + ""));
         panNorth.add(textYear = new JTextField(year + ""));
-
 
         textYear.setEnabled(false);
         textMonth.setEditable(false);
@@ -103,13 +99,14 @@ public class CalendarMemo extends JFrame implements ActionListener {
         labelCons1.setY(Spring.constant(100));
         backgroundS.add(panNorth);
 
-
         panWest = new JPanel(new GridLayout(7,7));
         f = new Font("Serif", Font.BOLD, 12);
 
         gridInit();
-        calSet();
+        db.checkDay(id);
+        calSetforStudent();
         hideInit();
+
         //add(panWest, "West");
 
         panWest.setBackground(Color.MAGENTA);
@@ -118,7 +115,6 @@ public class CalendarMemo extends JFrame implements ActionListener {
         labelCons2.setX(Spring.constant(280));
         labelCons2.setY(Spring.constant(150));
         backgroundS.add(panWest);
-
 
         panEast = new JPanel();
         panEast.add(textWrite = new JTextField(null));
@@ -170,19 +166,20 @@ public class CalendarMemo extends JFrame implements ActionListener {
         listResult.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-
+                db.listOfResultStudent(id);
             }
         });
+
         listAttendance.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-
+                db.listOfAttendenceStudent(id);
             }
         });
         changePswd.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                RenewLogin renewLogin = new RenewLogin(id, pswd);
+                RenewLogin renewLogin = new RenewLogin(id);
             }
         });
     }
@@ -231,7 +228,7 @@ public class CalendarMemo extends JFrame implements ActionListener {
         f = new Font("Serif", Font.BOLD, 12);
 
         gridInit();
-        calSet();
+        calSetforLecture();
         hideInit();
         //add(panWest, "West");
         panWest.setBackground(Color.MAGENTA);
@@ -325,7 +322,8 @@ public class CalendarMemo extends JFrame implements ActionListener {
         });
     }
 
-    public void calSet() {
+    public void calSetforStudent() {
+
         cal.set(Calendar.YEAR, year);
         cal.set(Calendar.MONTH,(month-1));
         cal.set(Calendar.DATE,1);
@@ -350,6 +348,7 @@ public class CalendarMemo extends JFrame implements ActionListener {
                 break;
             }
             todays = i;
+
             if (memoday == 1) {
                 calBtn[i+6+hopping].setForeground(new Color(0,255,0));
             }
@@ -372,7 +371,8 @@ public class CalendarMemo extends JFrame implements ActionListener {
             calInput(-1);
             gridInit();
             panelInit();
-            calSet();
+            calSetforStudent();
+            calSetforLecture();
             hideInit();
             this.textYear.setText(year + "");
             this.textMonth.setText(month + "");
@@ -382,7 +382,8 @@ public class CalendarMemo extends JFrame implements ActionListener {
             calInput(1);
             gridInit();
             panelInit();
-            calSet();
+            calSetforStudent();
+            calSetforStudent();
             hideInit();
             this.textYear.setText(year + "");
             this.textMonth.setText(month + "");
@@ -391,7 +392,8 @@ public class CalendarMemo extends JFrame implements ActionListener {
             day = Integer.parseInt(e.getActionCommand());
             pickDate = day+"/"+month+"/"+year;
             System.out.println(pickDate);
-            calSet();
+            calSetforStudent();
+            calSetforLecture();
         }
     }
 
@@ -430,10 +432,6 @@ public class CalendarMemo extends JFrame implements ActionListener {
     }
 
     public void searchMemo() {
-
-    }
-
-    public void checkDay() {
 
     }
 
@@ -479,6 +477,36 @@ public class CalendarMemo extends JFrame implements ActionListener {
             }
         });
 
+    }
+
+    public void calSetforLecture() {
+
+        cal.set(Calendar.YEAR, year);
+        cal.set(Calendar.MONTH,(month-1));
+        cal.set(Calendar.DATE,1);
+        int dayOfWeek = cal.get(Calendar.DAY_OF_WEEK);
+
+        int j = 0;
+        int hopping = 0;
+
+        calBtn[0].setForeground(new Color(255, 0, 0));
+        calBtn[6].setForeground(new Color(0, 0, 255));
+
+        for(int i = cal.getFirstDayOfWeek(); i < dayOfWeek; i++){
+            j++;
+        }
+        hopping = j;
+        for (int k = 0; k<hopping; k++) {
+            calBtn[k+7].setText("");
+        }
+        for (int i = cal.getMinimum(Calendar.DAY_OF_MONTH); i <= cal.getMaximum(Calendar.DAY_OF_MONTH); i++ ) {
+            cal.set(Calendar.DATE, i);
+            if (cal.get(Calendar.MONTH)!=month-1) {
+                break;
+            }
+            todays = i;
+            calBtn[i+6+hopping].setText((i) + "");
+        }
     }
 
 }

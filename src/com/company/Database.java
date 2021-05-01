@@ -10,8 +10,6 @@ import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.sql.*;
 import java.util.ArrayList;
-import java.util.List;
-import java.util.concurrent.TimeUnit;
 
 public class Database extends JFrame{
     String DB_URL = "jdbc:mysql://localhost:3306/oop_final?";
@@ -22,6 +20,7 @@ public class Database extends JFrame{
     PreparedStatement pstmt = null;
     ResultSet rs;
     String SQL = null;
+    CalendarMemo calendarMemo = new CalendarMemo();
 
     public Database() {
         try {
@@ -95,8 +94,7 @@ public class Database extends JFrame{
             if (rs.next()) {
                 if (rs.getString(1).equals(pswd)) {
                     dispose();
-                    CalendarMemo calendarMemo = new CalendarMemo();
-                    calendarMemo.CalendarForStudent(id, pswd);
+                    checkDay(id);
                 } else {
                     System.out.println("!!");
                     getMessageError();
@@ -194,7 +192,6 @@ public class Database extends JFrame{
         } catch (Exception e) {
             System.out.println(e);
         }
-
     }
 
     public void calDBAdddetail(String id,String date, String information,String type, String courseId, String classId) {
@@ -322,10 +319,90 @@ public class Database extends JFrame{
 
     }
 
+    public void listOfResultStudent(String id) {
+        String[] columns = new String[] {
+                "Course ID", "Class ID","grade"
+        };
 
+        DefaultTableModel model = new DefaultTableModel();
+        model.setColumnIdentifiers(columns);
+        JTable table = new JTable(model);
 
+        this.add(new JScrollPane(table));
+        this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        this.pack();
+        this.setVisible(true);
 
+        SQL = "select course_id, class_id, grade grade where student_id = ?" ;
+        try {
+            pstmt = conn.prepareStatement(SQL);
+            pstmt.setString(1, id);
+            rs = pstmt.executeQuery();
+            while(rs.next()){
+                String courseId = rs.getString("course_id");
+                String classID = rs.getString("class_id");
+                String grade = rs.getString("grade");
+                model.addRow(new Object[]{courseId, classID, grade});
+            }
+            pstmt.execute();
+        } catch (SQLException sqlException) {
+            System.out.println(sqlException);
+        } catch (Exception e) {
+            System.out.println(e);
+        }
+    }
 
+    public void listOfAttendenceStudent(String id) {
+        String[] columns = new String[] {
+                "Class ID","date","Attendance"
+        };
+
+        DefaultTableModel model = new DefaultTableModel();
+        model.setColumnIdentifiers(columns);
+        JTable table = new JTable(model);
+
+        this.add(new JScrollPane(table));
+        this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        this.pack();
+        this.setVisible(true);
+
+        SQL = "select class_id, date, statement where student_id = ?" ;
+        try {
+            pstmt = conn.prepareStatement(SQL);
+            pstmt.setString(1, id);
+            rs = pstmt.executeQuery();
+            while(rs.next()){
+                String courseId = rs.getString("course_id");
+                String date = rs.getString("date");
+                String statement = rs.getString("statement");
+                model.addRow(new Object[]{courseId, date, statement});
+            }
+            pstmt.execute();
+        } catch (SQLException sqlException) {
+            System.out.println(sqlException);
+        } catch (Exception e) {
+            System.out.println(e);
+        }
+    }
+
+    public void checkDay(String id) {
+
+        SQL = "select course_id from student where student_id = ?";
+        try {
+            pstmt = conn.prepareStatement(SQL);
+            pstmt.setString(1, id);
+            rs = pstmt.executeQuery();
+            while(rs.next()){
+                String courseId = rs.getString("course_id");
+
+            }
+        }catch (SQLException e) {
+            System.out.println(e.toString());
+        } catch (Exception e) {
+            System.out.println(e.toString());
+        }
+
+    }
 
 }
 
