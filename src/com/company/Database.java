@@ -195,7 +195,7 @@ public class Database extends JFrame{
             while(rs.next()) {
                 courseId = rs.getString("course_id");
                 classId = rs.getString("class_id");
-                className = rs.getString("className");
+                className = rs.getString("class_name");
             }
         } catch (SQLException sqlException) {
             System.out.println(sqlException);
@@ -219,7 +219,7 @@ public class Database extends JFrame{
         dialog.setVisible(true);
     }
 
-    public void getCourseCreateInfo(String course_id, String course_name, String course_price, String course_comments, String branch_Bno) {
+    public void getCourseCreateInfo(String course_id, String course_name, String course_price, String course_comments, String branch_Bno) throws SQLException {
 
         SQL = "INSERT INTO course (course_id, course_name, course_price, course_comments, branch_Bno)" + "values (?,?,?,?,?)";
 
@@ -233,9 +233,7 @@ public class Database extends JFrame{
             pstmt.setString(4, course_comments);
             pstmt.setString(5, branch_Bno);
 
-            // execute the pstmt
-            pstmt.execute();
-            conn.close();
+
 
         }catch (SQLException e) {
             System.out.println(e.toString());
@@ -243,9 +241,11 @@ public class Database extends JFrame{
             System.out.println(e.toString());
         }
 
+        pstmt.execute();
+
     }
 
-    public void getAdmInfo(String administrator_id, String administrator_password, String administrator_name, String administrator_Lname, String administrator_email, String administrator_address, String administrator_gender, String branch_Bno) {
+    public void getAdmInfo(String administrator_id, String administrator_password, String administrator_name, String administrator_Lname, String administrator_email, String administrator_address, String administrator_gender, String branch_Bno) throws SQLException {
 
         SQL = "INSERT INTO administrator (administrator_id, administrator_password, administrator_name, administrator_Lname, administrator_email, administrator_address, administrator_gender, branch_Bno)" + "values (?,?,?,?,?,?,?,?)";
 
@@ -262,19 +262,17 @@ public class Database extends JFrame{
             pstmt.setString(7, administrator_gender);
             pstmt.setString(8, branch_Bno);
 
-            // execute the pstmt
-            pstmt.execute();
-            conn.close();
-
         }catch (SQLException e) {
             System.out.println(e.toString());
         } catch (Exception e) {
             System.out.println(e.toString());
         }
 
+        pstmt.execute();
+
     }
 
-    public void getLetInfo(String lecture_id, String lecture_password, String lecture_name, String lecture_Lname, String lecture_email, String lecture_address, String lecture_gender, String branch_Bno) {
+    public void getLetInfo(String lecture_id, String lecture_password, String lecture_name, String lecture_Lname, String lecture_email, String lecture_address, String lecture_gender, String branch_Bno) throws SQLException {
         //my mysql insert statement
         SQL = "INSERT INTO lecture (lecture_id, lecture_password, lecture_name, lecture_Lname, lecture_email, lecture_address, lecture_gender, branch_Bno)" + "values (?,?,?,?,?,?,?,?)";
 
@@ -291,17 +289,20 @@ public class Database extends JFrame{
             pstmt.setString(7, lecture_gender);
             pstmt.setString(8, branch_Bno);
 
-            // execute the pstmt
-            pstmt.execute();
-            conn.close();
-
         }catch (SQLException e) {
             System.out.println(e.toString());
         } catch (Exception e) {
             System.out.println(e.toString());
         }
 
+        pstmt.execute();
+
     }
+
+
+
+
+
 
 
 

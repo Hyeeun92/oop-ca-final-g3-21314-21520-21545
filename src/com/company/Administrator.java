@@ -7,6 +7,7 @@ package com.company;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
+import javax.swing.table.TableModel;
 import java.awt.*;
 import java.awt.event.*;
 import java.sql.SQLException;
@@ -22,8 +23,8 @@ public class Administrator  extends JFrame implements ActionListener { //action 
     ButtonGroup radioGroup, radioGroupGender;
     JRadioButton rdbCreateStudent, rdbCreateLecturer, rdbCreateAdministrative, rdbCreateCourse, rdbFemale, rdbMale;
     JButton btnAdd, btnUpdate, btnClear, btnLogOut, btnManaFee, btnTimetables;
-
-    JScrollPane scrollPane;
+    JList listCourses;
+    JScrollPane scrollPaneCourses;
 
     Database db = new Database();
 
@@ -37,6 +38,7 @@ public class Administrator  extends JFrame implements ActionListener { //action 
         createdForms();
         Database db = new Database();
         addBranchInComboBox();
+        showListCourses();
         clearAllControls();
 
     }
@@ -175,17 +177,28 @@ public class Administrator  extends JFrame implements ActionListener { //action 
 
         background2.add(panelLeft);
 
+        headerCourse = new JLabel("Courses Available to enroll");
+        headerCourse.setBounds(10, 0, 200, 20);
+        headerCourse.setFont(new Font("Serif", Font.BOLD, 15));
+        headerCourse.setForeground(Color.WHITE);
+
         panelLef2 = new JPanel();
-        panelLef2.setBorder(new EmptyBorder(5, 5, 5, 5));
-        setContentPane(panelLef2);
-        panelLef2.setLayout(null);
+        //panelLef2.setBorder(new EmptyBorder(5, 5, 5, 5));
+        //setContentPane(panelLef2);
+        //panelLef2.setLayout(null);
+        panelLef2.setLayout(new FlowLayout());
         panelLef2.setBounds(20, 270, 285, 270);
         panelLef2.setBackground(new Color(65, 46, 108));
-        //listCourse();
-        scrollPane = new JScrollPane();
-        scrollPane.setBounds(10, 64, 366, 107);
 
-        panelLef2.add(scrollPane);
+        //listCourse();
+        //scrollPaneCourses = new JScrollPane();
+        //scrollPaneCourses.setBounds(0, 30, 400, 300);
+        //scrollPaneCourses.add(listCourses);
+
+
+        //panelLef2.add(headerCourse);
+        //panelLef2.add(scrollPaneCourses);
+
         // panelLef2.add();
         background2.add(panelLef2);
 
@@ -232,10 +245,7 @@ public class Administrator  extends JFrame implements ActionListener { //action 
 
         background2.add(panelRight);
 
-        headerCourse = new JLabel("Course Availables");
-        headerCourse.setBounds(10, 0, 175, 20);
-        headerCourse.setFont(new Font("Serif", Font.BOLD, 15));
-        headerCourse.setForeground(Color.WHITE);
+
         controlPanel = new JPanel();
         controlPanel.setLayout(new FlowLayout());
         controlPanel.setBounds(30, 25, 200, 60);
@@ -246,7 +256,7 @@ public class Administrator  extends JFrame implements ActionListener { //action 
         panelRightDown.setLayout(null);
         panelRightDown.setBounds(580, 270, 285, 270);
         panelLef2.setBackground(new Color(65, 46, 108));
-        panelRightDown.add(headerCourse, BorderLayout.EAST);
+        //panelRightDown.add(headerCourse, BorderLayout.EAST);
         // panelRightDown.add(controlPanel);
         background2.add(panelRightDown);
 
@@ -341,17 +351,29 @@ public class Administrator  extends JFrame implements ActionListener { //action 
 
         } else if (e.getSource() == btnAdd) {
             if (rdbCreateCourse.isSelected()) {
-                db.getCourseCreateInfo(getCourseIdS(), getCourseNameS(), getCoursePriceS(), getCourseCommentsS(), getBranch());
+                try {
+                    db.getCourseCreateInfo(getCourseIdS(), getCourseNameS(), getCoursePriceS(), getCourseCommentsS(), getBranch());
+                } catch (SQLException throwables) {
+                    throwables.printStackTrace();
+                }
                 getAddToDBmessage1();
                 clearAllControls();
 
             } else if (rdbCreateAdministrative.isSelected()) {
-                db.getAdmInfo(getCreateId(), getCreatePassword(), getNameS(), getLastnameS(), getEmailS(), getAddressS(), getGender(), getBranch());
+                try {
+                    db.getAdmInfo(getCreateId(), getCreatePassword(), getNameS(), getLastnameS(), getEmailS(), getAddressS(), getGender(), getBranch());
+                } catch (SQLException throwables) {
+                    throwables.printStackTrace();
+                }
                 getAddToDBmessage2();
                 clearAllControls();
 
             } else if (rdbCreateLecturer.isSelected()) {
-                db.getLetInfo(getCreateId(), getCreatePassword(), getNameS(), getLastnameS(), getEmailS(), getAddressS(), getGender(), getBranch());
+                try {
+                    db.getLetInfo(getCreateId(), getCreatePassword(), getNameS(), getLastnameS(), getEmailS(), getAddressS(), getGender(), getBranch());
+                } catch (SQLException throwables) {
+                    throwables.printStackTrace();
+                }
                 getAddToDBmessage2();
                 clearAllControls();
 
@@ -385,6 +407,7 @@ public class Administrator  extends JFrame implements ActionListener { //action 
     }
 
 
+
     public void clearAllControls() {
         try {
             nameF.setText("");
@@ -397,13 +420,12 @@ public class Administrator  extends JFrame implements ActionListener { //action 
             courseCommentsF.setText("");
             comboBoxBranch.setSelectedIndex(-1);
             radioGroup.clearSelection();
+            radioGroupGender.clearSelection();
         } catch (Exception e) {
             System.out.println(e.toString());
         }
 
     }
-
-    // String course_comments, String branch_Bno
 
 
     public String getBranch(){
@@ -546,13 +568,46 @@ public class Administrator  extends JFrame implements ActionListener { //action 
                 + "\n Gender: " + "  " + selectionGender;
 
         JOptionPane.showMessageDialog(frame,
-                "NEW STUDENT CREATE" +
+                "NEW USER CREATE" +
                         messagePersonInfo,
                 "INFORMATION SAVE DATABASES",
                 JOptionPane.INFORMATION_MESSAGE);
 
     }
 
+    private void showListCourses(){
+
+
+        final DefaultListModel<String> courseName = new DefaultListModel<>();
+
+        try {
+
+            String query = "select * from course";
+            db.pstmt = db.conn.prepareStatement(query);
+            db.rs = db.pstmt.executeQuery();
+
+            while (db.rs.next()) {
+
+                courseName.addElement(db.rs.getString("course_name"));
+            }
+
+        }catch (SQLException e) {
+            System.out.println(e.toString());
+        } catch (Exception e) {
+            System.out.println(e.toString());
+        }
+
+        final JList courseList = new JList(courseName);
+        courseList.setSelectionMode(ListSelectionModel.SINGLE_INTERVAL_SELECTION);
+        courseList.setSelectedIndex(0);
+        courseList.setVisibleRowCount(3);
+        courseList.setFixedCellHeight(30);
+        courseList.setFixedCellWidth(200);
+
+        JScrollPane courseListScrollPane = new JScrollPane(courseList);
+        panelLef2.add(courseListScrollPane);
+
+    }
 
 
 
@@ -584,7 +639,44 @@ public class Administrator  extends JFrame implements ActionListener { //action 
         }
     }
 
+
+public final void createListCourses(){
+
+        DefaultListModel<String> model1 = new DefaultListModel<>();
+
+        try {
+
+            String query = "select * from course";
+            db.pstmt = db.conn.prepareStatement(query);
+            db.rs = db.pstmt.executeQuery();
+
+            while (db.rs.next()) {
+
+                model1.addElement(db.rs.getString("course_name"));
+            }
+
+
+        }catch (SQLException e) {
+            System.out.println(e.toString());
+        } catch (Exception e) {
+            System.out.println(e.toString());
+        }
+
+       listCourses = new JList(model1);
+            listCourses.setSelectionMode(ListSelectionModel.SINGLE_INTERVAL_SELECTION);
+            listCourses.setLayoutOrientation(JList.VERTICAL_WRAP);
+            listCourses.setVisibleRowCount(3);
+            listCourses.setSelectedIndex(0);
+            scrollPaneCourses = new JScrollPane(listCourses);
+
+            scrollPaneCourses.setBounds(0, 30, 285, 200);
+            scrollPaneCourses.add(listCourses);
+            panelLef2.add(scrollPaneCourses);
+
+
+    }
      */
+
 
 
 
