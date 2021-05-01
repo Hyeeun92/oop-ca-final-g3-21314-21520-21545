@@ -109,6 +109,7 @@ public class CalendarMemo extends JFrame implements ActionListener {
 
         gridInit();
         calSet();
+        hideInit();
         //add(panWest, "West");
 
         panWest.setBackground(Color.MAGENTA);
@@ -231,6 +232,7 @@ public class CalendarMemo extends JFrame implements ActionListener {
 
         gridInit();
         calSet();
+        hideInit();
         //add(panWest, "West");
         panWest.setBackground(Color.MAGENTA);
         layout.putConstraint(SpringLayout.WEST, panWest, 5, SpringLayout.WEST, backgroundS);
@@ -278,19 +280,28 @@ public class CalendarMemo extends JFrame implements ActionListener {
 
         btnBefore.addActionListener(this);
         btnAfter.addActionListener(this);
+
         btnAdd.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 information = textWrite.getText();
-                if (pickDate!= null && information!= null) {
-                    checkpanel(inputId, pickDate, information);
+                if (information == null || information == "") {
+                    JOptionPane.showMessageDialog(null, "Please input information");
                 }
+                else if (pickDate==null){
+                    JOptionPane.showMessageDialog(null, "Please Pick date");
+                }
+                else {
+                   checkpanel(inputId, pickDate, information);
+                }
+
             }
         });
 
         btnAttendManage.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+
             }
         });
         btnStudentInfo.addActionListener(new ActionListener() {
@@ -305,6 +316,13 @@ public class CalendarMemo extends JFrame implements ActionListener {
             }
         });
 
+        btnDelete.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                db.calDBDel(id, pickDate);
+
+            }
+        });
     }
 
     public void calSet() {
@@ -347,6 +365,7 @@ public class CalendarMemo extends JFrame implements ActionListener {
             calBtn[i+6+hopping].setText((i) + "");
         }
     }
+
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == btnBefore) {
             this.panWest.removeAll();     //panWest
@@ -354,6 +373,7 @@ public class CalendarMemo extends JFrame implements ActionListener {
             gridInit();
             panelInit();
             calSet();
+            hideInit();
             this.textYear.setText(year + "");
             this.textMonth.setText(month + "");
         }
@@ -363,6 +383,7 @@ public class CalendarMemo extends JFrame implements ActionListener {
             gridInit();
             panelInit();
             calSet();
+            hideInit();
             this.textYear.setText(year + "");
             this.textMonth.setText(month + "");
         }
@@ -370,7 +391,6 @@ public class CalendarMemo extends JFrame implements ActionListener {
             day = Integer.parseInt(e.getActionCommand());
             pickDate = day+"/"+month+"/"+year;
             System.out.println(pickDate);
-
             calSet();
         }
     }
@@ -402,7 +422,22 @@ public class CalendarMemo extends JFrame implements ActionListener {
         }
     }
 
-    private void checkpanel(String inputId, String pickDate, String information) {
+    public void hideInit() {
+        for(int i = 0; i< calBtn.length; i++) {
+            if((calBtn[i].getText()).equals(""))
+                calBtn[i].setEnabled(false);
+        }
+    }
+
+    public void searchMemo() {
+
+    }
+
+    public void checkDay() {
+
+    }
+
+    public void checkpanel(String inputId, String pickDate, String information) {
 
         JFrame frame = new JFrame();
         frame.setLayout(new FlowLayout());
@@ -419,6 +454,7 @@ public class CalendarMemo extends JFrame implements ActionListener {
         ButtonGroup caExam = new ButtonGroup();
         caExam.add(btnExam);
         caExam.add(btnCa);
+
         JButton btnSave = new JButton("Save");
         frame.add(dateText);
         frame.add(infoText);
@@ -433,8 +469,8 @@ public class CalendarMemo extends JFrame implements ActionListener {
             public void actionPerformed(ActionEvent e) {
                 if (btnCa.isSelected()) {
                     String type = "ca";
+                    db.calDBAdd(inputId, pickDate, information, type);
                     frame.dispose();
-                    System.out.println(inputId + pickDate + information + type);
                 } else if (btnExam.isSelected()) {
                     String type = "Exam";
                     db.calDBAdd(inputId, pickDate, information, type);
@@ -444,6 +480,5 @@ public class CalendarMemo extends JFrame implements ActionListener {
         });
 
     }
-
 
 }

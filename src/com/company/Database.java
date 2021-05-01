@@ -17,11 +17,12 @@ public class Database extends JFrame{
     String DB_URL = "jdbc:mysql://localhost:3306/oop_final?";
     String unicode = "useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC";
     String DB_USER = "root";
-    String DB_PASSWORD =  "YES01@"; //"ah447Sladl!";  "Memory1979@";
+    String DB_PASSWORD ="ah447Sladl!";  //"YES01@";   "Memory1979@";
     Connection conn;
     PreparedStatement pstmt = null;
     ResultSet rs;
     String SQL = null;
+    CalendarMemo cm = new CalendarMemo();
 
     public Database() {
         try {
@@ -44,24 +45,18 @@ public class Database extends JFrame{
                 System.out.println(pstmt);
                 if (rs.getString(1).equals(pswd)) {
                     Administrator admin = new Administrator();
-
                 } else {
-                    System.out.println("!!");
                     getMessageError();
                 }
             }
             else {
-                System.out.println("!!");
                 getMessageError();
-
-
             }
         }catch (SQLException e) {
             System.out.println(e.toString());
         } catch (Exception e) {
             System.out.println(e.toString());
         }
-
     }
 
     public void getLectureLoginInfo(String id, String pswd) {
@@ -84,14 +79,12 @@ public class Database extends JFrame{
             else {
                 System.out.println("!!");
                 getMessageError();
-
             }
         }catch (SQLException e) {
             System.out.println(e.toString());
         } catch (Exception e) {
             System.out.println(e.toString());
         }
-
     }
 
     public void getStudentLoginInfo(String id, String pswd) {
@@ -142,13 +135,11 @@ public class Database extends JFrame{
             System.out.println(e);
         }
 
-
-
     }
 
     public void Listing(String getCourseId){
         String[] columns = new String[] {
-                "Student Id", "Student name", "Student Email", "Student Address", "Student Gender", "Course Id"
+                "Id", "First name","Last name","Email", "Address", "Gender", "Course Id"
         };
 
         DefaultTableModel model = new DefaultTableModel();
@@ -160,7 +151,7 @@ public class Database extends JFrame{
         this.pack();
         this.setVisible(true);
 
-        SQL = "select student_id, student_name, student_email, student_address, student_gender, course_id from student where course_id = ?" ;
+        SQL = "select student_id, student_Fname, student_Lname, student_email, student_address, student_gender, course_id from student where course_id = ?" ;
         try {
             pstmt = conn.prepareStatement(SQL);
             pstmt.setString(1, getCourseId);
@@ -168,12 +159,13 @@ public class Database extends JFrame{
 
             while(rs.next()){
                 String student_id = rs.getString("student_id");
-                String student_name = rs.getString("student_name");
+                String student_Fname = rs.getString("student_Fname");
+                String student_Lname = rs.getString("student_Lname");
                 String student_email = rs.getString("student_email");
                 String student_address = rs.getString("student_address");
                 String student_gender = rs.getString("student_gender");
                 String course_id = rs.getString("course_id");
-                model.addRow(new Object[]{student_id, student_name, student_email, student_address, student_gender, course_id});
+                model.addRow(new Object[]{student_id, student_Fname, student_Lname,  student_email, student_address, student_gender, course_id});
 
             }
         } catch (SQLException sqlException) {
@@ -186,7 +178,8 @@ public class Database extends JFrame{
     public void calDBAdd(String id, String date, String information, String type) {
 
         SQL = "select * from timetable where lecture_id = ?";
-        String courseId, classId, className;
+        String courseId = "";
+        String classId = "";
 
         try {
             pstmt = conn.prepareStatement(SQL);
@@ -195,7 +188,7 @@ public class Database extends JFrame{
             while(rs.next()) {
                 courseId = rs.getString("course_id");
                 classId = rs.getString("class_id");
-                className = rs.getString("class_name");
+                calDBAdddetail(id, date, information, type, courseId, classId);
             }
         } catch (SQLException sqlException) {
             System.out.println(sqlException);
@@ -203,12 +196,27 @@ public class Database extends JFrame{
             System.out.println(e);
         }
 
-        if (information.equals("")) {
-            JOptionPane.showMessageDialog(null, "Please input information");
-            return;
-        }
+    }
 
-        SQL = "insert into schedule()";
+    public void calDBAdddetail(String id,String date, String information,String type, String courseId, String classId) {
+        SQL = "insert into schedule(class_id, finish_date, lecture_id, type, course_id, information)"+ "values (?,?,?,?,?,?,?,?)";
+        try {
+            pstmt = conn.prepareStatement(SQL);
+            pstmt.clearParameters();
+            pstmt.setString(1, classId);
+            pstmt.setString(2, date);
+            pstmt.setString(3, id);
+            pstmt.setString(4, type);
+            pstmt.setString(5, courseId);
+            pstmt.setString(6, information);
+        }catch (SQLException e) {
+            System.out.println(e.toString());
+        } catch (Exception e) {
+            System.out.println(e.toString());
+        }
+    }
+
+    public void calDBDel(String id, String date){
 
     }
 
@@ -232,8 +240,6 @@ public class Database extends JFrame{
             pstmt.setString(3, course_price);
             pstmt.setString(4, course_comments);
             pstmt.setString(5, branch_Bno);
-
-
 
         }catch (SQLException e) {
             System.out.println(e.toString());
@@ -299,7 +305,9 @@ public class Database extends JFrame{
 
     }
 
+    public void getMemo(){
 
+    }
 
 
 
