@@ -5,34 +5,37 @@ package com.company;
 21314 - Nathalie Flores
  */
 
+import javax.naming.directory.SearchResult;
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
-import javax.swing.table.TableModel;
+import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.awt.event.*;
 import java.sql.SQLException;
+import java.util.*;
 
 
 public class Administrator  extends JFrame implements ActionListener { //action listener interface
 
+
     JFrame frame;
-    JLabel branch, form, name, lastname, email, address, gender, headerCourse, courseID, courseName, coursePrice, courseComments, manageStudentFee, createTimetable;
-    JTextField nameF, lastnameF, emailF, addressF, courseIDF, courseNameF, coursePriceF, courseCommentsF;
-    JPanel panelUp, panelRight, panelLeft, panelLef2, panelLeftDown, panelRightDown, controlPanel, panelLogOut;
+    JLabel branch, form, title1,title2,title3,  name, lastname, email, address, gender, headerCourse, courseID, courseName, coursePrice, courseComments, manageStudentFee, createTimetable,search,amount;
+    JTextField nameF, lastnameF, emailF, addressF, courseIDF, courseNameF, coursePriceF, courseCommentsF, searchF, amountF;
+    JPanel panelUp, panelRight, panelLeft, panelLeft1, panelLef2, panelLeftDown, panelRightDown, controlPanel, panelButtons;
     JComboBox<String> comboBoxBranch;
-    ButtonGroup radioGroup, radioGroupGender;
-    JRadioButton rdbCreateStudent, rdbCreateLecturer, rdbCreateAdministrative, rdbCreateCourse, rdbFemale, rdbMale;
-    JButton btnAdd, btnUpdate, btnClear, btnLogOut, btnManaFee, btnTimetables;
-    JList listCourses;
-    JScrollPane scrollPaneCourses;
+    ButtonGroup radioGroup, radioGroupGender, radioGroupFee;
+    JRadioButton rdbCreateStudent, rdbCreateLecturer, rdbCreateAdministrative, rdbCreateCourse, rdbFemale, rdbMale,rdbFullyP,rdbInstP;
+    JButton btnAdd, btnUpdate, btnClear, btnLogOut, btnManaFee, btnTimetables, btnSearh;
+    JList courseList = new JList();
+    static JTable table;
 
     Database db = new Database();
 
-    String nameS, lastnameS, emailS, addressS, createId , branchS, selectionGender, password ;
-    // String lecture_id, lecture_password, lecture_name, lecture_Lname, lecture_email, lecture_address, lecture_gender;
+    String nameS, lastnameS, emailS, addressS, createId , branchS, selectionGender, password, searchS;
+    String course_id, course_name, course_price, course_comments, branch_Bno, couSFees ;
+    Calendar today;
+    int year = 0;
 
-    // String  student_name, student_Lname, studentr_email, student_address;
-    String course_id, course_name, course_price, course_comments, branch_Bno;
 
     public Administrator() {
         createdForms();
@@ -54,24 +57,24 @@ public class Administrator  extends JFrame implements ActionListener { //action 
         form = new JLabel("YOU MUST SELECT     "+"     1.Type of Form:   ");
         form.setForeground(Color.WHITE);
         form.setBackground(new Color(210, 31, 78));
-        form.setFont(new Font("Serif", Font.ITALIC + Font.BOLD, 15));
+        form.setFont(new Font("Serif", Font.ITALIC + Font.BOLD, 20));
         form.setBounds(0, 0, 210, 20);
         form.setOpaque(true);
 
         rdbCreateAdministrative = new JRadioButton("Administrative");
-        rdbCreateAdministrative.setFont(new Font("Serif", Font.BOLD, 10));
+        rdbCreateAdministrative.setFont(new Font("Serif", Font.BOLD, 15));
         rdbCreateAdministrative.setBounds(240, 0, 95, 20);
         rdbCreateAdministrative.setForeground(Color.BLUE);
         rdbCreateLecturer = new JRadioButton("Lecturer");
-        rdbCreateLecturer.setFont(new Font("Serif", Font.BOLD, 10));
+        rdbCreateLecturer.setFont(new Font("Serif", Font.BOLD, 15));
         rdbCreateLecturer.setBounds(335, 0, 75, 20);
         rdbCreateLecturer.setForeground(Color.BLUE);
         rdbCreateStudent = new JRadioButton("Student");
-        rdbCreateStudent.setFont(new Font("Serif", Font.BOLD, 10));
+        rdbCreateStudent.setFont(new Font("Serif", Font.BOLD, 15));
         rdbCreateStudent.setBounds(410, 0, 75, 20);
         rdbCreateStudent.setForeground(Color.BLUE);
         rdbCreateCourse = new JRadioButton("Course");
-        rdbCreateCourse.setFont(new Font("Serif", Font.BOLD, 10));
+        rdbCreateCourse.setFont(new Font("Serif", Font.BOLD, 15));
         rdbCreateCourse.setBounds(485, 0, 75, 20);
         rdbCreateCourse.setForeground(Color.BLUE);
         radioGroup = new ButtonGroup();
@@ -84,11 +87,11 @@ public class Administrator  extends JFrame implements ActionListener { //action 
         branch = new JLabel(" 2.Branch:  ");
         branch.setForeground(Color.WHITE);
         branch.setBackground(new Color(210, 31, 78));
-        branch.setFont(new Font("Serif", Font.ITALIC + Font.BOLD, 15));
+        branch.setFont(new Font("Serif", Font.ITALIC + Font.BOLD, 20));
         branch.setBounds(660, 0, 70, 20);
         branch.setOpaque(true);
         comboBoxBranch = new JComboBox<String>();
-        comboBoxBranch.setFont(new Font("Serif", Font.ITALIC + Font.BOLD, 10));
+        comboBoxBranch.setFont(new Font("Serif", Font.ITALIC + Font.BOLD, 15));
         comboBoxBranch.setBounds(7, 0, 75, 20);
         comboBoxBranch.setForeground(Color.BLUE);
         comboBoxBranch.addActionListener(new ActionListener() {
@@ -107,7 +110,7 @@ public class Administrator  extends JFrame implements ActionListener { //action 
         });
 
         panelUp = new JPanel();
-        panelUp.setBounds(0, 10, 900, 30);
+        panelUp.setBounds(0, 10, 1000, 40);
         panelUp.setBackground(new Color(210, 31, 78));
         panelUp.add(form, BorderLayout.CENTER);
         panelUp.add(rdbCreateAdministrative, BorderLayout.CENTER);
@@ -119,50 +122,55 @@ public class Administrator  extends JFrame implements ActionListener { //action 
 
         background2.add(panelUp);
 
+        title1 = new JLabel("Adm/Lecturer/Student Form");
+        title1.setBounds(10, 5, 250, 20);
+        title1.setFont(new Font("Serif", Font.BOLD, 20));
+        title1.setForeground(Color.PINK);
         name = new JLabel("Name");
-        name.setBounds(10, 10, 50, 20);
+        name.setBounds(10, 50, 50, 20);
         name.setFont(new Font("Serif", Font.BOLD, 15));
         name.setForeground(Color.WHITE);
         nameF = new JTextField();
-        nameF.setBounds(80, 10, 180, 20);
+        nameF.setBounds(80, 50, 180, 20);
         lastname = new JLabel("Lastname");
         lastname.setFont(new Font("Serif", Font.BOLD, 15));
-        lastname.setBounds(10, 50, 70, 20);
+        lastname.setBounds(10, 90, 70, 20);
         lastname.setForeground(Color.WHITE);
         lastnameF = new JTextField("", 10);
-        lastnameF.setBounds(80, 50, 180, 20);
+        lastnameF.setBounds(80, 90, 180, 20);
         gender = new JLabel("Gender");
-        gender.setBounds(10, 90, 60, 20);
+        gender.setBounds(10, 130, 60, 20);
         gender.setFont(new Font("Serif", Font.BOLD, 15));
         gender.setForeground(Color.WHITE);
         rdbFemale = new JRadioButton("Female");
         rdbFemale.setFont(new Font("Serif", Font.BOLD, 15));
-        rdbFemale.setBounds(80, 90, 90, 20);
+        rdbFemale.setBounds(80, 130, 90, 20);
         rdbMale = new JRadioButton("Male");
         rdbMale.setFont(new Font("Serif", Font.BOLD, 15));
-        rdbMale.setBounds(180, 90, 60, 20);
+        rdbMale.setBounds(180, 130, 60, 20);
         radioGroupGender = new ButtonGroup();
         radioGroupGender.add(rdbFemale);
         radioGroupGender.add(rdbMale);
         address = new JLabel("Address");
-        address.setBounds(10, 130, 60, 20);
+        address.setBounds(10, 170, 60, 20);
         address.setFont(new Font("Serif", Font.BOLD, 15));
         address.setForeground(Color.WHITE);
         addressF = new JTextField("", 10);
-        addressF.setBounds(80, 130, 180, 20);
+        addressF.setBounds(80, 170, 180, 20);
         email = new JLabel("Email");
-        email.setBounds(10, 170, 50, 20);
+        email.setBounds(10, 210, 50, 20);
         email.setFont(new Font("Serif", Font.BOLD, 15));
         email.setForeground(Color.WHITE);
         emailF = new JTextField("", 10);
-        emailF.setBounds(80, 170, 180, 20);
+        emailF.setBounds(80, 210, 180, 20);
 
         panelLeft = new JPanel();
         panelLeft.setBorder(new EmptyBorder(5, 5, 5, 5));
         setContentPane(panelLeft);
         panelLeft.setLayout(null);
-        panelLeft.setBounds(20, 60, 275, 200);
+        panelLeft.setBounds(20, 60, 275, 250);
         panelLeft.setBackground(Color.BLACK);
+        panelLeft.add(title1, BorderLayout.EAST);
         panelLeft.add(name, BorderLayout.EAST);
         panelLeft.add(nameF, BorderLayout.EAST);
         panelLeft.add(lastname, BorderLayout.EAST);
@@ -177,63 +185,83 @@ public class Administrator  extends JFrame implements ActionListener { //action 
 
         background2.add(panelLeft);
 
+
+        amount = new JLabel("Amount Fee Paid");
+        amount.setBounds(10, 10, 175, 20);
+        amount.setFont(new Font("Serif", Font.BOLD, 15));
+        amount.setForeground(Color.WHITE);
+        amountF = new JTextField();
+        amountF.setBounds(150, 10, 100, 20);
+        rdbFullyP= new JRadioButton("Fully paid");
+        rdbFullyP.setFont(new Font("Serif", Font.BOLD, 12));
+        rdbFullyP.setBounds(20, 40, 100, 25);
+        rdbInstP= new JRadioButton("Instalments paid");
+        rdbInstP.setFont(new Font("Serif", Font.BOLD, 12));
+        rdbInstP.setBounds(130, 40, 120, 25);
+        radioGroupFee= new ButtonGroup();
+        radioGroupFee.add(rdbFullyP);
+        radioGroupFee.add(rdbInstP);
         headerCourse = new JLabel("Courses Available to enroll");
-        headerCourse.setBounds(10, 0, 200, 20);
+        headerCourse.setBounds(10, 90, 200, 20);
         headerCourse.setFont(new Font("Serif", Font.BOLD, 15));
         headerCourse.setForeground(Color.WHITE);
+        panelLeft1 = new JPanel();
+        panelLeft1.setBorder(new EmptyBorder(5, 5, 5, 5));
+        setContentPane(panelLeft1);
+        panelLeft1.setLayout(null);
+        panelLeft1.setBounds(20, 325, 285, 110);
+        panelLeft1.setBackground(Color.black);
+        panelLeft1.add(amount);
+        panelLeft1.add(amountF);
+        panelLeft1.add(rdbFullyP);
+        panelLeft1.add(rdbInstP);
+        panelLeft1.add(headerCourse);
+        background2.add(panelLeft1);
 
         panelLef2 = new JPanel();
-        //panelLef2.setBorder(new EmptyBorder(5, 5, 5, 5));
-        //setContentPane(panelLef2);
-        //panelLef2.setLayout(null);
         panelLef2.setLayout(new FlowLayout());
-        panelLef2.setBounds(20, 270, 285, 270);
-        panelLef2.setBackground(new Color(65, 46, 108));
+        panelLef2.setBounds(20, 430, 285, 100);
+        panelLef2.setBackground(new Color(38,0,77));
 
-        //listCourse();
-        //scrollPaneCourses = new JScrollPane();
-        //scrollPaneCourses.setBounds(0, 30, 400, 300);
-        //scrollPaneCourses.add(listCourses);
-
-
-        //panelLef2.add(headerCourse);
-        //panelLef2.add(scrollPaneCourses);
-
-        // panelLef2.add();
         background2.add(panelLef2);
 
 
+        title2 = new JLabel("Course Form");
+        title2.setBounds(10, 5, 200, 20);
+        title2.setFont(new Font("Serif", Font.BOLD, 20));
+        title2.setForeground(Color.PINK);
         courseID = new JLabel("Course ID:");
-        courseID.setBounds(10, 10, 100, 20);
+        courseID.setBounds(10, 50, 100, 20);
         courseID.setFont(new Font("Serif", Font.BOLD, 15));
         courseID.setForeground(Color.WHITE);
         courseIDF = new JTextField();
-        courseIDF.setBounds(110, 10, 150, 20);
+        courseIDF.setBounds(110, 50, 150, 20);
         courseName = new JLabel("Course name:");
-        courseName.setBounds(10, 50, 100, 20);
+        courseName.setBounds(10, 90, 100, 20);
         courseName.setFont(new Font("Serif", Font.BOLD, 15));
         courseName.setForeground(Color.WHITE);
         courseNameF = new JTextField();
-        courseNameF.setBounds(110, 50, 150, 20);
+        courseNameF.setBounds(110, 90, 150, 20);
         coursePrice = new JLabel("Course price:");
-        coursePrice.setBounds(10, 90, 100, 20);
+        coursePrice.setBounds(10, 130, 100, 20);
         coursePrice.setFont(new Font("Serif", Font.BOLD, 15));
         coursePrice.setForeground(Color.WHITE);
         coursePriceF = new JTextField();
-        coursePriceF.setBounds(110, 90, 150, 20);
+        coursePriceF.setBounds(110, 130, 150, 20);
         courseComments = new JLabel("Comments:");
-        courseComments.setBounds(10, 130, 100, 20);
+        courseComments.setBounds(10, 170, 100, 20);
         courseComments.setFont(new Font("Serif", Font.BOLD, 15));
         courseComments.setForeground(Color.WHITE);
         courseCommentsF = new JTextField();
-        courseCommentsF.setBounds(110, 130, 150, 50);
+        courseCommentsF.setBounds(110, 170, 150, 50);
 
         panelRight = new JPanel();
         panelRight.setBorder(new EmptyBorder(5, 5, 5, 5));
         setContentPane(panelRight);
         panelRight.setLayout(null);
-        panelRight.setBounds(580, 60, 270, 200);
+        panelRight.setBounds(320, 60, 280, 250);
         panelRight.setBackground(Color.BLACK);
+        panelRight.add(title2, BorderLayout.WEST);
         panelRight.add(courseID, BorderLayout.WEST);
         panelRight.add(courseIDF, BorderLayout.WEST);
         panelRight.add(courseName, BorderLayout.WEST);
@@ -246,17 +274,35 @@ public class Administrator  extends JFrame implements ActionListener { //action 
         background2.add(panelRight);
 
 
-        controlPanel = new JPanel();
-        controlPanel.setLayout(new FlowLayout());
-        controlPanel.setBounds(30, 25, 200, 60);
+        title3 = new JLabel("In order to update or delete");
+        title3.setBounds(10, 10, 300, 25);
+        title3.setFont(new Font("Serif", Font.BOLD, 25));
+        title3.setForeground(Color.PINK);
+        search = new JLabel("Unique ID:");
+        search.setBounds(10, 50, 100, 20);
+        search.setFont(new Font("Serif", Font.BOLD, 15));
+        search.setForeground(Color.WHITE);
+        searchF = new JTextField();
+        searchF.setBounds(100, 50, 100, 20);
+        btnSearh = new JButton("Search");
+        btnSearh.setFont(new Font("Serif", Font.BOLD, 17));
+        //btnSearh.setIcon(new ImageIcon(getClass().getResource("searchIcon.png")));
+        btnSearh.setBounds(225, 50, 90, 30);
 
+        controlPanel = new JPanel();
+        controlPanel.setBounds(10,90,330,300);
+        controlPanel.setForeground(Color.LIGHT_GRAY);
         panelRightDown = new JPanel();
         panelRightDown.setBorder(new EmptyBorder(5, 5, 5, 5));
         setContentPane(panelRightDown);
         panelRightDown.setLayout(null);
-        panelRightDown.setBounds(580, 270, 285, 270);
-        panelLef2.setBackground(new Color(65, 46, 108));
-        //panelRightDown.add(headerCourse, BorderLayout.EAST);
+        panelRightDown.setBounds(635, 60, 350, 410);
+        panelRightDown.setBackground(Color.BLACK);
+        panelRightDown.add(search, BorderLayout.EAST);
+        panelRightDown.add(searchF, BorderLayout.EAST);
+        panelRightDown.add(title3,BorderLayout.EAST);
+        panelRightDown.add(btnSearh,BorderLayout.EAST);
+        panelRightDown.add(controlPanel, BorderLayout.EAST);
         // panelRightDown.add(controlPanel);
         background2.add(panelRightDown);
 
@@ -268,18 +314,18 @@ public class Administrator  extends JFrame implements ActionListener { //action 
         btnManaFee.setIcon(new ImageIcon(getClass().getResource("manaFee.jpg"))); // NOI18N
         btnManaFee.setBounds(20, 30, 100, 103);
         createTimetable = new JLabel(" Created Timetables ");
-        createTimetable.setBounds(5, 150, 150, 20);
+        createTimetable.setBounds(160, 5, 150, 20);
         createTimetable.setFont(new Font("Serif", Font.BOLD, 15));
         createTimetable.setForeground(Color.WHITE);
         btnTimetables = new JButton();
         btnTimetables.setIcon(new ImageIcon(getClass().getResource("calendarIcon.jpg"))); // NOI18N
-        btnTimetables.setBounds(20, 180, 100, 103);
+        btnTimetables.setBounds(170, 30, 100, 103);
         panelLeftDown = new JPanel();
         panelLeftDown.setBorder(new EmptyBorder(5, 5, 5, 5));
         setContentPane(panelLeftDown);
         panelLeftDown.setLayout(null);
-        panelLeftDown.setBounds(380, 60, 150, 300);
-        panelLeftDown.setBackground(new Color(65, 46, 108));
+        panelLeftDown.setBounds(320, 320, 300, 150);
+        panelLeftDown.setBackground(new Color(38,0,77));
         panelLeftDown.add(btnManaFee, BorderLayout.WEST);
         panelLeftDown.add(manageStudentFee, BorderLayout.WEST);
         panelLeftDown.add(btnTimetables, BorderLayout.WEST);
@@ -298,27 +344,28 @@ public class Administrator  extends JFrame implements ActionListener { //action 
         btnClear = new JButton("Delete");
         btnClear.setFont(new Font("Serif", Font.BOLD, 10));
         btnClear.setIcon(new ImageIcon(getClass().getResource("eraseIcon.png")));
-        btnClear.setBounds(0, 40, 100, 40);
+        btnClear.setBounds(200, 0, 100, 40);
         btnLogOut = new JButton("Log out");
-        btnLogOut.setBounds(100, 40, 100, 40);
-        panelLogOut = new JPanel();
-        panelLogOut.setBorder(new EmptyBorder(5, 5, 5, 5));
-        setContentPane(panelLogOut);
-        panelLogOut.setLayout(null);
-        panelLogOut.setBounds(350, 400, 200, 80);
-        panelLogOut.add(btnAdd);
-        panelLogOut.add(btnUpdate);
-        panelLogOut.add(btnClear);
-        panelLogOut.add(btnLogOut);
+        btnLogOut.setBounds(300, 0, 100, 40);
+        btnLogOut.setForeground(Color.RED);
+        panelButtons = new JPanel();
+        panelButtons.setBorder(new EmptyBorder(5, 5, 5, 5));
+        setContentPane(panelButtons);
+        panelButtons.setLayout(null);
+        panelButtons.setBounds(550, 490, 400, 40);
+        panelButtons.add(btnAdd);
+        panelButtons.add(btnUpdate);
+        panelButtons.add(btnClear);
+        panelButtons.add(btnLogOut);
 
-        background2.add(panelLogOut);
+        background2.add(panelButtons);
 
 
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setLayout(new FlowLayout());
-        frame.setSize(900, 600);
+        frame.setSize(1000, 600);
         frame.setLocationRelativeTo(null);
-        frame.setResizable(false);
+        //frame.setResizable(false);
         frame.setTitle("ADMINISTRATIVE FUNCTIONS");
         frame.setVisible(true);
 
@@ -331,9 +378,10 @@ public class Administrator  extends JFrame implements ActionListener { //action 
 
         btnAdd.addActionListener(this);
         btnClear.addActionListener(this);
-
-
+        btnSearh.addActionListener(this);
         btnUpdate.addActionListener(this);
+
+
 
     }
 
@@ -342,13 +390,11 @@ public class Administrator  extends JFrame implements ActionListener { //action 
 
         if (e.getSource() == btnLogOut) {
             this.frame.setVisible(false);
-            //LoginPage loginPage = new LoginPage();
         } else if (e.getSource() == btnManaFee) {
             this.frame.setVisible(false);
             ManagementFees managementFees = new ManagementFees();
         } else if (e.getSource() == btnTimetables) {
-            this.frame.setVisible(false);
-
+            //this.frame.setVisible(false);
         } else if (e.getSource() == btnAdd) {
             if (rdbCreateCourse.isSelected()) {
                 try {
@@ -378,13 +424,28 @@ public class Administrator  extends JFrame implements ActionListener { //action 
                 clearAllControls();
 
             } else if (rdbCreateStudent.isSelected()) {
-                //db.getStudInfo(getCreateId(),getCreatePassword(),getNameS(),getLastnameS(),getEmailS(),getAddressS(),getGender(),getBranch());
+                try {
+                    db.getStuInfo(getCreateId(), getCreatePassword(), getNameS(), getLastnameS(), getEmailS(), getAddressS(), getGender(), getStudentBranch(),getStudentCourse());
+                } catch (SQLException throwables) {
+                    throwables.printStackTrace();
+                }
                 getAddToDBmessage2();
                 clearAllControls();
             }
+        } else if (e.getSource() == btnClear) {
+
+
+        }else if (e.getSource() == btnUpdate){
+
+        }else if (e.getSource() == btnSearh){
+
+
+
+
         }
 
     }
+
 
 
     public void addBranchInComboBox() {
@@ -421,6 +482,8 @@ public class Administrator  extends JFrame implements ActionListener { //action 
             comboBoxBranch.setSelectedIndex(-1);
             radioGroup.clearSelection();
             radioGroupGender.clearSelection();
+
+
         } catch (Exception e) {
             System.out.println(e.toString());
         }
@@ -523,6 +586,9 @@ public class Administrator  extends JFrame implements ActionListener { //action 
         nameS = nameF.getText();
         lastnameS = lastnameF.getText();
 
+        today = Calendar.getInstance();
+        year = today.get(Calendar.YEAR);
+
         try{
 
             if (this.rdbCreateAdministrative.isSelected()){
@@ -531,13 +597,13 @@ public class Administrator  extends JFrame implements ActionListener { //action 
                 String nameNumber = String.valueOf(nameS.length() + lastnameS.length());
                 createId = (studentId+nam1+nameNumber);
             } else if (this.rdbCreateLecturer.isSelected()) {
-                String studentId = "st21-";
+                String studentId = "lect-";
                 String nam1 = nameS.substring(0, 1).toUpperCase();
                 String nameNumber = String.valueOf(nameS.length() + lastnameS.length());
                 createId = (studentId+nam1+nameNumber);
 
             }else if (this.rdbCreateStudent.isSelected()) {
-                String studentId = "lect-";
+                String studentId = "st"+year+"-";
                 String nam1 = nameS.substring(0, 1).toUpperCase();
                 String nameNumber = String.valueOf(nameS.length() + lastnameS.length());
                 createId = (studentId+nam1+nameNumber);
@@ -560,12 +626,11 @@ public class Administrator  extends JFrame implements ActionListener { //action 
     public void getAddToDBmessage2() {
 
         String messagePersonInfo = "\n *** INFORMATION ****"
-                + "\n Student number: " + "  " + createId
-                + "\n *Temporarily PASSWORD: " + "  " + password
+                + "\n User ID: " + "  " + createId
+                + "\n **PASSWORD: " + "  " + password
                 + "\n Name: " + " " + nameS + " " + lastnameS
                 + "\n Email: " + "  " + emailS
-                + "\n Address: " + "  " + addressS
-                + "\n Gender: " + "  " + selectionGender;
+                + "\n Address: " + "  " + addressS;
 
         JOptionPane.showMessageDialog(frame,
                 "NEW USER CREATE" +
@@ -575,10 +640,10 @@ public class Administrator  extends JFrame implements ActionListener { //action 
 
     }
 
+
     private void showListCourses(){
 
-
-        final DefaultListModel<String> courseName = new DefaultListModel<>();
+        final DefaultListModel<String> courseNameModel = new DefaultListModel<>();
 
         try {
 
@@ -587,8 +652,7 @@ public class Administrator  extends JFrame implements ActionListener { //action 
             db.rs = db.pstmt.executeQuery();
 
             while (db.rs.next()) {
-
-                courseName.addElement(db.rs.getString("course_name"));
+                courseNameModel.addElement(db.rs.getString("course_name"));
             }
 
         }catch (SQLException e) {
@@ -597,87 +661,149 @@ public class Administrator  extends JFrame implements ActionListener { //action 
             System.out.println(e.toString());
         }
 
-        final JList courseList = new JList(courseName);
+        courseList = new JList(courseNameModel);
         courseList.setSelectionMode(ListSelectionModel.SINGLE_INTERVAL_SELECTION);
         courseList.setSelectedIndex(0);
         courseList.setVisibleRowCount(3);
         courseList.setFixedCellHeight(30);
-        courseList.setFixedCellWidth(200);
+        courseList.setFixedCellWidth(270);
 
         JScrollPane courseListScrollPane = new JScrollPane(courseList);
         panelLef2.add(courseListScrollPane);
 
+
+
     }
 
+    public String getStudentCourse(){
+        couSFees = (String)db.getCourseIDInfo(CIDFee());
 
+        return couSFees;
 
-
-    /*  WORKING ON **** Nathalie
-    public final void listCourse() {
-
-        String[] columnNames = {"Course ID", "Course Name", "Course Price", "Course Comments", "Branch"};
-        DefaultTableModel tableModel = new DefaultTableModel(columnNames, 0);
-        tableModel.setColumnIdentifiers(columnNames);
-        tableModel.setRowCount(0);
-
-        JTable table = new JTable(tableModel);
-        this.add(new JScrollPane(table));
-
-        try {
-
-            String query = "select * from course";
-            db.pstmt = db.conn.prepareStatement(query);
-            db.rs = db.pstmt.executeQuery();
-
-            while (db.rs.next()) {
-
-                Object o[] = {db.rs.getInt("course_id"),db.rs.getInt("course_name"),db.rs.getInt("course_price"),db.rs.getInt("course_comments"),db.rs.getInt("branch_Bno")};
-                tableModel.addRow(o);
-            }
-        } catch (SQLException exe) {
-            exe.printStackTrace();
-        }
     }
 
+    public String CIDFee(){
+        String data = new String();
+        if (courseList.getSelectedIndex() != -1) {
+            data= (String) courseList.getSelectedValue();
 
-public final void createListCourses(){
-
-        DefaultListModel<String> model1 = new DefaultListModel<>();
-
-        try {
-
-            String query = "select * from course";
-            db.pstmt = db.conn.prepareStatement(query);
-            db.rs = db.pstmt.executeQuery();
-
-            while (db.rs.next()) {
-
-                model1.addElement(db.rs.getString("course_name"));
-            }
-
-
-        }catch (SQLException e) {
-            System.out.println(e.toString());
-        } catch (Exception e) {
-            System.out.println(e.toString());
         }
 
-       listCourses = new JList(model1);
-            listCourses.setSelectionMode(ListSelectionModel.SINGLE_INTERVAL_SELECTION);
-            listCourses.setLayoutOrientation(JList.VERTICAL_WRAP);
-            listCourses.setVisibleRowCount(3);
-            listCourses.setSelectedIndex(0);
-            scrollPaneCourses = new JScrollPane(listCourses);
+        return data;
+    }
 
-            scrollPaneCourses.setBounds(0, 30, 285, 200);
-            scrollPaneCourses.add(listCourses);
-            panelLef2.add(scrollPaneCourses);
+    public String getStudentBranch(){
+        getStudentCourse();
+        String studentBranch = (String)db.getStudentBranchWithCourseEnroll(couSFees);
 
+        return studentBranch;
+    }
+
+    public String getIdToSearch() {
+        searchS = searchF.getText();
+        return searchS;
+    }
+
+
+
+ /* ***** WORKING ON NATHALIE FLORES
+
+
+
+    public boolean ifCourseIdExist(String course_id) {
+        db.SQL = "select course_id from course where course_id=?";
+        try {
+            db.pstmt = db.conn.prepareStatement(db.SQL);
+            db.pstmt.setString(1, course_id);
+            db.rs = db.pstmt.executeQuery();
+        } catch (SQLException e1) {
+            // TODO Auto-generated catch block
+            e1.printStackTrace();
+        }
+
+        try {
+            // check for any facultyID already in use or not
+            // check for any record, if the first call to next() returns false then there is
+            // no data in the ResultSet.
+            if (db.rs.next() == false) {
+                //JavaWindowsFormUserInformers
+                JOptionPane.showMessageDialog(frame,
+                        "This Course ID already exists, please choose the other one." ,
+                        "POSSIBLE DUPLICATE IN DB",
+                        JOptionPane.WARNING_MESSAGE);
+
+                return false;
+            } else
+                return true;
+        } catch (SQLException e) {
+
+            e.printStackTrace();
+
+        }
+        return false;
+    }
+
+
+    public void showTableData(){
+
+        String[] columnNames = new String[] {"ID", "Password", "Name"};
+        Object[][] data =  null;
+
+
+        //DefaultTableModel model = new DefaultTableModel();
+        //model.setColumnIdentifiers(columnNames);
+
+        table = new JTable(data, columnNames);
+        //table.setModel(model);
+        table.setAutoResizeMode(JTable.AUTO_RESIZE_ALL_COLUMNS);
+        table.setFillsViewportHeight(true);
+
+        JScrollPane scroll = new JScrollPane(table);
+        scroll.setHorizontalScrollBarPolicy(
+                JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+        scroll.setVerticalScrollBarPolicy(
+                JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
+
+        String textvalue = searchF.getText();
+        String roll= "";
+        String name= "";
+        String cl = "";
+        try
+        {
+            db.SQL = "select student_id,student_password, student_name from student where student_id = ?";
+            db.pstmt = db.conn.prepareStatement(db.SQL);
+            db.pstmt.setString(1,textvalue);
+            db.rs = db.pstmt.executeQuery();
+            if(db.rs.next())
+            {
+                if (db.rs.getString(1).equals(db.rs.getString("student_id"))) {
+                    roll = db.rs.getString("student_id");
+                    name = db.rs.getString("student_password");
+                    cl = db.rs.getString("student_name");
+                    model.addRow(new Object[]{roll, name, cl,});
+                } else {
+                    System.out.println("!!");
+
+                }
+
+            }
+
+        }
+        catch(Exception ex)
+        {
+            JOptionPane.showMessageDialog(null, ex.getMessage(),"Error",
+                    JOptionPane.ERROR_MESSAGE);
+        }
+
+        this.controlPanel.add(scroll);
+        controlPanel.add(table.getTableHeader(), BorderLayout.NORTH);
+        controlPanel.add(table, BorderLayout.CENTER);
 
     }
+
+
+
      */
-
-
 
 
 }

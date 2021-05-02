@@ -15,7 +15,7 @@ import java.util.List;
 public class Database extends JFrame {
     String DB_URL = "jdbc:mysql://localhost:3306/oop_final?serverTimezone=UTC";
     String DB_USER = "root";
-    String DB_PASSWORD = "ah447Sladl!"; //"YES01@";   "Memory1979@";
+    String DB_PASSWORD = "YES01@"; // "ah447Sladl!";  "Memory1979@";
     Connection conn;
     PreparedStatement pstmt;
     ResultSet rs;
@@ -314,6 +314,98 @@ public class Database extends JFrame {
         pstmt.execute();
 
     }
+
+    public String getCourseIDInfo(String data) {
+
+        String CIDFee = null;
+
+        SQL = "SELECT course_id FROM course WHERE course_name = ?";
+
+        try {
+            pstmt = conn.prepareStatement(SQL);
+            pstmt.setString(1, data);
+            rs = pstmt.executeQuery();
+            if (rs.next()) {
+                //System.out.println(pstmt);
+                if (rs.getString(1).equals(rs.getString("course_id"))) {
+                    CIDFee = rs.getString("course_id");
+
+                } else {
+                    System.out.println("!!");
+
+                }
+            } else {
+                System.out.println("!!");
+
+            }
+        } catch (SQLException e) {
+            System.out.println(e.toString());
+        } catch (Exception e) {
+            System.out.println(e.toString());
+        }
+        return CIDFee;
+    }
+
+    public void getStuInfo(String student_id, String student_password, String student_name, String student_Lname, String student_email, String student_address, String student_gender, String branch_Bno, String course_id)throws SQLException {
+        //my mysql insert statement
+        SQL = "INSERT INTO student ( student_id, student_password, student_name, student_Lname, student_email, student_address, student_gender, branch_Bno, course_id)" + "values (?,?,?,?,?,?,?,?,?)";
+
+        try{
+            //create my mysql insert preparedStatement
+            pstmt = conn.prepareStatement(SQL);
+            pstmt.clearParameters();
+            pstmt.setString(1, student_id);
+            pstmt.setString(2, student_password);
+            pstmt.setString(3, student_name);
+            pstmt.setString(4, student_Lname);
+            pstmt.setString(5, student_email);
+            pstmt.setString(6, student_address);
+            pstmt.setString(7, student_gender);
+            pstmt.setString(8, branch_Bno);
+            pstmt.setString(9, course_id);
+
+            pstmt.execute();
+
+        }catch (SQLException e) {
+            System.out.println(e.toString());
+        } catch (Exception e) {
+            System.out.println(e.toString());
+        }
+
+    }
+
+    public String getStudentBranchWithCourseEnroll(String couSFees) {
+
+        String studentBranch = null;
+
+        SQL = "SELECT branch_Bno FROM course WHERE course_id = ?";
+
+        try {
+            pstmt = conn.prepareStatement(SQL);
+            pstmt.setString(1, couSFees);
+            rs = pstmt.executeQuery();
+            if (rs.next()) {
+                System.out.println(pstmt);
+                if (rs.getString(1).equals(rs.getString("branch_Bno"))) {
+                    studentBranch= rs.getString("branch_Bno");
+
+                } else {
+                    System.out.println("!!");
+
+                }
+            } else {
+                System.out.println("!!");
+
+            }
+        } catch (SQLException e) {
+            System.out.println(e.toString());
+        } catch (Exception e) {
+            System.out.println(e.toString());
+        }
+        return studentBranch;
+    }
+
+
 
     public String checkMemo(String id, String courseId, String classId, String pickDate) {
 
