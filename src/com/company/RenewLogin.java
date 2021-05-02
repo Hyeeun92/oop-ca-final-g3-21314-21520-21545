@@ -19,12 +19,12 @@ public class RenewLogin extends JFrame {
     JTextField idField;
     JPasswordField pswdField, newField, confirmField;
     JLabel title, idLabel, pswdLabel, newLabel, confirmLabel, messageLabel;
-    String pswd = null;
-    String pswdNew = null;
-    String pswdConfirm = null;
-    String id = null;
+    String pswd = "";
+    String pswdNew = "";
+    String pswdConfirm = "";
+    String id = "";
 
-    public RenewLogin(String id) {
+    public RenewLogin(String getId, String getPswd) {
 
         Database db = new Database();
 
@@ -60,7 +60,6 @@ public class RenewLogin extends JFrame {
         confirmLabel.setBounds(100, 275, 170, 25);
         confirmLabel.setFont(new Font("Serif", Font.BOLD, 16));
 
-
         messageLabel.setBounds(325, 250, 250, 35);
         messageLabel.setFont(new Font(null, Font.BOLD, 25));
 
@@ -72,8 +71,6 @@ public class RenewLogin extends JFrame {
         btnSave.setBounds(375, 350, 175, 50);
         btnSave.setFont(new Font("Serif", Font.BOLD, 20));
         btnSave.setFocusable(false);
-
-
 
         frame.add(title);
         frame.add(idLabel);
