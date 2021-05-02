@@ -29,7 +29,6 @@ public class LoginPage extends JFrame{
 
     public LoginPage(){
 
-        Model model = new Model();
         Database db = new Database();
         CalendarMemo calendarMemo = new CalendarMemo();
 
@@ -100,7 +99,7 @@ public class LoginPage extends JFrame{
         layout.putConstraint(SpringLayout.WEST, panelR1, 5, SpringLayout.WEST, background);
         SpringLayout.Constraints labelConsR0 = layout.getConstraints(panelR1);
         labelConsR0.setX(Spring.constant(15));
-        labelConsR0.setY(Spring.constant(120));;
+        labelConsR0.setY(Spring.constant(120));
         panelR1.add(adminRadio);
         background.add(panelR1);
 
@@ -114,7 +113,7 @@ public class LoginPage extends JFrame{
         layout.putConstraint(SpringLayout.WEST, panelR2, 5, SpringLayout.WEST, background);
         SpringLayout.Constraints labelConsR1 = layout.getConstraints(panelR2);
         labelConsR1.setX(Spring.constant(15));
-        labelConsR1.setY(Spring.constant(145));;
+        labelConsR1.setY(Spring.constant(145));
         panelR2.add(lectureRadio);
         background.add(panelR2);
 
@@ -128,7 +127,7 @@ public class LoginPage extends JFrame{
         layout.putConstraint(SpringLayout.WEST, panelR3, 5, SpringLayout.WEST, background);
         SpringLayout.Constraints labelConsR2 = layout.getConstraints(panelR3);
         labelConsR2.setX(Spring.constant(15));
-        labelConsR2.setY(Spring.constant(170));;
+        labelConsR2.setY(Spring.constant(170));
         panelR3.add(studentRadio);
         background.add(panelR3);
 
@@ -147,7 +146,7 @@ public class LoginPage extends JFrame{
         layout.putConstraint(SpringLayout.WEST, panelB1, 5, SpringLayout.WEST, background);
         SpringLayout.Constraints labelConsB1 = layout.getConstraints(panelB1);
         labelConsB1.setX(Spring.constant(490));
-        labelConsB1.setY(Spring.constant(375));;
+        labelConsB1.setY(Spring.constant(375));
         panelB1.add(btnLogin);
         background.add(panelB1);
 
@@ -159,7 +158,7 @@ public class LoginPage extends JFrame{
         layout.putConstraint(SpringLayout.WEST, panelB2, 5, SpringLayout.WEST, background);
         SpringLayout.Constraints labelConsB2 = layout.getConstraints(panelB2);
         labelConsB2.setX(Spring.constant(390));
-        labelConsB2.setY(Spring.constant(375));;
+        labelConsB2.setY(Spring.constant(375));
         panelB2.add(btnReset);
         background.add(panelB2);
 

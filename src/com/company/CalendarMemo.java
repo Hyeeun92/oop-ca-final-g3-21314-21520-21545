@@ -61,15 +61,15 @@ public class CalendarMemo extends JFrame implements ActionListener{
 
     public void CalendarForStudent(String id, String pswd) {
 
+        this.id = id;
+        this.pswd = pswd;
+
         JLabel backgroundS = new JLabel(new ImageIcon(getClass().getResource("greenChalkboard.jpg")));
         backgroundS.setSize(960,533);
         add(backgroundS);
 
         layout = new SpringLayout();
         backgroundS.setLayout(layout);
-
-        inputId = id;
-        inputPswd = pswd;
 
         today = Calendar.getInstance();
         cal = new GregorianCalendar();
@@ -81,7 +81,6 @@ public class CalendarMemo extends JFrame implements ActionListener{
         panNorth.add(btnBefore = new JButton("<"));
         panNorth.add(textMonth = new JTextField(month + ""));
         panNorth.add(textYear = new JTextField(year + ""));
-
 
         textYear.setEnabled(false);
         textMonth.setEditable(false);
@@ -99,7 +98,6 @@ public class CalendarMemo extends JFrame implements ActionListener{
         labelCons1.setY(Spring.constant(100));
         backgroundS.add(panNorth);
 
-
         panWest = new JPanel(new GridLayout(7,7));
         f = new Font("Serif", Font.BOLD, 12);
 
@@ -116,7 +114,7 @@ public class CalendarMemo extends JFrame implements ActionListener{
 
 
         panEast = new JPanel();
-        panEast.add(textWrite = new JTextField(null));
+        panEast.add(textWrite = new JTextField(""));
         textWrite.setEditable(false);
         textWrite.setPreferredSize(new Dimension(180, 180));
 
@@ -129,7 +127,6 @@ public class CalendarMemo extends JFrame implements ActionListener{
         labelCons3.setX(Spring.constant(730));
         labelCons3.setY(Spring.constant(120));
         backgroundS.add(panEast);
-
 
         panSouth = new JPanel();
         panSouth.add(listResult = new JButton());
@@ -151,7 +148,6 @@ public class CalendarMemo extends JFrame implements ActionListener{
         labelCons4.setY(Spring.constant(400));
         backgroundS.add(panSouth);
 
-
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setResizable(false);
         setTitle("CALENDAR");
@@ -159,10 +155,13 @@ public class CalendarMemo extends JFrame implements ActionListener{
         setVisible(true);
         setLocationRelativeTo(null);
 
-        /*btnBefore.addActionListener(this);
-        btnAfter.addActionListener(this);*/
+        btnBefore.addActionListener(this);
+        btnAfter.addActionListener(this);
+        listResult.addActionListener(this);
+        listAttendance.addActionListener(this);
+        changePswd.addActionListener(this);
 
-        listResult.addActionListener(new ActionListener() {
+        /*listResult.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
 
@@ -179,7 +178,7 @@ public class CalendarMemo extends JFrame implements ActionListener{
             public void actionPerformed(ActionEvent e) {
                 RenewLogin renewLogin = new RenewLogin();
             }
-        });
+        });*/
     }
 
     public void CalendarForLecture(String id, String pswd, String courseId, String classId) {
@@ -229,7 +228,7 @@ public class CalendarMemo extends JFrame implements ActionListener{
         f = new Font("Serif", Font.BOLD, 12);
 
         gridInit();
-        calSet();
+
         //add(panWest, "West");
         panWest.setBackground(Color.MAGENTA);
         layout.putConstraint(SpringLayout.WEST, panWest, 5, SpringLayout.WEST, backgroundS);
@@ -241,7 +240,7 @@ public class CalendarMemo extends JFrame implements ActionListener{
         backgroundS.add(panWest);
 
         panEast = new JPanel();
-        panEast.add(textWrite = new JTextField());
+        panEast.add(textWrite = new JTextField(""));
         textWrite.setPreferredSize(new Dimension(180, 180));
         //add(panEast, "East");
         panEast.setBackground(Color.BLUE);
@@ -283,59 +282,69 @@ public class CalendarMemo extends JFrame implements ActionListener{
         btnStudentInfo.addActionListener(this);
 
         calSet();
-        /*db.lectureSearchMemo(model);
-        String roadDate = model.getRoadDate();
-        String getInfo = model.getLectureScheduleInfo();
-
-        if (roadDate == pickDate) {
-            textWrite.setText(getInfo);
-        }*/
-
-      /*  btnAdd.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                information = textWrite.getText();
-                if (pickDate!= null && information!= null) {
-                    model.setLectureScheduleInfo(information);
-                    model.setPickDate(pickDate);
-                    System.out.println(model.getLectureScheduleInfo() + model.getPickDate() + "!!");
-                    checkpanel();
-                }
-            }
-        });
-        btnDelete.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                information = textWrite.getText();
-                if (pickDate!= null && information!= null) {
-                    model.setLectureScheduleInfo(information);
-                    model.setPickDate(pickDate);
-                    db.calDBDelete();
-                }
-            }
-        });
-
-        btnAttendManage.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-            }
-        });
-        btnStudentInfo.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                SwingUtilities.invokeLater(new Runnable() {
-                    @Override
-                    public void run() {
-                        db.listOfStudents();
-                    }
-                });
-            }
-        });*/
 
     }
 
-    public void calSet() {
+    public void actionPerformed(ActionEvent e) {
 
+        Database db = new Database();
+
+        if (e.getSource() == btnBefore) {
+            this.panWest.removeAll();     //panWest
+            calInput(-1);
+            gridInit();
+            panelInit();
+            calSet();
+            this.textYear.setText(year + "");
+            this.textMonth.setText(month + "");
+        }
+        else if (e.getSource() == btnAfter) {
+            this.panWest.removeAll();    //panWest
+            calInput(1);
+            gridInit();
+            panelInit();
+            calSet();
+            this.textYear.setText(year + "");
+            this.textMonth.setText(month + "");
+        }
+        else if (e.getSource() == btnStudentInfo) {
+            db.listOfStudents(courseId);
+        }
+        else if (e.getSource() == btnAdd) {
+            information = textWrite.getText();
+            if (pickDate != null && information != null) {
+                checkpanel(id, pswd, courseId, classId, pickDate, information);
+            }
+        }
+        else if (e.getSource() == btnDelete) {
+            information = textWrite.getText();
+            if (pickDate != null && information != null) {
+                db.calDBDelete(id, courseId, classId, pickDate, information);
+            }
+        }
+        else if (e.getSource() == btnAttendManage) {
+
+        }
+        else if (e.getSource() == listResult) {
+
+        }
+        else if (e.getSource() == listAttendance) {
+
+        }
+        else if (e.getSource() == changePswd) {
+            RenewLogin renewLogin = new RenewLogin(id, pswd);
+        }
+
+        else if (Integer.parseInt(e.getActionCommand()) >= 1 && Integer.parseInt(e.getActionCommand()) <=31) {
+            day = Integer.parseInt(e.getActionCommand());
+            pickDate = day+"/"+month+"/"+year;
+            System.out.println(pickDate);
+            textWrite.setText(db.checkMemo(id, courseId, classId, pickDate));
+            calSet();
+        }
+    }
+
+    public void calSet() {
         cal.set(Calendar.YEAR, year);
         cal.set(Calendar.MONTH,(month-1));
         cal.set(Calendar.DATE,1);
@@ -374,55 +383,6 @@ public class CalendarMemo extends JFrame implements ActionListener{
                 }
             }
             calBtn[i+6+hopping].setText((i) + "");
-        }
-    }
-
-   public void actionPerformed(ActionEvent e) {
-        Database db = new Database();
-        if (e.getSource() == btnBefore) {
-            this.panWest.removeAll();     //panWest
-            calInput(-1);
-            gridInit();
-            panelInit();
-            calSet();
-            this.textYear.setText(year + "");
-            this.textMonth.setText(month + "");
-        }
-        else if (e.getSource() == btnAfter) {
-            this.panWest.removeAll();    //panWest
-            calInput(1);
-            gridInit();
-            panelInit();
-            calSet();
-            this.textYear.setText(year + "");
-            this.textMonth.setText(month + "");
-        }
-        else if (e.getSource() == btnStudentInfo) {
-            db.listOfStudents(courseId);
-        }
-        else if (e.getSource() == btnAdd) {
-            information = textWrite.getText();
-            if (pickDate != null && information != null) {
-                checkpanel(id, pswd, courseId, classId, pickDate, information);
-            }
-        }
-        else if (e.getSource() == btnDelete) {
-            information = textWrite.getText();
-            if (pickDate != null && information != null) {
-                /* model.setLectureScheduleInfo(information);
-                   model.setPickDate(pickDate);
-                   db.calDBDelete();*/
-            }
-        }
-        else if (e.getSource() == btnAttendManage) {
-
-        }
-        else if (Integer.parseInt(e.getActionCommand()) >= 1 && Integer.parseInt(e.getActionCommand()) <=31) {
-            day = Integer.parseInt(e.getActionCommand());
-            pickDate = day+"/"+month+"/"+year;
-            System.out.println(pickDate);
-            calSet();
-            //db.searchMemo();
         }
     }
 

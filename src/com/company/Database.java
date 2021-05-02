@@ -20,6 +20,7 @@ public class Database extends JFrame {
     PreparedStatement pstmt;
     ResultSet rs;
     String SQL = "";
+    CalendarMemo calendarMemo = new CalendarMemo();
 
     public Database() {
         try {
@@ -85,13 +86,12 @@ public class Database extends JFrame {
         } catch (Exception e) {
             System.out.println(e.toString());
         }
-
-
     }
 
     public void getLectureInformation(String id, String pswd) {
 
         CalendarMemo calendarMemo = new CalendarMemo();
+
         String courseId = "";
         String classId = "";
 
@@ -134,7 +134,7 @@ public class Database extends JFrame {
             pstmt = conn.prepareStatement(SQL);
             pstmt.setString(1, id);
             rs = pstmt.executeQuery();
-            if (rs.next()) {
+            while (rs.next()) {
                 if (rs.getString(1).equals(pswd)) {
                     dispose();
                     CalendarMemo calendarMemo = new CalendarMemo();
@@ -142,9 +142,6 @@ public class Database extends JFrame {
                 } else {
                     getMessageError();
                 }
-            } else {
-                getMessageError();
-
             }
         } catch (SQLException e) {
             System.out.println(e.toString());
@@ -189,27 +186,7 @@ public class Database extends JFrame {
 
     }
 
-    public void calDBAdddetail(String id, String date, String information, String type, String courseId, String classId) {
-        SQL = "insert into schedule(class_id, finish_date, lecture_id, type, course_id, information)" + "values (?,?,?,?,?,?,?,?)";
-        try {
-            pstmt = conn.prepareStatement(SQL);
-            pstmt.clearParameters();
-            pstmt.setString(1, classId);
-            pstmt.setString(2, date);
-            pstmt.setString(3, id);
-            pstmt.setString(4, type);
-            pstmt.setString(5, courseId);
-            pstmt.setString(6, information);
-        } catch (SQLException e) {
-            System.out.println(e.toString());
-        } catch (Exception e) {
-            System.out.println(e.toString());
-        }
-    }
-
     public void calDBAdd(String id, String pswd, String courseId, String classId, String pickDate, String information, String type) {
-        Model model = new Model();
-        CalendarMemo calendarMemo = new CalendarMemo();
 
         //my mysql insert statement
         SQL = "INSERT INTO schedule (class_id, finish_date, lecture_id, type, course_id, information)" + "values (?,?,?,?,?,?)";
@@ -235,17 +212,15 @@ public class Database extends JFrame {
         }
     }
 
-    public void calDBDelete() {
-        Model model = new Model();
-        CalendarMemo calendarMemo = new CalendarMemo();
+    public void calDBDelete(String id, String courseId, String classId, String pickDate, String information) {
 
-
-        SQL = "DELETE FROM schedule WHERE finish_date = ? and lecture_id = ? ";
+        SQL = "DELETE FROM schedule WHERE finish_date = ? and lecture_id = ? and courseId = ?";
         try {
             pstmt = conn.prepareStatement(SQL);
-          //  pstmt.setString(1, date);
-           // pstmt.setString(2, id);
-         //   rs = pstmt.executeQuery();
+            pstmt.setString(1, pickDate);
+            pstmt.setString(2, id);
+            pstmt.setString(3, courseId);
+            pstmt.executeUpdate(SQL);
 
         } catch (SQLException sqlException) {
             System.out.println(sqlException);
@@ -340,8 +315,29 @@ public class Database extends JFrame {
 
     }
 
-    public void getMemo() {
+    public String checkMemo(String id, String courseId, String classId, String pickDate) {
 
+        SQL = "select information from schedule where lecture_id = ? and finish_date = ?";
+        String info = "";
+        String information = "";
+        try {
+            pstmt = conn.prepareStatement(SQL);
+            pstmt.setString(1, id);
+            pstmt.setString(2, pickDate);
+            rs = pstmt.executeQuery();
+
+            while(rs.next()) {
+               info += rs.getString("information");
+               information = courseId + "\n" + classId + "\n" + pickDate + "\n" + info;
+               System.out.println(information);
+               //calendarMemo.checkMemo(courseId, classId, information, pickDate);
+            }
+        } catch (SQLException e) {
+            System.out.println(e.toString());
+        } catch (Exception e) {
+            System.out.println(e.toString());
+        }
+        return information;
     }
 
     public void listOfResultStudent(String id) {
@@ -448,5 +444,7 @@ public class Database extends JFrame {
         }*/
 
     }
+
+
 }
 
