@@ -24,7 +24,7 @@ public class RenewLogin extends JFrame {
     String pswdConfirm = null;
     String id = null;
 
-    public RenewLogin(String id) {
+    public RenewLogin() {
 
         Database db = new Database();
 

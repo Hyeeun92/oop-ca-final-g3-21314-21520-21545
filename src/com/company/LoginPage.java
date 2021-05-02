@@ -29,16 +29,17 @@ public class LoginPage extends JFrame{
 
     public LoginPage(){
 
-        frameLogin = new JFrame();
+        Model model = new Model();
+        Database db = new Database();
+        CalendarMemo calendarMemo = new CalendarMemo();
 
+        frameLogin = new JFrame();
 
         JLabel background=new JLabel(new ImageIcon(getClass().getResource("college.jpg")));
         frameLogin.add(background);
 
         SpringLayout layout = new SpringLayout();
         background.setLayout(layout);
-
-        Database db = new Database();
 
         title = new JLabel("  Virtual Global College (VGC)  ");
         title.setSize(640, 50);
@@ -64,7 +65,6 @@ public class LoginPage extends JFrame{
         panel1.add(idLabel);
         panel1.add(idField);
         background.add(panel1);
-
 
         pswdLabel = new JLabel("Password: ");
         pswdLabel.setFont(new Font("Serif", Font.BOLD, 20));
