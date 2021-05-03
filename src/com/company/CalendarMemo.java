@@ -323,7 +323,7 @@ public class CalendarMemo extends JFrame implements ActionListener{
 
         }
         else if (e.getSource() == changePswd) {
-            RenewLogin renewLogin = new RenewLogin(id, pswd);
+            RenewLogin renewLogin = new RenewLogin(getId, getPswd);
         }
 
         else if (Integer.parseInt(e.getActionCommand()) >= 1 && Integer.parseInt(e.getActionCommand()) <=31) {

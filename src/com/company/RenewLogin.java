@@ -19,14 +19,18 @@ public class RenewLogin extends JFrame {
     JTextField idField;
     JPasswordField pswdField, newField, confirmField;
     JLabel title, idLabel, pswdLabel, newLabel, confirmLabel, messageLabel;
-    String pswd = "";
+    String inputPswd = "";
     String pswdNew = "";
     String pswdConfirm = "";
-    String id = "";
+    String inputId = "";
+    String getId;
+    String getpswd;
 
-    public RenewLogin(String getId, String getPswd) {
+    public RenewLogin(String id, String pswd) {
 
         Database db = new Database();
+        this.getId = id;
+        this.getpswd = pswd;
 
         //create JFrame
         frame = new JFrame();
@@ -85,12 +89,54 @@ public class RenewLogin extends JFrame {
         frame.add(confirmField);
         frame.add(btnSave);
 
-
-
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setSize(640, 480);
         frame.setLayout(null);
         frame.setVisible(true);
+        idField.setText(getId);
+        System.out.println(getId);
+        idField.setEditable(false);
+
+        btnSave.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                inputPswd = String.valueOf(pswdField.getPassword());
+                pswdNew = String.valueOf(newField.getPassword());
+                pswdConfirm = String.valueOf(confirmField.getPassword());
+                if (inputPswd.equals(getpswd)) {
+                    if (pswdNew.equals(getpswd)) {
+                        JOptionPane optionPane = new JOptionPane("Current password and new password are same", JOptionPane.ERROR_MESSAGE);
+                        JDialog dialog = optionPane.createDialog("Failure");
+                        dialog.setAlwaysOnTop(true);
+                        dialog.setVisible(true);
+                    } else {
+                        if (pswdNew.equals(pswdConfirm)) {
+                            db.changeStudentPswd(getId, pswdNew);
+                        } else {
+                            JOptionPane optionPane = new JOptionPane("New password and confirm new password are different", JOptionPane.ERROR_MESSAGE);
+                            JDialog dialog = optionPane.createDialog("Failure");
+                            dialog.setAlwaysOnTop(true);
+                            dialog.setVisible(true);
+                        }
+                    }
+
+                } else {
+                    JOptionPane optionPane = new JOptionPane("Incorrect password", JOptionPane.ERROR_MESSAGE);
+                    JDialog dialog = optionPane.createDialog("Failure");
+                    dialog.setAlwaysOnTop(true);
+                    dialog.setVisible(true);
+                }
+            }
+        });
+
+
+
+
+
+        //String inputPswd = "";
+        //    String pswdNew = "";
+        //    String pswdConfirm = "";
+        //    String intputId = "";
 
         /*btnSave.addActionListener(
            //new ActionListener() {

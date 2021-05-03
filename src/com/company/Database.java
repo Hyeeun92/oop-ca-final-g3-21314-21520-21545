@@ -64,16 +64,14 @@ public class Database extends JFrame {
 
     public void getLectureLoginInfo(String id, String pswd) {
 
-        System.out.println("getLectureLoginIngo " + id);
-        System.out.println("getLectureLoginInfo " + pswd);
-
         SQL = "select lecture_password from lecture where lecture_id = ?";
+        String password = null;
         try {
             pstmt = conn.prepareStatement(SQL);
             pstmt.setString(1, id);
             rs = pstmt.executeQuery();
             while (rs.next()) {
-                String password = rs.getString(1);
+                password = rs.getString(1);
                 if (password.equals(pswd)) {
                     getLectureInformation(id, pswd);
                 } else {
@@ -576,6 +574,23 @@ public class Database extends JFrame {
             System.out.println(e.toString());
         }
         return list;
+    }
+
+    public void changeStudentPswd(String getId, String pswdNew) {
+
+        SQL = "Update student set student_password = ? where student_id = ?";
+        try {
+            //create my mysql insert preparedStatement
+            pstmt = conn.prepareStatement(SQL);
+            pstmt.setString(1, pswdNew);
+            pstmt.setString(2, getId);
+            pstmt.executeUpdate();
+
+        } catch (SQLException e) {
+            System.out.println(e.toString());
+        } catch (Exception e) {
+            System.out.println(e.toString());
+        }
     }
 }
 
