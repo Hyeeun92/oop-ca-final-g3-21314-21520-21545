@@ -55,6 +55,8 @@ public class CalendarMemo extends JFrame implements ActionListener{
     String id, pswd, courseId, classId;
     String getId, getPswd;
     ArrayList<String[]> getClassList = new ArrayList<>();
+    String inputCourseId;
+    String inputClassId;
     //SpringLayout.Constraints labelCons2;
 
     public CalendarMemo() {
@@ -296,13 +298,18 @@ public class CalendarMemo extends JFrame implements ActionListener{
         else if (e.getSource() == btnAdd) {
             information = textWrite.getText();
             if (pickDate != null && information != null) {
-                checkpanel(id, pswd, getClassList, pickDate, information);
+                checkpanel(getId, getPswd, getClassList, pickDate, information);
             }
         }
         else if (e.getSource() == btnDelete) {
             information = textWrite.getText();
+            String[] info = information.split(" / ");
+            String getCourseId = info[0];
+            String getClassId = info[1];
+            String getInfo = info[2];
             if (pickDate != null && information != null) {
-                db.calDBDelete(id, courseId, classId, pickDate, information);
+                db.calDBDelete(getId, getCourseId, getClassId, pickDate, getInfo);
+                System.out.println(getId+getClassId+getClassId+pickDate+getInfo);
             }
         }
         else if (e.getSource() == btnAttendManage) {
@@ -401,25 +408,51 @@ public class CalendarMemo extends JFrame implements ActionListener{
     private void checkpanel(String id, String pswd, ArrayList<String[]> classList, String pickDate, String information) {
 
         Database db = new Database();
+        this.getId = id;
+        this.pickDate = pickDate;
+        this.information = information;
 
         JFrame frame = new JFrame();
         frame.setLayout(new FlowLayout());
         setLayout(new FlowLayout());
-        frame.setSize(500, 200);
+        frame.setSize(300, 300);
         JTextField dateText = new JTextField(null);
         JTextField infoText = new JTextField(null);
         dateText.setEditable(false);
         infoText.setEditable(false);
-        dateText.setText("Date: " + pickDate);
-        infoText.setText("Information: " + information);
+        dateText.setText(pickDate);
+        infoText.setText(information);
         JRadioButton btnCa = new JRadioButton("CA", false);
         JRadioButton btnExam = new JRadioButton("EXAM", false);
         ButtonGroup caExam = new ButtonGroup();
         caExam.add(btnExam);
         caExam.add(btnCa);
-        JButton btnSave = new JButton("Save");
         frame.add(dateText);
         frame.add(infoText);
+        ButtonGroup radioButtonGroup = new ButtonGroup();
+        for (int i = 0; i < classList.size(); i++) {
+            JRadioButton button[] = new JRadioButton[classList.size()];
+            String[] courseId_classId_List = new String[2];
+            courseId_classId_List = getClassList.get(i);
+            courseId = courseId_classId_List[0];
+            classId = courseId_classId_List[1];
+            button[i] = new JRadioButton(courseId +"," +classId, false);
+            radioButtonGroup.add(button[i]);
+            frame.add(button[i]);
+            button[i].addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    String courseClassId = e.getActionCommand();
+                    String[] list = courseClassId.split(",");
+                    inputCourseId = list[0];
+                    inputClassId = list[1];
+
+                }
+            });
+        }
+
+        JButton btnSave = new JButton("Save");
+
         frame.add(btnExam);
         frame.add(btnCa);
         frame.add(btnSave);
@@ -431,11 +464,14 @@ public class CalendarMemo extends JFrame implements ActionListener{
             public void actionPerformed(ActionEvent e) {
                 if (btnCa.isSelected()) {
                     String type = "CA";
-                    System.out.println(inputId + pickDate + information + "CA");
-                    db.calDBAdd(id, pswd, classList, pickDate, information, type);
+                    System.out.println(getId + pickDate + information + inputCourseId + inputClassId +  type);
+                    db.calDBAdd(getId, pswd, inputCourseId, inputClassId, pickDate, information, type);
+
                 } else if (btnExam.isSelected()) {
                     String type = "Exam";
-                    db.calDBAdd(id, pswd, classList, pickDate, information, type);
+                    System.out.println(getId + pickDate + information + inputCourseId + inputClassId +  type);
+                    db.calDBAdd(getId, pswd, inputCourseId, inputClassId, pickDate, information, type);
+
                 }
                 //db.calDBAdd();
                 frame.dispose();

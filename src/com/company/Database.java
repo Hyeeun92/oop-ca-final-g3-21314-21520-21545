@@ -15,7 +15,7 @@ import java.util.List;
 public class Database extends JFrame {
     String DB_URL = "jdbc:mysql://localhost:3306/oop_final?serverTimezone=UTC";
     String DB_USER = "root";
-    String DB_PASSWORD = "YES01@"; // "ah447Sladl!";  "Memory1979@";
+    String DB_PASSWORD =  "ah447Sladl!";  //"YES01@";"Memory1979@";
     Connection conn;
     PreparedStatement pstmt;
     ResultSet rs;
@@ -122,6 +122,7 @@ public class Database extends JFrame {
             e.printStackTrace();
         }
     }
+
     public void getStudentLoginInfo(String id, String pswd) {
 
         String courseId;
@@ -221,10 +222,12 @@ public class Database extends JFrame {
         }
 
     }
+
     public void calDBAdd(String id, String pswd, String courseId, String classId, String pickDate, String information, String type) {
 
         //my mysql insert statement
-        SQL = "INSERT INTO schedule (class_id, finish_date, lecture_id, type, course_id, information)" + "values (?,?,?,?,?,?)";
+        SQL = "INSERT INTO schedule (class_id, finish_date, lecture_id, type, course_id, information)"
+                + "values (?,?,?,?,?,?)";
 
         try {
             //create my mysql insert preparedStatement
@@ -256,7 +259,6 @@ public class Database extends JFrame {
             pstmt.setString(1, classId);
             pstmt.setString(2, id);
             pstmt.setString(3, pickDate);
-            System.out.println(pickDate +  " " + id + " " + courseId);
             pstmt.executeUpdate();
 
         } catch (SQLException sqlException) {
