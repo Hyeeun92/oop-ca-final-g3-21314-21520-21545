@@ -309,7 +309,6 @@ public class CalendarMemo extends JFrame implements ActionListener{
             String getInfo = info[2];
             if (pickDate != null && information != null) {
                 db.calDBDelete(getId, getCourseId, getClassId, pickDate, getInfo);
-                System.out.println(getId+getClassId+getClassId+pickDate+getInfo);
             }
         }
         else if (e.getSource() == btnAttendManage) {
@@ -336,10 +335,12 @@ public class CalendarMemo extends JFrame implements ActionListener{
     }
 
     public void calSet() {
+        Database db = new Database();
         cal.set(Calendar.YEAR, year);
-        cal.set(Calendar.MONTH,(month-1));
-        cal.set(Calendar.DATE,1);
+        cal.set(Calendar.MONTH, (month - 1));
+        cal.set(Calendar.DATE, 1);
         int dayOfWeek = cal.get(Calendar.DAY_OF_WEEK);
+        ArrayList<Integer> list = db.checkDay(year, month, getClassList);
 
         int j = 0;
         int hopping = 0;
@@ -347,35 +348,39 @@ public class CalendarMemo extends JFrame implements ActionListener{
         calBtn[0].setForeground(new Color(255, 0, 0));
         calBtn[6].setForeground(new Color(0, 0, 255));
 
-        for(int i = cal.getFirstDayOfWeek(); i < dayOfWeek; i++){
+        for (int i = cal.getFirstDayOfWeek(); i < dayOfWeek; i++) {
             j++;
         }
         hopping = j;
-        for (int k = 0; k<hopping; k++) {
-            calBtn[k+7].setText("");
+        for (int k = 0; k < hopping; k++) {
+            calBtn[k + 7].setText("");
         }
-        for (int i = cal.getMinimum(Calendar.DAY_OF_MONTH); i <= cal.getMaximum(Calendar.DAY_OF_MONTH); i++ ) {
+        for (int i = cal.getMinimum(Calendar.DAY_OF_MONTH); i <= cal.getMaximum(Calendar.DAY_OF_MONTH); i++) {
             cal.set(Calendar.DATE, i);
-            if (cal.get(Calendar.MONTH)!=month-1) {
+            if (cal.get(Calendar.MONTH) != month - 1) {
                 break;
-            }
-            todays = i;
+            } else {
+                // get day if there are has Ca or exam to set text as green
+                for (int g = 0; g < list.size(); g++) {
+                    int day = list.get(g);
+                    calBtn[day + 6 + hopping].setForeground(new Color(0, 255, 0));
+                }
+                //set text color black
+                calBtn[i + 6 + hopping].setForeground(new Color(0, 0, 0));
+                //Saturday set text blue
+                if ((i + hopping) % 7 == 0) {
+                    calBtn[i + 6 + hopping].setForeground(new Color(0, 0, 255));
+                }
+                //Sunday set text red
+                if ((i + hopping - 1) % 7 == 0) {
+                    calBtn[i + 6 + hopping].setForeground(new Color(255, 0, 0));
+                }
 
-            if (memoday == 1) {
-                calBtn[i+6+hopping].setForeground(new Color(0,255,0));
+                calBtn[i + 6 + hopping].setText((i) + "");
             }
-            else {
-                calBtn[i+6+hopping].setForeground(new Color(0,0,0));
-                if ((i+hopping)%7 == 0) {
-                    calBtn[i+6+hopping].setForeground(new Color(0,0,255));
-                }
-                if ((i+hopping-1)%7 == 0) {
-                    calBtn[i+6+hopping].setForeground(new Color(255,0,0));
-                }
-            }
-            calBtn[i+6+hopping].setText((i) + "");
         }
     }
+
 
     public void gridInit() {
         for (int i = 0; i < days.length; i++) {
@@ -386,7 +391,6 @@ public class CalendarMemo extends JFrame implements ActionListener{
             calBtn[i].addActionListener((this));
             }
         }
-
 
     public void panelInit() {
         GridLayout gridLayout1 = new GridLayout(7,7);

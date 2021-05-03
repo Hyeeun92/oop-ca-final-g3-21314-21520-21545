@@ -10,12 +10,11 @@ import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.sql.*;
 import java.util.ArrayList;
-import java.util.List;
 
 public class Database extends JFrame {
     String DB_URL = "jdbc:mysql://localhost:3306/oop_final?serverTimezone=UTC";
     String DB_USER = "root";
-    String DB_PASSWORD =  "ah447Sladl!";  //"YES01@";"Memory1979@";
+    String DB_PASSWORD = "ah447Sladl!";  //"YES01@";"Memory1979@";
     Connection conn;
     PreparedStatement pstmt;
     ResultSet rs;
@@ -73,7 +72,7 @@ public class Database extends JFrame {
             pstmt = conn.prepareStatement(SQL);
             pstmt.setString(1, id);
             rs = pstmt.executeQuery();
-            while(rs.next()) {
+            while (rs.next()) {
                 String password = rs.getString(1);
                 if (password.equals(pswd)) {
                     getLectureInformation(id, pswd);
@@ -112,7 +111,7 @@ public class Database extends JFrame {
                 classList[0] = courseId;
                 classList[1] = classId;
                 System.out.println(count + courseId + classId);
-                classAndCourseList.add(i,classList);
+                classAndCourseList.add(i, classList);
             }
             calendarMemo.CalendarForLecture(id, pswd, classAndCourseList);
 
@@ -167,7 +166,7 @@ public class Database extends JFrame {
                 classId = rs.getString("class_id");
                 classList[0] = courseId;
                 classList[1] = classId;
-                classAndCourseList.add(i,classList);
+                classAndCourseList.add(i, classList);
             }
             calendarMemo.CalendarForStudent(id, pswd, classAndCourseList);
 
@@ -203,7 +202,7 @@ public class Database extends JFrame {
                 String[] courseId_classId_List = new String[2];
                 courseId_classId_List = getClassList.get(i);
                 courseId = courseId_classId_List[0];
-                pstmt.setString(1,courseId);
+                pstmt.setString(1, courseId);
                 rs = pstmt.executeQuery();
                 while (rs.next()) {
                     String studentFname = rs.getString("student_fname");
@@ -385,11 +384,11 @@ public class Database extends JFrame {
         return CIDFee;
     }
 
-    public void getStuInfo(String student_id, String student_password, String student_name, String student_Lname, String student_email, String student_address, String student_gender, String branch_Bno, String course_id)throws SQLException {
+    public void getStuInfo(String student_id, String student_password, String student_name, String student_Lname, String student_email, String student_address, String student_gender, String branch_Bno, String course_id) throws SQLException {
         //my mysql insert statement
         SQL = "INSERT INTO student ( student_id, student_password, student_name, student_Lname, student_email, student_address, student_gender, branch_Bno, course_id)" + "values (?,?,?,?,?,?,?,?,?)";
 
-        try{
+        try {
             //create my mysql insert preparedStatement
             pstmt = conn.prepareStatement(SQL);
             pstmt.clearParameters();
@@ -405,7 +404,7 @@ public class Database extends JFrame {
 
             pstmt.execute();
 
-        }catch (SQLException e) {
+        } catch (SQLException e) {
             System.out.println(e.toString());
         } catch (Exception e) {
             System.out.println(e.toString());
@@ -426,7 +425,7 @@ public class Database extends JFrame {
             if (rs.next()) {
                 System.out.println(pstmt);
                 if (rs.getString(1).equals(rs.getString("branch_Bno"))) {
-                    studentBranch= rs.getString("branch_Bno");
+                    studentBranch = rs.getString("branch_Bno");
 
                 } else {
                     System.out.println("!!");
@@ -449,8 +448,8 @@ public class Database extends JFrame {
         SQL = "select information from schedule where finish_date = ? and course_id = ? and class_id = ?";
         String info = "";
         String information = "";
-        String classId="";
-        String courseId="";
+        String classId = "";
+        String courseId = "";
         ArrayList<String[]> getClassList = classList;
 
         try {
@@ -545,45 +544,38 @@ public class Database extends JFrame {
         }
     }
 
-    public void checkDay(String id) {
+    public ArrayList<Integer> checkDay(int year, int month, ArrayList<String[]> classList) {
 
-        SQL = "select course_id from student where student_id = ?";
+        SQL = "select finish_date from schedule where course_id = ?";
+        String roadDate;
+
+        ArrayList<Integer> list = new ArrayList<>();
         try {
             pstmt = conn.prepareStatement(SQL);
-            pstmt.setString(1, id);
-            rs = pstmt.executeQuery();
-            while (rs.next()) {
-                String courseId = rs.getString("course_id");
+            for (int i = 0; i < classList.size(); i++) {
+                String[] courseId_classId_List = new String[2];
+                courseId_classId_List = classList.get(i);
+                String courseId = courseId_classId_List[0];
+                pstmt.setString(1, courseId);
+                rs = pstmt.executeQuery();
+                while (rs.next()) {
+                    roadDate = rs.getString("finish_date");
+                    String[] date = roadDate.split("/");
+                    int getDay = Integer.parseInt(date[0]);
+                    int getMonth = Integer.parseInt(date[1]);
+                    int getYear = Integer.parseInt(date[2]);
+                    if (getMonth == month && getYear == year) {
+                        list.add(getDay);
+                    }
 
+                }
             }
         } catch (SQLException e) {
             System.out.println(e.toString());
         } catch (Exception e) {
             System.out.println(e.toString());
         }
-
+        return list;
     }
-
-    public void lectureSearchMemo() {
-
-      /*  SQL = "select finish_date, information from schedule where lecture_id = ?";
-        try {
-            pstmt = conn.prepareStatement(SQL);
-            pstmt.setString(1, lectureId);
-            rs = pstmt.executeQuery();
-            while (rs.next()) {
-                String date = rs.getString("finish_date");
-                String info = rs.getString("information");
-                model.setRoadDate(date);
-                model.setLectureScheduleInfo(info);
-            }
-
-        } catch (SQLException sqlException) {
-            sqlException.printStackTrace();
-        }*/
-
-    }
-
-
 }
 
