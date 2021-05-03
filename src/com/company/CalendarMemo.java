@@ -108,6 +108,7 @@ public class CalendarMemo extends JFrame implements ActionListener{
 
         gridInit();
         calSet();
+        hideInit();
         //add(panWest, "West");
 
         panWest.setBackground(Color.MAGENTA);
@@ -213,6 +214,8 @@ public class CalendarMemo extends JFrame implements ActionListener{
         f = new Font("Serif", Font.BOLD, 12);
 
         gridInit();
+        calSet();
+        hideInit();
 
         //add(panWest, "West");
         panWest.setBackground(Color.MAGENTA);
@@ -265,9 +268,6 @@ public class CalendarMemo extends JFrame implements ActionListener{
         btnDelete.addActionListener(this);
         btnAttendManage.addActionListener(this);
         btnStudentInfo.addActionListener(this);
-
-        calSet();
-
     }
 
     public void actionPerformed(ActionEvent e) {
@@ -280,6 +280,7 @@ public class CalendarMemo extends JFrame implements ActionListener{
             gridInit();
             panelInit();
             calSet();
+            hideInit();
             this.textYear.setText(year + "");
             this.textMonth.setText(month + "");
         }
@@ -289,6 +290,7 @@ public class CalendarMemo extends JFrame implements ActionListener{
             gridInit();
             panelInit();
             calSet();
+            hideInit();
             this.textYear.setText(year + "");
             this.textMonth.setText(month + "");
         }
@@ -380,7 +382,6 @@ public class CalendarMemo extends JFrame implements ActionListener{
             }
         }
     }
-
 
     public void gridInit() {
         for (int i = 0; i < days.length; i++) {
@@ -484,5 +485,11 @@ public class CalendarMemo extends JFrame implements ActionListener{
 
     }
 
+    public void hideInit() {
+        for(int i = 0; i< calBtn.length; i++) {
+            if((calBtn[i].getText()).equals(""))
+                calBtn[i].setEnabled(false);
+        }
+    }
 
 }
