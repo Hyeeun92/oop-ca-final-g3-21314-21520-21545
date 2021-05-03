@@ -53,16 +53,19 @@ public class CalendarMemo extends JFrame implements ActionListener{
 
     SpringLayout layout;
     String id, pswd, courseId, classId;
+    String getId, getPswd;
+    ArrayList<String[]> getClassList = new ArrayList<>();
     //SpringLayout.Constraints labelCons2;
 
     public CalendarMemo() {
 
     }
 
-    public void CalendarForStudent(String id, String pswd) {
+    public void CalendarForStudent(String id, String pswd, ArrayList<String[]> classList) {
 
-        this.id = id;
-        this.pswd = pswd;
+        this.getId = id;
+        this.getPswd = pswd;
+        this.getClassList = classList;
 
         JLabel backgroundS = new JLabel(new ImageIcon(getClass().getResource("greenChalkboard.jpg")));
         backgroundS.setSize(960,533);
@@ -161,32 +164,12 @@ public class CalendarMemo extends JFrame implements ActionListener{
         listAttendance.addActionListener(this);
         changePswd.addActionListener(this);
 
-        /*listResult.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-
-            }
-        });
-        listAttendance.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-
-            }
-        });
-        changePswd.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                RenewLogin renewLogin = new RenewLogin();
-            }
-        });*/
     }
 
-    public void CalendarForLecture(String id, String pswd, String courseId, String classId) {
-
-        this.id = id;
-        this.pswd = pswd;
-        this.courseId = courseId;
-        this.classId = classId;
+    public void CalendarForLecture(String id, String pswd, ArrayList<String[]> classList) {
+        this.getId = id;
+        this.getPswd = pswd;
+        this.getClassList = classList;
 
         JLabel backgroundS = new JLabel(new ImageIcon(getClass().getResource("lecturerBg.png")));
         backgroundS.setSize(1000,600);
@@ -308,12 +291,12 @@ public class CalendarMemo extends JFrame implements ActionListener{
             this.textMonth.setText(month + "");
         }
         else if (e.getSource() == btnStudentInfo) {
-            db.listOfStudents(courseId);
+            db.listOfStudents(getClassList);
         }
         else if (e.getSource() == btnAdd) {
             information = textWrite.getText();
             if (pickDate != null && information != null) {
-                checkpanel(id, pswd, courseId, classId, pickDate, information);
+                checkpanel(id, pswd, getClassList, pickDate, information);
             }
         }
         else if (e.getSource() == btnDelete) {
@@ -339,7 +322,8 @@ public class CalendarMemo extends JFrame implements ActionListener{
             day = Integer.parseInt(e.getActionCommand());
             pickDate = day+"/"+month+"/"+year;
             System.out.println(pickDate);
-            textWrite.setText(db.checkMemo(id, courseId, classId, pickDate));
+            System.out.println(getId);
+            textWrite.setText(db.checkMemo(getId, getClassList , pickDate));
             calSet();
         }
     }
@@ -414,7 +398,7 @@ public class CalendarMemo extends JFrame implements ActionListener{
         }
     }
 
-    private void checkpanel(String id, String pswd, String courseId, String classId, String pickDate, String information) {
+    private void checkpanel(String id, String pswd, ArrayList<String[]> classList, String pickDate, String information) {
 
         Database db = new Database();
 
@@ -448,10 +432,10 @@ public class CalendarMemo extends JFrame implements ActionListener{
                 if (btnCa.isSelected()) {
                     String type = "CA";
                     System.out.println(inputId + pickDate + information + "CA");
-                    db.calDBAdd(id, pswd, courseId, classId, pickDate, information, type);
+                    db.calDBAdd(id, pswd, classList, pickDate, information, type);
                 } else if (btnExam.isSelected()) {
                     String type = "Exam";
-                    db.calDBAdd(id, pswd, courseId, classId, pickDate, information, type);
+                    db.calDBAdd(id, pswd, classList, pickDate, information, type);
                 }
                 //db.calDBAdd();
                 frame.dispose();
