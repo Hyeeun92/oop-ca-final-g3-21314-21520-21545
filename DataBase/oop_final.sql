@@ -1,3 +1,9 @@
+-- 
+
+--21545 - Hyeeun Lee
+--21520 - Liubov Eremenko
+--21314 - Nathalie Flores
+
 -- MySQL dump 10.13  Distrib 8.0.21, for Win64 (x86_64)
 --
 -- Host: localhost    Database: oop_final
