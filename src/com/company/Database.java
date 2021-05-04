@@ -592,5 +592,29 @@ public class Database extends JFrame {
             System.out.println(e.toString());
         }
     }
+
+    public ArrayList<String> studentListForAttandance(String getCourseId, String getClassId) {
+
+        String fullName;
+        ArrayList<String> studentList = new ArrayList<>();
+
+        SQL = "select student_Fname, student_lName from student where course_id = ?";
+
+        try {
+            pstmt = conn.prepareStatement(SQL);
+            pstmt.setString(1, getCourseId);
+            rs = pstmt.executeQuery();
+            while(rs.next()) {
+                fullName = rs.getString("student_fname") + " "  + rs.getString("student_lname");
+                studentList.add(fullName);
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return studentList;
+    }
 }
 
