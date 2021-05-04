@@ -10,7 +10,8 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-public class ManagementFees implements ActionListener {
+public class ManagementFees extends JFrame implements ActionListener {
+
     JFrame frame;
     JLabel title, amount;
     JTextField amountF;
@@ -18,9 +19,15 @@ public class ManagementFees implements ActionListener {
     JRadioButton rdbFullyP, rdbInstP;
     JButton btnChangeScreen, btnCancel;
 
-    public ManagementFees() {
-        Database db = new Database();
+    Database db = new Database();
 
+    public ManagementFees() {
+
+        createdGui();
+
+    }
+
+    public void createdGui(){
         //create JFrame
         frame = new JFrame();
         title = new JLabel("Adm. Manage of fees paid ", SwingConstants.CENTER);
@@ -64,7 +71,7 @@ public class ManagementFees implements ActionListener {
 
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setLayout(null);
-        frame.setSize(640, 480);
+        frame.setSize(1000,600);
         frame.setLocationRelativeTo(null);
         frame.setVisible(true);
 

@@ -39,7 +39,6 @@ public class Administrator  extends JFrame implements ActionListener { //action 
 
     public Administrator() {
         createdForms();
-        Database db = new Database();
         addBranchInComboBox();
         showListCourses();
         clearAllControls();

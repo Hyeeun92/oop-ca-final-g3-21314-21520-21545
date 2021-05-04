@@ -315,7 +315,7 @@ public class CalendarMemo extends JFrame implements ActionListener{
         }
         else if (e.getSource() == btnAttendManage) {
             if (pickDate != null) {
-                Attandance attendance = new Attandance(getId, pickDate, getClassList);
+                //Attandance attendance = new Attandance(getId, pickDate, getClassList);
             }
         }
         else if (e.getSource() == listResult) {
