@@ -607,6 +607,7 @@ public class Database extends JFrame {
             while(rs.next()) {
                 fullName = rs.getString("student_fname") + " "  + rs.getString("student_lname");
                 studentList.add(fullName);
+                System.out.println(fullName);
             }
 
         } catch (SQLException e) {
