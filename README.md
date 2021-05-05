@@ -35,5 +35,8 @@ The team encountered challenges in the design and the programing of the software
 
 ## Development Process
 ## UML Diagram
+https://github.com/Hyeeun92/oop-ca-final-g3-21314-21520-21545/issues/1#issue-876498458
+## EED Diagram
+![database](https://user-images.githubusercontent.com/65398774/117155737-ec977700-adb4-11eb-9622-cecc23352aab.png)
 
 
