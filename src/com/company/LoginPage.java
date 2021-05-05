@@ -30,10 +30,10 @@ public class LoginPage extends JFrame{
     public LoginPage(){
 
         Database db = new Database();
-        CalendarMemo calendarMemo = new CalendarMemo();
 
         frameLogin = new JFrame();
 
+        //set background with image file
         JLabel background=new JLabel(new ImageIcon(getClass().getResource("college.jpg")));
         frameLogin.add(background);
 
@@ -131,12 +131,11 @@ public class LoginPage extends JFrame{
         panelR3.add(studentRadio);
         background.add(panelR3);
 
-
+        //add radio button to buttongroup
         radioGroup = new ButtonGroup();
         radioGroup.add(adminRadio);
         radioGroup.add(lectureRadio);
         radioGroup.add(studentRadio);
-
 
         btnLogin = new JButton("Log in");
         btnLogin.setFont(new Font("Serif", Font.BOLD, 15));
@@ -169,19 +168,20 @@ public class LoginPage extends JFrame{
         frameLogin.setVisible(true);
         frameLogin.setLocationRelativeTo(null); // make the frame center
 
+        //add login button action listener
         btnLogin.addActionListener(
                 new ActionListener() {
                     @Override
                     public void actionPerformed(ActionEvent e) {
                         id = idField.getText();
                         pswd = String.valueOf(pswdField.getPassword());
-
+                        //if user select admin radio button
                         if (adminRadio.isSelected()) {
                             db.getAdminLoginInfo(id, pswd);
-
+                        //if user select lecture radio button
                         } else if (lectureRadio.isSelected()) {
                             db.getLectureLoginInfo(id, pswd);
-
+                        //if user select studnet radio button
                         } else if (studentRadio.isSelected()) {
                             db.getStudentLoginInfo(id, pswd);
 

@@ -6,7 +6,6 @@ package com.company;
 21314 - Nathalie Flores
 */
 
-
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -22,7 +21,6 @@ public class RenewLogin extends JFrame {
     String inputPswd = "";
     String pswdNew = "";
     String pswdConfirm = "";
-    String inputId = "";
     String getId;
     String getpswd;
 
@@ -103,14 +101,18 @@ public class RenewLogin extends JFrame {
                 inputPswd = String.valueOf(pswdField.getPassword());
                 pswdNew = String.valueOf(newField.getPassword());
                 pswdConfirm = String.valueOf(confirmField.getPassword());
+                //start if to compare user input password and database password
                 if (inputPswd.equals(getpswd)) {
+                    //start if to compare user input pasword and database password
                     if (pswdNew.equals(getpswd)) {
                         JOptionPane optionPane = new JOptionPane("Current password and new password are same", JOptionPane.ERROR_MESSAGE);
                         JDialog dialog = optionPane.createDialog("Failure");
                         dialog.setAlwaysOnTop(true);
                         dialog.setVisible(true);
                     } else {
+                        //start if to compare user input new password and confirm password
                         if (pswdNew.equals(pswdConfirm)) {
+                            //call database class changeStudentPswd to update new password
                             db.changeStudentPswd(getId, pswdNew);
                         } else {
                             JOptionPane optionPane = new JOptionPane("New password and confirm new password are different", JOptionPane.ERROR_MESSAGE);
@@ -119,7 +121,6 @@ public class RenewLogin extends JFrame {
                             dialog.setVisible(true);
                         }
                     }
-
                 } else {
                     JOptionPane optionPane = new JOptionPane("Incorrect password", JOptionPane.ERROR_MESSAGE);
                     JDialog dialog = optionPane.createDialog("Failure");
@@ -128,71 +129,5 @@ public class RenewLogin extends JFrame {
                 }
             }
         });
-
-
-
-
-
-        //String inputPswd = "";
-        //    String pswdNew = "";
-        //    String pswdConfirm = "";
-        //    String intputId = "";
-
-        /*btnSave.addActionListener(
-           //new ActionListener() {
-               /*   @Override
-                  public void actionPerformed(ActionEvent e) {
-                        String id, pswdOld, pswdNew, pswdConfirm;
-                        id = idField.getText();
-                        pswd = pswdField.getPassword();
-                        pswdNew = newField.getPassword();
-                        pswdConfirm = confirmField.getPassword();
-                        String db1 = "select * from student where student_id = '"+id+"' ";
-                        String db2 = "update student set student_password ='"+pswdNew+"' where student_id = '"+id+"' ";
-
-                  if (pswdNew.equals(pswdConfirm)){
-
-                            try {
-                                st=con.prepareStatement(db.getStudentLoginInfo(id, pswd);
-                                if() {
-                                    st=con.prepareStatement("update login set password = ? where id = ?" );
-                                    st.setString( , pswdNew);
-                                    st.setString( , id);
-                                    JOptionPane.showMessageDialog(null, "Password Changed Successfully");
-                                                db //set new pswd to
-                                                    id.setText("");
-                                                    pswd ;
-                                                    pswdNew;
-                                                    pswdConfirm ;
-
-                                }else {
-                                    JOptionPane.showMessageDialog(null, "Invalid ID or Old password");
-
-                                } catch (Exception e) {
-                                    System.out.println(e);
-                                }
-                                }
-
-                        } else {
-                            JOptionPane.showMessageDialog(null, "New Password does not match with Confirm Password");
-
-                        }
-
-                        id = pswdField.getPassword();
-                        pswd = String.valueOf(newField.getPassword());
-
-                        *//*if (adminRadio.isSelected()) {
-                           db.getAdminLoginInfo(id, pswd);
-                        } else if (lectureRadio.isSelected()) {
-                            db.getLectureLoginInfo(id, pswd);
-                        } else if (studentRadio.isSelected()) {
-                          db.getStudentLoginInfo(id,pswd);*//*
-                       }
-                    }
-               }
-        );*/
     }
-
-
-
 }
