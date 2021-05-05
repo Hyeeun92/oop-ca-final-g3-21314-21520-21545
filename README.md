@@ -46,12 +46,15 @@ The team encountered challenges in the design and the programing of the software
 <img width="473" alt="loginPage" src="https://user-images.githubusercontent.com/65398774/117157424-7eec4a80-adb6-11eb-9278-10320aceedf9.png">
 
 ### User: Administrator
+<img width="741" alt="administratorPage" src="https://user-images.githubusercontent.com/65398774/117158924-c0c9c080-adb7-11eb-8fb6-cd76509dcd21.png">
+
+### User: Lecturer
 <img width="742" alt="lecturePage" src="https://user-images.githubusercontent.com/65398774/117157506-8dd2fd00-adb6-11eb-92f0-b0a8ef64acda.png">
 
 ### User: Student
 <img width="738" alt="studentlogin" src="https://user-images.githubusercontent.com/65398774/117157620-a3482700-adb6-11eb-8459-3e153a0928e0.png">
 
-## Considerations
+## Conclusion
 The main objective of this project was fulfilled, which was to create a “Virtual Global College (VGC)” software, the project has some unfinished parts, however, it allowed us to study in a more in-depth way the programming language and its interactions based on data. <br>
 Java is one of the most popular and imperishable programming languages in the world of technology industry. This is the reason why Java developers are in a constant race to improve their skills. The motto of OOP is to bind the data and the functions together, so as to improve code stability and safety.
 
