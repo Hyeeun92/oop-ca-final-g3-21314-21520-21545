@@ -35,8 +35,9 @@ The team encountered challenges in the design and the programing of the software
 
 ## Development Process
 ## UML Diagram
-https://github.com/Hyeeun92/oop-ca-final-g3-21314-21520-21545/issues/1#issue-876498458
+![Bank_uml (1)](https://user-images.githubusercontent.com/65398774/117156280-6b8caf80-adb5-11eb-8125-2247d44f91ee.png)
+
 ## EED Diagram
 ![database](https://user-images.githubusercontent.com/65398774/117155737-ec977700-adb4-11eb-9622-cecc23352aab.png)
 
-
+## GUI application 
