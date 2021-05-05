@@ -1,10 +1,10 @@
 # Continuous Assessment - JAVA PROGRAMMING PROJECT (Final CA)
 
-## Student: 
-21545 - Hyeeun Lee
-21520 - Liubov Eremenko
-21314 - Nathalie Flores
-## oop-ca-final-g3-21314-21520-21545#
+## Students: 
+21545 - Hyeeun Lee <br>
+21520 - Liubov Eremenko <br>
+21314 - Nathalie Flores <br>
+## oop-ca-final-g3-21314-21520-21545
 
 ## Lecturer: John Rowley
 
@@ -41,3 +41,18 @@ The team encountered challenges in the design and the programing of the software
 ![database](https://user-images.githubusercontent.com/65398774/117155737-ec977700-adb4-11eb-9622-cecc23352aab.png)
 
 ## GUI application 
+
+### Login page
+<img width="473" alt="loginPage" src="https://user-images.githubusercontent.com/65398774/117157424-7eec4a80-adb6-11eb-9278-10320aceedf9.png">
+
+### User: Administrator
+<img width="742" alt="lecturePage" src="https://user-images.githubusercontent.com/65398774/117157506-8dd2fd00-adb6-11eb-92f0-b0a8ef64acda.png">
+
+### User: Student
+<img width="738" alt="studentlogin" src="https://user-images.githubusercontent.com/65398774/117157620-a3482700-adb6-11eb-8459-3e153a0928e0.png">
+
+## Considerations
+The main objective of this project was fulfilled, which was to create a “Virtual Global College (VGC)” software, the project has some unfinished parts, however, it allowed us to study in a more in-depth way the programming language and its interactions based on data. <br>
+Java is one of the most popular and imperishable programming languages in the world of technology industry. This is the reason why Java developers are in a constant race to improve their skills. The motto of OOP is to bind the data and the functions together, so as to improve code stability and safety.
+
+
