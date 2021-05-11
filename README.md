@@ -29,6 +29,10 @@ MySQL and Intellij IDE are required to run the program.
 1. Download the document oop_final.sql found inside the database folder.
 2. Open the document in the IDE and run in the main class.
 
+
+## Youtube Video
+https://youtu.be/qPwRf59f7To
+
 ## Project Summary
 This report is prepared to outline the progress of the software launch of “Virtual Global College (VGC)”. 
 The team encountered challenges in the design and the programing of the software but managed to complete 87% of the project.
